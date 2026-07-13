@@ -25,76 +25,34 @@ const featured = [
 ];
 
 const chapters = [
-  {
-    n: "01",
-    name: "PALADIUM ELEKTRONIK PARA",
-    badge: "FINTECH",
-    role: "LEAD UX/UI DESIGNER — ART DIRECTOR",
-    years: "2024–2026",
-    body:
-      "Reworked missing or inconsistent product pages into a unified experience. Restructured user journeys, improved navigation between core features, and shipped a scalable design system that raised visual coherence across major fintech functionalities.",
-  },
-  {
-    n: "02",
-    name: "JOLLIFY GAMES",
-    badge: "GAMING",
-    role: "LEAD UX/UI DESIGNER",
-    years: "2022–2023",
-    body:
-      "Worked closely with art, game design and dev teams on multiple game projects. Owned gameplay-related UX elements, visual clarity, and interaction patterns inside the games.",
-  },
-  {
-    n: "03",
-    name: "MUDIO GAMES",
-    badge: "GAMING",
-    role: "LEAD UX/UI DESIGNER",
-    years: "2021–2022",
-    body:
-      "Designed and improved visual and UX elements for the Evox game. Focused on usability, interface clarity and player interaction inside the game environment.",
-  },
-  {
-    n: "04",
-    name: "ZYNGA TÜRKİYE",
-    badge: "GAMING",
-    role: "UX/UI DESIGNER",
-    years: "2020–2021",
-    body:
-      "Casual card games team: Solitaire, FreeCell and classics. Designed interface layouts and interaction patterns that support clear gameplay flows and accessible player experiences.",
-  },
-  {
-    n: "05",
-    name: "BEIN CONNECT",
-    badge: "MEDIA",
-    role: "UX/UI DESIGNER",
-    years: "2019–2020",
-    body:
-      "Collaborated with teams in Turkey and Asia Pacific on web and mobile streaming products. Contributed to interface design and UX improvements across multiple markets.",
-  },
+  { n: "01", name: "PALADIUM ELEKTRONIK PARA", badge: "FINTECH", role: "LEAD UX/UI DESIGNER — ART DIRECTOR", years: "2024–2026",
+    body: "Reworked missing or inconsistent product pages into a unified experience. Restructured user journeys, improved navigation between core features, and shipped a scalable design system that raised visual coherence across major fintech functionalities." },
+  { n: "02", name: "JOLLIFY GAMES", badge: "GAMING", role: "LEAD UX/UI DESIGNER", years: "2022–2023",
+    body: "Worked closely with art, game design and dev teams on multiple game projects. Owned gameplay-related UX elements, visual clarity, and interaction patterns inside the games." },
+  { n: "03", name: "MUDIO GAMES", badge: "GAMING", role: "LEAD UX/UI DESIGNER", years: "2021–2022",
+    body: "Designed and improved visual and UX elements for the Evox game. Focused on usability, interface clarity and player interaction inside the game environment." },
+  { n: "04", name: "ZYNGA TÜRKİYE", badge: "GAMING", role: "UX/UI DESIGNER", years: "2020–2021",
+    body: "Casual card games team: Solitaire, FreeCell and classics. Designed interface layouts and interaction patterns that support clear gameplay flows and accessible player experiences." },
+  { n: "05", name: "BEIN CONNECT", badge: "MEDIA", role: "UX/UI DESIGNER", years: "2019–2020",
+    body: "Collaborated with teams in Turkey and Asia Pacific on web and mobile streaming products. Contributed to interface design and UX improvements across multiple markets." },
 ];
 
 const clients = ["DANONE", "HYUNDAI", "ŞİŞECAM", "SAMSUNG", "DUREX", "QNB", "DOĞUŞ", "TAV"];
 const skills = [
-  "PRODUCT DESIGN",
-  "UX/UI DESIGN",
-  "INTERACTION DESIGN",
-  "PRODUCT THINKING",
-  "DESIGN SYSTEMS",
-  "INFORMATION ARCHITECTURE",
-  "RESPONSIVE DESIGN",
-  "GAME UI SYSTEMS",
-  "PROTOTYPING",
-  "USABILITY OPTIMIZATION",
-  "AI-ASSISTED DESIGN",
-  "ILLUSTRATION",
+  "PRODUCT DESIGN","UX/UI DESIGN","INTERACTION DESIGN","PRODUCT THINKING","DESIGN SYSTEMS","INFORMATION ARCHITECTURE",
+  "RESPONSIVE DESIGN","GAME UI SYSTEMS","PROTOTYPING","USABILITY OPTIMIZATION","AI-ASSISTED DESIGN","ILLUSTRATION",
 ];
 
 function ProjectsPage() {
   return (
-    <div className="min-h-screen bg-black p-4 md:p-6 space-y-6">
-      {/* Red intro screen */}
-      <CRTScreen background="#e14b42">
+    <div className="min-h-screen bg-black p-4 md:p-6">
+      <CRTScreen
+        background="linear-gradient(180deg, #e14b42 0%, #e14b42 40%, #f2f0ec 65%, #f2f0ec 100%)"
+      >
         <SiteHeader variant="light" centerIcons="diamond" />
-        <div className="px-8 md:px-16 pt-10 pb-20 text-[#f0ebe3]">
+
+        {/* Hero (red area) */}
+        <section className="px-8 md:px-16 pt-10 pb-24 text-[#f0ebe3]">
           <h1 className="display-heading text-[18vw] md:text-[14rem] leading-[0.85] text-black">
             PROJECTS
           </h1>
@@ -127,12 +85,10 @@ function ProjectsPage() {
               ))}
             </div>
           </div>
-        </div>
-      </CRTScreen>
+        </section>
 
-      {/* Cream chapter screen */}
-      <CRTScreen background="#f2f0ec">
-        <div className="px-8 md:px-16 pt-12 pb-14 text-black">
+        {/* Chapters (cream area) */}
+        <section className="px-8 md:px-16 pt-24 pb-14 text-black">
           <p className="text-xs tracking-[0.3em] text-black/60 mb-8">A FEW CHAPTERS — SCROLL FOR THE FULL STORY</p>
           <ul className="space-y-10">
             {chapters.map((c) => (
@@ -152,10 +108,7 @@ function ProjectsPage() {
           </ul>
 
           <div className="mt-10">
-            <a
-              href="#"
-              className="inline-flex items-center gap-2 bg-black text-[#f0ebe3] text-xs tracking-[0.25em] rounded-md px-4 py-3 hover:bg-[#e14b42] transition-colors"
-            >
+            <a href="#" className="inline-flex items-center gap-2 bg-black text-[#f0ebe3] text-xs tracking-[0.25em] rounded-md px-4 py-3 hover:bg-[#e14b42] transition-colors">
               DOWNLOAD FULL CV <Download size={14} />
             </a>
           </div>
@@ -164,10 +117,7 @@ function ProjectsPage() {
             <p className="text-xs tracking-[0.3em] text-black/50 mb-4">SKILLS</p>
             <div className="flex flex-wrap gap-2">
               {skills.map((s) => (
-                <span
-                  key={s}
-                  className="text-[10px] tracking-[0.2em] border border-black/20 rounded-sm px-3 py-2 text-black/80 hover:bg-black hover:text-[#f0ebe3] transition-colors"
-                >
+                <span key={s} className="text-[10px] tracking-[0.2em] border border-black/20 rounded-sm px-3 py-2 text-black/80 hover:bg-black hover:text-[#f0ebe3] transition-colors">
                   {s}
                 </span>
               ))}
@@ -177,17 +127,14 @@ function ProjectsPage() {
           <div className="mt-20 border-t border-[#e14b42]/40 pt-10">
             <p className="text-xs tracking-[0.3em] text-[#e14b42]">LET'S CONNECT</p>
             <h2 className="display-heading text-4xl md:text-6xl text-black mt-3">WANT TO WORK TOGETHER?</h2>
-            <a
-              href="/contact"
-              className="mt-6 inline-flex items-center gap-2 bg-black text-[#f0ebe3] text-xs tracking-[0.25em] rounded-md px-5 py-3 hover:bg-[#e14b42] transition-colors"
-            >
+            <a href="/contact" className="mt-6 inline-flex items-center gap-2 bg-black text-[#f0ebe3] text-xs tracking-[0.25em] rounded-md px-5 py-3 hover:bg-[#e14b42] transition-colors">
               GET IN TOUCH ↗
             </a>
           </div>
-        </div>
-      </CRTScreen>
+        </section>
 
-      <SiteFooter />
+        <SiteFooter />
+      </CRTScreen>
     </div>
   );
 }

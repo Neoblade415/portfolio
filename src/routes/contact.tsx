@@ -20,12 +20,11 @@ function ContactPage() {
   return (
     <div className="min-h-screen bg-black p-4 md:p-6">
       <CRTScreen
-        background="linear-gradient(120deg, #1a1120 0%, #3a2540 40%, #4a2530 70%, #2b1f3d 100%)"
+        background="linear-gradient(180deg, #1a1120 0%, #3a2540 40%, #4a2530 70%, #2b1f3d 100%)"
       >
         <SiteHeader variant="dark" centerIcons="space" logo="I WANT TO BELIEVE" />
 
         <div className="relative px-8 md:px-16 pt-10 pb-32 min-h-[75vh] grid md:grid-cols-2 gap-10 items-center">
-          {/* Big outline text */}
           <h1
             className="display-heading text-[16vw] md:text-[9rem] leading-[0.9] tracking-tight"
             style={{
@@ -38,7 +37,6 @@ function ContactPage() {
             TOUCH
           </h1>
 
-          {/* UFO + beam */}
           <div className="relative">
             <svg
               aria-hidden
@@ -84,7 +82,6 @@ function ContactPage() {
             </div>
           </div>
 
-          {/* faint stars */}
           {Array.from({ length: 30 }).map((_, i) => (
             <span
               key={i}
@@ -97,9 +94,9 @@ function ContactPage() {
             />
           ))}
         </div>
-      </CRTScreen>
 
-      <SiteFooter />
+        <SiteFooter />
+      </CRTScreen>
     </div>
   );
 }
