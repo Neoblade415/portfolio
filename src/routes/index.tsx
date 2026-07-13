@@ -18,15 +18,17 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <div className="min-h-screen bg-black p-4 md:p-6">
-      <CRTScreen background="linear-gradient(180deg, #f0ebe3 0%, #e8e2d6 100%)">
+      <CRTScreen background="#f0ebe3" className="min-h-[calc(100vh-2rem)] md:min-h-[calc(100vh-3rem)]">
         <SiteHeader variant="light" centerIcons="diamond" />
 
         <div className="relative flex flex-col items-center justify-center px-6 md:px-12 pt-8 pb-24 min-h-[70vh]">
+          {/* orbit ellipse */}
           <div
             aria-hidden
             className="absolute inset-x-6 top-16 bottom-16 border border-black/15 rounded-[50%] rotate-[-8deg]"
           />
 
+          {/* side vertical labels */}
           <Link
             to="/projects"
             className="hidden md:block absolute left-6 top-1/2 -translate-y-1/2 text-black/80 text-[10px] tracking-[0.4em] font-semibold"
@@ -34,6 +36,14 @@ function Index() {
           >
             ← PROJECTS
           </Link>
+          <div
+            aria-hidden
+            className="hidden md:block absolute left-24 top-1/2 -translate-y-1/2 display-heading text-black/8 text-[6rem]"
+            style={{ writingMode: "vertical-rl", transform: "rotate(180deg)", color: "rgba(0,0,0,0.06)" }}
+          >
+            01
+          </div>
+
           <Link
             to="/artworks"
             className="hidden md:block absolute right-6 top-1/2 -translate-y-1/2 text-black/80 text-[10px] tracking-[0.4em] font-semibold"
@@ -41,7 +51,15 @@ function Index() {
           >
             ARTWORKS →
           </Link>
+          <div
+            aria-hidden
+            className="hidden md:block absolute right-24 top-1/2 -translate-y-1/2 display-heading text-black/8 text-[6rem]"
+            style={{ writingMode: "vertical-rl", color: "rgba(0,0,0,0.06)" }}
+          >
+            02
+          </div>
 
+          {/* portrait */}
           <div className="relative z-10 mt-6 flex items-end justify-center">
             <div
               className="w-[280px] h-[280px] md:w-[420px] md:h-[420px] rounded-full overflow-hidden"
@@ -60,8 +78,11 @@ function Index() {
                   </radialGradient>
                 </defs>
                 <ellipse cx="100" cy="110" rx="60" ry="70" fill="url(#face)" />
+                {/* hair */}
                 <path d="M40,80 Q60,20 100,25 Q150,20 160,80 Q155,55 130,50 Q100,45 70,55 Q50,60 40,80Z" fill="#1a1a1a" />
+                {/* beard */}
                 <path d="M55,130 Q80,180 100,180 Q120,180 145,130 Q140,155 100,160 Q60,155 55,130Z" fill="#2a1a10" />
+                {/* colorful splash */}
                 <g opacity="0.75">
                   <circle cx="70" cy="90" r="10" fill="#e14b42" />
                   <circle cx="82" cy="75" r="6" fill="#f2c94c" />
@@ -96,9 +117,9 @@ function Index() {
             </Link>
           </div>
         </div>
-
-        <SiteFooter />
       </CRTScreen>
+
+      <SiteFooter />
     </div>
   );
 }
