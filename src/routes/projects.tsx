@@ -3,6 +3,8 @@ import { CRTScreen } from "@/components/CRTScreen";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Download } from "lucide-react";
+import { useRef, useMemo } from "react";
+import { useScrollColorPlateaus } from "@/hooks/useScrollColorPlateaus";
 
 export const Route = createFileRoute("/projects")({
   head: () => ({
@@ -89,105 +91,125 @@ const skills = [
 ];
 
 function ProjectsPage() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const chaptersRef = useRef<HTMLDivElement>(null);
+  const footerRef = useRef<HTMLDivElement>(null);
+
+  const sections = useMemo(() => [
+    { ref: heroRef, color: "#e14b42" },
+    { ref: chaptersRef, color: "#f2f0ec" },
+    { ref: footerRef, color: "#000000" },
+  ], []);
+
+  const backgroundColor = useScrollColorPlateaus(scrollRef, sections);
+
   return (
-    <div className="min-h-screen bg-black p-4 md:p-6 space-y-6">
-      {/* Red intro screen */}
-      <CRTScreen background="#e14b42">
-        <SiteHeader variant="light" centerIcons="diamond" />
-        <div className="px-8 md:px-16 pt-10 pb-20 text-[#f0ebe3]">
-          <h1 className="display-heading text-[18vw] md:text-[14rem] leading-[0.85] text-black">
-            PROJECTS
-          </h1>
-          <p className="mt-6 max-w-3xl text-base md:text-lg text-black/85">
-            I'm Evren Yılmaz — UX/UI designer & project lead. A few selected works from different eras — each one a different challenge,
-            a different client, the same obsession with craft.
-          </p>
+    <div className="bg-black w-screen h-screen overflow-hidden">
+      {/* Single continuous CRT screen */}
+      <CRTScreen ref={scrollRef} background={backgroundColor}>
+        <div className="space-y-6">
+          <SiteHeader variant="light" centerIcons="diamond" />
+          
+          {/* Hero Section */}
+          <div ref={heroRef} className="px-8 md:px-16 pt-10 pb-20 text-[#f0ebe3]">
+            <h1 className="display-heading text-[18vw] md:text-[14rem] leading-[0.85] text-white">
+              PROJECTS
+            </h1>
+            <p className="mt-6 max-w-3xl text-base md:text-lg text-white/85">
+              I'm Evren Yılmaz — UX/UI designer & project lead. A few selected works from different eras — each one a different challenge,
+              a different client, the same obsession with craft.
+            </p>
 
-          <ul className="mt-14 divide-y divide-black/20 border-t border-black/20">
-            {featured.map((p) => (
-              <li key={p.name} className="flex items-baseline justify-between gap-4 py-6 group cursor-pointer">
-                <span className="display-heading text-4xl md:text-6xl text-[#f0ebe3] group-hover:text-black transition-colors">
-                  {p.name}
-                </span>
-                <span className="flex items-baseline gap-6 text-xs tracking-[0.2em] text-[#f0ebe3]/80">
-                  <span className="hidden md:inline">{p.tag}</span>
-                  <span className="text-black/70">{p.year}</span>
-                </span>
-              </li>
-            ))}
-          </ul>
-
-          <div className="mt-16">
-            <p className="text-xs tracking-[0.3em] text-black/70 mb-4">PROUD TO HAVE WORKED WITH</p>
-            <div className="flex flex-wrap items-center gap-x-10 gap-y-4">
-              {clients.map((c) => (
-                <span key={c} className="text-sm md:text-base font-semibold tracking-[0.15em] text-[#f0ebe3]/85">
-                  {c}
-                </span>
+            <ul className="mt-14 divide-y divide-black/20 border-t border-black/20">
+              {featured.map((p) => (
+                <li key={p.name} className="flex items-baseline justify-between gap-4 py-6 group cursor-pointer">
+                  <span className="display-heading text-4xl md:text-6xl text-[#f0ebe3] group-hover:text-black transition-colors">
+                    {p.name}
+                  </span>
+                  <span className="flex items-baseline gap-6 text-xs tracking-[0.2em] text-[#f0ebe3]/80">
+                    <span className="hidden md:inline">{p.tag}</span>
+                    <span className="text-black/70">{p.year}</span>
+                  </span>
+                </li>
               ))}
+            </ul>
+
+            <div className="mt-16">
+              <p className="text-xs tracking-[0.3em] text-black/70 mb-4">PROUD TO HAVE WORKED WITH</p>
+              <div className="flex flex-wrap items-center gap-x-10 gap-y-4">
+                {clients.map((c) => (
+                  <span key={c} className="text-sm md:text-base font-semibold tracking-[0.15em] text-[#f0ebe3]/85">
+                    {c}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </CRTScreen>
 
-      {/* Cream chapter screen */}
-      <CRTScreen background="#f2f0ec">
-        <div className="px-8 md:px-16 pt-12 pb-14 text-black">
-          <p className="text-xs tracking-[0.3em] text-black/60 mb-8">A FEW CHAPTERS — SCROLL FOR THE FULL STORY</p>
-          <ul className="space-y-10">
-            {chapters.map((c) => (
-              <li key={c.n} className="grid grid-cols-[auto,1fr,auto] items-baseline gap-x-4 md:gap-x-8 border-b border-black/15 pb-8">
-                <span className="text-xs md:text-sm font-semibold text-black/50 tabular-nums">{c.n}</span>
-                <div>
-                  <div className="flex flex-wrap items-center gap-3">
-                    <h3 className="display-heading text-3xl md:text-5xl text-black">{c.name}</h3>
-                    <span className="bg-black text-[#f0ebe3] text-[10px] tracking-[0.2em] px-2 py-1 rounded-sm">{c.badge}</span>
+          {/* Chapters Section */}
+          <div ref={chaptersRef} className="px-8 md:px-16 pt-12 pb-14 text-black min-h-screen">
+            <h2 className="display-heading text-[18vw] md:text-[13rem] leading-[0.85] text-black pt-4">
+              JOURNEY
+            </h2>
+            <p className="text-xs tracking-[0.3em] text-black/60 mb-8 pt-8">A FEW CHAPTERS — SCROLL FOR THE FULL STORY</p>
+            <ul className="space-y-10">
+              {chapters.map((c) => (
+                <li key={c.n} className="grid grid-cols-[auto,1fr,auto] items-baseline gap-x-4 md:gap-x-8 border-b border-black/15 pb-8">
+                  <span className="text-xs md:text-sm font-semibold text-black/50 tabular-nums">{c.n}</span>
+                  <div>
+                    <div className="flex flex-wrap items-center gap-3">
+                      <h3 className="display-heading text-3xl md:text-5xl text-black">{c.name}</h3>
+                      <span className="bg-black text-[#f0ebe3] text-[10px] tracking-[0.2em] px-2 py-1 rounded-sm">{c.badge}</span>
+                    </div>
+                    <p className="mt-2 text-xs tracking-[0.2em] text-black/60">{c.role}</p>
+                    <p className="mt-3 max-w-3xl text-sm text-black/70 leading-relaxed">{c.body}</p>
                   </div>
-                  <p className="mt-2 text-xs tracking-[0.2em] text-black/60">{c.role}</p>
-                  <p className="mt-3 max-w-3xl text-sm text-black/70 leading-relaxed">{c.body}</p>
-                </div>
-                <span className="text-xs text-black/50 tabular-nums whitespace-nowrap">{c.years}</span>
-              </li>
-            ))}
-          </ul>
-
-          <div className="mt-10">
-            <a
-              href="#"
-              className="inline-flex items-center gap-2 bg-black text-[#f0ebe3] text-xs tracking-[0.25em] rounded-md px-4 py-3 hover:bg-[#e14b42] transition-colors"
-            >
-              DOWNLOAD FULL CV <Download size={14} />
-            </a>
-          </div>
-
-          <div className="mt-16">
-            <p className="text-xs tracking-[0.3em] text-black/50 mb-4">SKILLS</p>
-            <div className="flex flex-wrap gap-2">
-              {skills.map((s) => (
-                <span
-                  key={s}
-                  className="text-[10px] tracking-[0.2em] border border-black/20 rounded-sm px-3 py-2 text-black/80 hover:bg-black hover:text-[#f0ebe3] transition-colors"
-                >
-                  {s}
-                </span>
+                  <span className="text-xs text-black/50 tabular-nums whitespace-nowrap">{c.years}</span>
+                </li>
               ))}
+            </ul>
+
+            <div className="mt-10">
+              <a
+                href="#"
+                className="inline-flex items-center gap-2 bg-black text-[#f0ebe3] text-xs tracking-[0.25em] rounded-md px-4 py-3 hover:bg-[#e14b42] transition-colors"
+              >
+                DOWNLOAD FULL CV <Download size={14} />
+              </a>
+            </div>
+
+            <div className="mt-16">
+              <p className="text-xs tracking-[0.3em] text-black/50 mb-4">SKILLS</p>
+              <div className="flex flex-wrap gap-2">
+                {skills.map((s) => (
+                  <span
+                    key={s}
+                    className="text-[10px] tracking-[0.2em] border border-black/20 rounded-sm px-3 py-2 text-black/80 hover:bg-black hover:text-[#f0ebe3] transition-colors"
+                  >
+                    {s}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-20 border-t border-[#e14b42]/40 pt-10">
+              <p className="text-xs tracking-[0.3em] text-[#e14b42]">LET'S CONNECT</p>
+              <h2 className="display-heading text-4xl md:text-6xl text-black mt-3">WANT TO WORK TOGETHER?</h2>
+              <a
+                href="/contact"
+                className="mt-6 inline-flex items-center gap-2 bg-black text-[#f0ebe3] text-xs tracking-[0.25em] rounded-md px-5 py-3 hover:bg-[#e14b42] transition-colors"
+              >
+                GET IN TOUCH ↗
+              </a>
             </div>
           </div>
 
-          <div className="mt-20 border-t border-[#e14b42]/40 pt-10">
-            <p className="text-xs tracking-[0.3em] text-[#e14b42]">LET'S CONNECT</p>
-            <h2 className="display-heading text-4xl md:text-6xl text-black mt-3">WANT TO WORK TOGETHER?</h2>
-            <a
-              href="/contact"
-              className="mt-6 inline-flex items-center gap-2 bg-black text-[#f0ebe3] text-xs tracking-[0.25em] rounded-md px-5 py-3 hover:bg-[#e14b42] transition-colors"
-            >
-              GET IN TOUCH ↗
-            </a>
+          <div ref={footerRef}>
+            <SiteFooter />
           </div>
         </div>
       </CRTScreen>
-
-      <SiteFooter />
     </div>
   );
 }

@@ -15,6 +15,7 @@ function routeLabel(pathname: string): string {
 export function CRTTransition() {
   const { location } = useRouterState();
   const [visible, setVisible] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [label, setLabel] = useState(() => routeLabel(location.pathname));
   const firstRun = useRef(true);
 
@@ -25,13 +26,16 @@ export function CRTTransition() {
       return;
     }
     setLabel(routeLabel(location.pathname));
+    setMounted(true);
     setVisible(true);
     const t = setTimeout(() => setVisible(false), 1400);
     return () => clearTimeout(t);
   }, [location.pathname]);
 
+  if (!mounted) return null;
+
   return (
-    <AnimatePresence>
+    <AnimatePresence onExitComplete={() => setMounted(false)}>
       {visible && (
         <motion.div
           key="crt-overlay"

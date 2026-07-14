@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { CRTScreen } from "@/components/CRTScreen";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { useRef, useMemo } from "react";
+import { useScrollColorPlateaus } from "@/hooks/useScrollColorPlateaus";
 
 export const Route = createFileRoute("/artworks")({
   head: () => ({
@@ -65,37 +67,54 @@ const artworks = Array.from({ length: 8 }).map((_, i) => ({
 }));
 
 function ArtworksPage() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const artworksRef = useRef<HTMLDivElement>(null);
+  const footerRef = useRef<HTMLDivElement>(null);
+
+  const sections = useMemo(() => [
+    { ref: artworksRef, color: "#2f5be8" },
+    { ref: footerRef, color: "#000000" },
+  ], []);
+
+  const backgroundColor = useScrollColorPlateaus(scrollRef, sections);
+
   return (
-    <div className="min-h-screen bg-black p-4 md:p-6 space-y-6">
-      <CRTScreen background="#2f5be8">
-        <SiteHeader variant="dark" centerIcons="eye" />
-        <div className="px-8 md:px-16 pt-10 pb-14">
-          <h1 className="display-heading text-[18vw] md:text-[13rem] leading-[0.85] text-black">
-            ARTWORKS
-          </h1>
+    <div className="bg-black w-screen h-screen overflow-hidden">
+      {/* Single continuous CRT screen */}
+      <CRTScreen ref={scrollRef} background={backgroundColor}>
+        <div className="space-y-6">
+          <div ref={artworksRef}>
+            <div className="pt-4 md:pt-6">
+              <SiteHeader variant="dark" centerIcons="eye" />
+            </div>
+            <div className="px-8 md:px-16 pt-10 pb-14">
+              <h1 className="display-heading text-[18vw] md:text-[13rem] leading-[0.85] text-black">
+                ARTWORKS
+              </h1>
 
-          <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-            {artworks.slice(0, 4).map((a) => (
-              <ArtCard key={a.id} id={a.id} variant={a.variant} />
-            ))}
+              <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+                {artworks.slice(0, 4).map((a) => (
+                  <ArtCard key={a.id} id={a.id} variant={a.variant} />
+                ))}
+              </div>
+            </div>
+            <div className="px-8 md:px-16 pt-10 pb-14">
+              <h2 className="display-heading text-[18vw] md:text-[13rem] leading-[0.85] text-black opacity-0">
+                ARTWORKS
+              </h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+                {artworks.slice(4).map((a) => (
+                  <ArtCard key={a.id} id={a.id} variant={a.variant} />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div ref={footerRef}>
+            <SiteFooter />
           </div>
         </div>
       </CRTScreen>
-
-      <CRTScreen background="#2f5be8">
-        <div className="px-8 md:px-16 pt-10 pb-14">
-          <h2 className="display-heading text-[18vw] md:text-[13rem] leading-[0.85] text-black">
-            ARTWORKS
-          </h2>
-          <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-            {artworks.slice(4).map((a) => (
-              <ArtCard key={a.id} id={a.id} variant={a.variant} />
-            ))}
-          </div>
-        </div>
-      </CRTScreen>
-
-      <SiteFooter />
     </div>
   );
 }

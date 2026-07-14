@@ -26,7 +26,7 @@ export function SiteHeader({ logo = "GALEKTO", centerIcons = "eye", variant = "d
   ] as const;
 
   return (
-    <header className={`relative z-10 mx-4 mt-4 rounded-full border ${borderClass} px-6 py-3 backdrop-blur-sm`}>
+    <header className={`relative z-10 mx-6 mt-6 md:mx-12 md:mt-8 rounded-full border ${borderClass} px-6 py-3 backdrop-blur-sm`}>
       <div className="flex items-center justify-between gap-4">
         <Link to="/" className={`text-xs font-semibold tracking-[0.2em] ${inkClass} hover:opacity-100 opacity-80 transition-opacity`}>
           {logo}
