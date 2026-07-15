@@ -3,7 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 
 export function SiteFooter() {
   return (
-    <footer className="bg-black text-white/70 px-8 md:px-16 pt-16 pb-8">
+    <footer className="bg-[#222222] text-white/70 px-8 md:px-16 pt-16 pb-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
         <ul className="display-heading text-2xl md:text-3xl space-y-2 text-white/60">
           {[

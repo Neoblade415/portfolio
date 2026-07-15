@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { CRTScreen } from "@/components/CRTScreen";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useLayoutEffect } from "react";
 import { useScrollColorPlateaus } from "@/hooks/useScrollColorPlateaus";
+import { motion } from "motion/react";
 
 export const Route = createFileRoute("/artworks")({
   head: () => ({
@@ -73,16 +73,20 @@ function ArtworksPage() {
 
   const sections = useMemo(() => [
     { ref: artworksRef, color: "#2f5be8" },
-    { ref: footerRef, color: "#000000" },
+    { ref: footerRef, color: "#222222" },
   ], []);
 
   const backgroundColor = useScrollColorPlateaus(scrollRef, sections);
 
+  useLayoutEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = 0;
+    }
+  }, []);
+
   return (
-    <div className="bg-black w-screen h-screen overflow-hidden">
-      {/* Single continuous CRT screen */}
-      <CRTScreen ref={scrollRef} background={backgroundColor}>
-        <div className="space-y-6">
+    <motion.div ref={scrollRef} className="w-full h-full crt-content-scroll" style={{ background: backgroundColor }}>
+      <div className="space-y-6">
           <div ref={artworksRef}>
             <div className="pt-4 md:pt-6">
               <SiteHeader variant="dark" centerIcons="eye" />
@@ -114,8 +118,7 @@ function ArtworksPage() {
             <SiteFooter />
           </div>
         </div>
-      </CRTScreen>
-    </div>
+    </motion.div>
   );
 }
 

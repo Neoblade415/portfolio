@@ -1,12 +1,11 @@
 import type { CSSProperties, ReactNode } from "react";
-import { motion, type MotionValue } from "motion/react";
-import { forwardRef, useEffect, useId, useRef, useState } from "react";
+import { motion } from "motion/react";
+import { useEffect, useId, useRef, useState } from "react";
 import { useAmbientDisturbances } from "../hooks/useAmbientDisturbances";
 import SplashCursor from "./SplashCursor";
 
 export interface CRTScreenProps {
   children: ReactNode;
-  background?: string | MotionValue<string>;
   className?: string;
   style?: CSSProperties;
 }
@@ -15,8 +14,7 @@ export interface CRTScreenProps {
  * Wraps content in a curved retro-CRT "screen" frame with
  * barrel distortion, rounded corners, scanlines, film grain, and vignette.
  */
-export const CRTScreen = forwardRef<HTMLDivElement, CRTScreenProps>(
-  ({ children, background, className = "", style }, ref) => {
+export const CRTScreen = ({ children, className = "", style }: CRTScreenProps) => {
     const outerRef = useRef<HTMLDivElement>(null);
     const [size, setSize] = useState({ w: 0, h: 0 });
     const clipId = useId();
@@ -75,17 +73,15 @@ export const CRTScreen = forwardRef<HTMLDivElement, CRTScreenProps>(
           </svg>
         )}
 
-        <motion.div
-          ref={ref}
-          className="crt-content-scroll relative z-10"
+        <div
+          className="relative z-10 w-full h-full overflow-hidden"
           style={{
-            background: background ?? "var(--crt-cream)",
             filter: "brightness(var(--crt-brightness, 1))",
             textShadow: "var(--crt-chromatic-x, 0px) 0 0 red, calc(var(--crt-chromatic-x, 0px) * -1) 0 0 blue",
           }}
         >
           {children}
-        </motion.div>
+        </div>
 
         {/* dynamic scanline rolls */}
         {[1, 2, 3].map((i) => (
@@ -128,8 +124,5 @@ export const CRTScreen = forwardRef<HTMLDivElement, CRTScreenProps>(
           }}
         />
       </div>
-    );
-  }
-);
-
-CRTScreen.displayName = "CRTScreen";
+  );
+};

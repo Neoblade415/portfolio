@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CRTTransition } from "../components/CRTTransition";
+import { CRTScreen } from "../components/CRTScreen";
 
 function NotFoundComponent() {
   return (
@@ -106,8 +107,12 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
-      <CRTTransition />
+      <div className="bg-black w-screen h-screen overflow-hidden">
+        <CRTScreen>
+          <Outlet />
+          <CRTTransition />
+        </CRTScreen>
+      </div>
     </QueryClientProvider>
   );
 }

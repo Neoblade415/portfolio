@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { CRTScreen } from "@/components/CRTScreen";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Download } from "lucide-react";
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useLayoutEffect } from "react";
 import { useScrollColorPlateaus } from "@/hooks/useScrollColorPlateaus";
+import { motion } from "motion/react";
+import { ScrambleText } from "@/components/ScrambleText";
 
 export const Route = createFileRoute("/projects")({
   head: () => ({
@@ -99,16 +100,20 @@ function ProjectsPage() {
   const sections = useMemo(() => [
     { ref: heroRef, color: "#e14b42" },
     { ref: chaptersRef, color: "#f2f0ec" },
-    { ref: footerRef, color: "#000000" },
+    { ref: footerRef, color: "#222222" },
   ], []);
 
   const backgroundColor = useScrollColorPlateaus(scrollRef, sections);
 
+  useLayoutEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = 0;
+    }
+  }, []);
+
   return (
-    <div className="bg-black w-screen h-screen overflow-hidden">
-      {/* Single continuous CRT screen */}
-      <CRTScreen ref={scrollRef} background={backgroundColor}>
-        <div className="space-y-6">
+    <motion.div ref={scrollRef} className="w-full h-full crt-content-scroll" style={{ background: backgroundColor }}>
+      <div className="space-y-6">
           <SiteHeader variant="light" centerIcons="diamond" />
           
           {/* Hero Section */}
@@ -125,7 +130,7 @@ function ProjectsPage() {
               {featured.map((p) => (
                 <li key={p.name} className="flex items-baseline justify-between gap-4 py-6 group cursor-pointer">
                   <span className="display-heading text-4xl md:text-6xl text-[#f0ebe3] group-hover:text-black transition-colors">
-                    {p.name}
+                    <ScrambleText text={p.name} />
                   </span>
                   <span className="flex items-baseline gap-6 text-xs tracking-[0.2em] text-[#f0ebe3]/80">
                     <span className="hidden md:inline">{p.tag}</span>
@@ -209,7 +214,6 @@ function ProjectsPage() {
             <SiteFooter />
           </div>
         </div>
-      </CRTScreen>
-    </div>
+    </motion.div>
   );
 }

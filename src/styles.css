@@ -1,8 +1,15 @@
 @import "tailwindcss" source(none);
-@source "../src";
 @import "tw-animate-css";
+@source "../src";
 
 @custom-variant dark (&:is(.dark *));
+
+@font-face {
+  font-family: 'CustomFont';
+  src: url('/fonts/display-font.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
 
 @theme inline {
   --radius-sm: 2px;
@@ -40,7 +47,7 @@
   --color-crt-green: var(--crt-green);
 
   --font-sans: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
-  --font-display: "Anton", "Archivo Black", "Space Grotesk", sans-serif;
+  --font-display: "CustomFont", "Anton", "Archivo Black", "Space Grotesk", sans-serif;
 }
 
 :root {
@@ -152,14 +159,14 @@
   inset: -100%;
   pointer-events: none;
   z-index: 30;
-  opacity: 0.25;
+  opacity: 0.45;
   mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='noiseFilter'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='matrix' values='1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 1 0' /></filter><rect width='100%25' height='100%25' filter='url(%23noiseFilter)'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='noiseFilter'><feTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='matrix' values='1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 1 0' /></filter><rect width='100%25' height='100%25' filter='url(%23noiseFilter)'/></svg>");
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .crt-ambient-noise {
-    animation: static-noise 1s steps(8) infinite;
+    animation: static-noise 0.3s steps(8) infinite;
   }
 }
 

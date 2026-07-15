@@ -17,7 +17,7 @@ export function SiteHeader({ logo = "GALEKTO", centerIcons = "eye", variant = "d
   const { pathname } = useLocation();
   const Icons = iconSets[centerIcons];
   const inkClass = variant === "light" ? "text-black/80" : "text-white/70";
-  const borderClass = variant === "light" ? "border-black/25" : "border-white/25";
+  const borderClass = variant === "light" ? "border-black/40" : "border-white/40";
 
   const links = [
     { to: "/projects", label: "PROJECTS" },
@@ -27,11 +27,11 @@ export function SiteHeader({ logo = "GALEKTO", centerIcons = "eye", variant = "d
 
   return (
     <header className={`relative z-10 mx-6 mt-6 md:mx-12 md:mt-8 rounded-full border ${borderClass} px-6 py-3 backdrop-blur-sm`}>
-      <div className="flex items-center justify-between gap-4">
+      <div className="relative flex items-center justify-between gap-4">
         <Link to="/" className={`text-xs font-semibold tracking-[0.2em] ${inkClass} hover:opacity-100 opacity-80 transition-opacity`}>
           {logo}
         </Link>
-        <div className={`hidden sm:flex items-center gap-6 ${inkClass}`}>
+        <div className={`hidden sm:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-6 ${inkClass}`}>
           {Icons.map((I, i) => (
             <I key={i} size={16} strokeWidth={1.4} />
           ))}

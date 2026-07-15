@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { CRTScreen } from "@/components/CRTScreen";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useLayoutEffect } from "react";
 import { useScrollColorPlateaus } from "@/hooks/useScrollColorPlateaus";
+import { motion } from "motion/react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -24,15 +24,20 @@ function Index() {
 
   const sections = useMemo(() => [
     { ref: heroRef, color: "#f0ebe3" },
-    { ref: footerRef, color: "#000000" },
+    { ref: footerRef, color: "#222222" },
   ], []);
 
   const backgroundColor = useScrollColorPlateaus(scrollRef, sections);
 
+  useLayoutEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = 0;
+    }
+  }, []);
+
   return (
-    <div className="bg-black w-screen h-screen overflow-hidden">
-      <CRTScreen ref={scrollRef} background={backgroundColor}>
-        <div ref={heroRef}>
+    <motion.div ref={scrollRef} className="w-full h-full crt-content-scroll" style={{ background: backgroundColor }}>
+      <div ref={heroRef}>
           <div className="pt-4 md:pt-6">
             <SiteHeader variant="light" centerIcons="diamond" />
           </div>
@@ -138,7 +143,6 @@ function Index() {
         <div ref={footerRef}>
           <SiteFooter />
         </div>
-      </CRTScreen>
-    </div>
+    </motion.div>
   );
 }
