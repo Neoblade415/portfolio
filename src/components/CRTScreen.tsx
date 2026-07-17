@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { motion } from "motion/react";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAmbientDisturbances } from "../hooks/useAmbientDisturbances";
 import SplashCursor from "./SplashCursor";
 
@@ -17,7 +17,7 @@ export interface CRTScreenProps {
 export const CRTScreen = ({ children, className = "", style }: CRTScreenProps) => {
     const outerRef = useRef<HTMLDivElement>(null);
     const [size, setSize] = useState({ w: 0, h: 0 });
-    const clipId = useId();
+    const clipId = "global-crt-clip";
 
     useAmbientDisturbances(outerRef);
 
@@ -62,6 +62,7 @@ export const CRTScreen = ({ children, className = "", style }: CRTScreenProps) =
         style={{
           clipPath: w > 0 ? `url(#${clipId})` : "none",
           WebkitClipPath: w > 0 ? `url(#${clipId})` : "none",
+          backgroundColor: 'var(--crt-bg, #000)',
           ...style,
         }}
       >

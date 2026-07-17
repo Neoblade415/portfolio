@@ -987,6 +987,9 @@ function SplashCursor({
 
     // Named event handlers for proper cleanup
     function handleMouseDown(e) {
+      if (window.location.pathname === '/' || window.location.pathname === '') return;
+      if (document.getElementById('crt-transition-overlay')) return;
+      if (!e.target.closest || !e.target.closest('.crt-screen') || e.target.closest('[data-no-splash]')) return;
       let pointer = pointers[0];
       let posX = scaleByPixelRatio(e.clientX);
       let posY = scaleByPixelRatio(e.clientY);
@@ -996,6 +999,9 @@ function SplashCursor({
 
     let firstMouseMoveHandled = false;
     function handleMouseMove(e) {
+      if (window.location.pathname === '/' || window.location.pathname === '') return;
+      if (document.getElementById('crt-transition-overlay')) return;
+      if (!e.target.closest || !e.target.closest('.crt-screen') || e.target.closest('[data-no-splash]')) return;
       let pointer = pointers[0];
       let posX = scaleByPixelRatio(e.clientX);
       let posY = scaleByPixelRatio(e.clientY);
@@ -1009,6 +1015,9 @@ function SplashCursor({
     }
 
     function handleTouchStart(e) {
+      if (window.location.pathname === '/' || window.location.pathname === '') return;
+      if (document.getElementById('crt-transition-overlay')) return;
+      if (!e.target.closest || !e.target.closest('.crt-screen') || e.target.closest('[data-no-splash]')) return;
       const touches = e.targetTouches;
       let pointer = pointers[0];
       for (let i = 0; i < touches.length; i++) {
@@ -1019,6 +1028,9 @@ function SplashCursor({
     }
 
     function handleTouchMove(e) {
+      if (window.location.pathname === '/' || window.location.pathname === '') return;
+      if (document.getElementById('crt-transition-overlay')) return;
+      if (!e.target.closest || !e.target.closest('.crt-screen') || e.target.closest('[data-no-splash]')) return;
       const touches = e.targetTouches;
       let pointer = pointers[0];
       for (let i = 0; i < touches.length; i++) {
@@ -1075,15 +1087,15 @@ function SplashCursor({
         pointerEvents: 'none',
         width: '100%',
         height: '100%',
-        mixBlendMode: 'difference' // Keeps the color inversion
+        mixBlendMode: 'difference', // Keeps the color inversion
       }}
     >
       <canvas
         ref={canvasRef}
         id="fluid"
         style={{
-          width: '100vw',
-          height: '100vh',
+          width: '100%',
+          height: '100%',
           display: 'block'
         }}
       />

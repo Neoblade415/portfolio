@@ -48,9 +48,11 @@ export function CRTTransition() {
     <AnimatePresence onExitComplete={() => setMounted(false)}>
       {visible && (
         <motion.div
+          id="crt-transition-overlay"
           key="crt-overlay"
           className="absolute inset-0 z-20 flex flex-col justify-center overflow-hidden"
           style={{ background: colors.bg }}
+          data-no-splash="true"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, transition: { duration: 0.25, ease: "easeOut" } }}
           exit={{ opacity: 0, transition: { duration: 0.35, ease: "easeIn" } }}
