@@ -3,8 +3,8 @@
 import React, { useEffect, useRef } from 'react';
 
 function SplashCursor({
-  baseLayer,
-  revealLayer,
+  baseLayer = undefined as React.ReactNode,
+  revealLayer = undefined as React.ReactNode,
   SIM_RESOLUTION = 128,
   DYE_RESOLUTION = 1440,
   CAPTURE_RESOLUTION = 512,
