@@ -6,6 +6,8 @@ interface SiteHeaderProps {
   centerIcons?: "eye" | "space" | "diamond" | "none";
   variant?: "light" | "dark";
   noBlur?: boolean;
+  backLink?: string;
+  bgColor?: string;
 }
 
 const iconSets = {
@@ -15,10 +17,10 @@ const iconSets = {
   none: [],
 };
 
-export function SiteHeader({ logo = "GALEKTO", centerIcons = "eye", variant = "dark", noBlur = false }: SiteHeaderProps) {
+export function SiteHeader({ logo = "GALEKTO", centerIcons = "eye", variant = "dark", noBlur = false, backLink, bgColor }: SiteHeaderProps) {
   const { pathname } = useLocation();
   const Icons = iconSets[centerIcons];
-  const inkClass = variant === "light" ? "text-black/80" : "text-white/70";
+  const inkClass = variant === "light" ? "text-black/80" : "text-white";
   const borderClass = variant === "light" ? "border-black/20" : "border-white/20";
 
   const links = [
@@ -28,17 +30,23 @@ export function SiteHeader({ logo = "GALEKTO", centerIcons = "eye", variant = "d
   ] as const;
 
   return (
-    <header className={`relative z-10 mx-6 mt-2 md:mx-12 md:mt-2 rounded-lg border ${borderClass} px-8 py-3 ${noBlur ? '' : 'backdrop-blur-sm'}`}>
+    <header className={`relative z-10 mx-6 mt-2 md:mx-12 md:mt-2 rounded-lg border-[1.5px] ${borderClass} px-8 py-3 transition-colors duration-500 ${noBlur || bgColor ? '' : 'backdrop-blur-sm'}`} style={bgColor ? { backgroundColor: bgColor } : undefined}>
       <div className="relative flex items-center justify-between gap-4">
-        <Link to="/" className={`text-xs font-semibold tracking-[0.2em] ${inkClass} hover:opacity-100 opacity-80 transition-opacity`}>
-          {logo}
-        </Link>
+        {backLink ? (
+          <Link to={backLink} className={`text-[10px] sm:text-xs font-semibold tracking-[0.2em] ${inkClass} hover:opacity-100 opacity-80 transition-opacity flex items-center gap-2`}>
+            <span>&larr;</span> BACK TO THE PROJECTS
+          </Link>
+        ) : (
+          <Link to="/" className={`text-xs font-semibold tracking-[0.2em] ${inkClass} hover:opacity-100 opacity-80 transition-opacity`}>
+            {logo}
+          </Link>
+        )}
         <div className={`hidden sm:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-6 ${inkClass}`}>
           {Icons.map((I, i) => (
             <I key={i} size={16} strokeWidth={1.4} />
           ))}
         </div>
-        <nav className="flex items-center gap-6 sm:gap-10">
+        <nav className="flex  items-center gap-6 sm:gap-10">
           {links.map((l) => {
             const active = pathname.startsWith(l.to);
             return (

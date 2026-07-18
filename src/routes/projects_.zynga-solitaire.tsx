@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
-import { useRef, useLayoutEffect } from "react";
+import { useRef, useLayoutEffect, useState } from "react";
 import { motion } from "motion/react";
 
 export const Route = createFileRoute("/projects_/zynga-solitaire")({
@@ -16,6 +16,7 @@ export const Route = createFileRoute("/projects_/zynga-solitaire")({
 
 function ZyngaSolitaireCaseStudy() {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useLayoutEffect(() => {
     if (scrollRef.current) {
@@ -23,25 +24,39 @@ function ZyngaSolitaireCaseStudy() {
     }
   }, []);
 
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    setIsScrolled(e.currentTarget.scrollTop > 50);
+  };
+
   return (
-    <motion.div ref={scrollRef} className="w-full h-full crt-content-scroll" style={{ background: "#f2f0ec" }}>
+    <motion.div ref={scrollRef} onScroll={handleScroll} className="w-full h-full crt-content-scroll" style={{ background: "#f2f0ec" }}>
       <div className="w-full text-[#222]">
         
-        {/* Site Header */}
-        <div className="relative z-50 p-6 pointer-events-none">
-          <div className="pointer-events-auto">
-            <SiteHeader variant="light" centerIcons="diamond" />
+        {/* Header at Top (Sticky across whole page) */}
+        <div className="sticky top-0 z-50 w-full h-0 pointer-events-none">
+          <div className="pointer-events-auto pt-4 md:pt-6">
+            <SiteHeader variant="dark" centerIcons="diamond" backLink="/projects" bgColor={isScrolled ? "#333333" : "transparent"} />
           </div>
         </div>
-          
-        {/* Hero */}
-        <div className="w-full bg-[#1e4a3b] aspect-[21/9] flex items-end p-8 md:p-16 relative overflow-hidden">
-          <div className="absolute inset-0 flex items-center justify-center opacity-40">
-            <span className="display-heading text-[25vw] text-white whitespace-nowrap">SOLITAIRE</span>
+
+        {/* Full-Screen Hero */}
+        <div className="relative w-full h-screen min-h-[600px] flex flex-col bg-[#1e4a3b]">
+          {/* Background Image Placeholder */}
+          <div className="absolute inset-0 bg-[#1e4a3b]">
+            <div className="absolute inset-0 flex items-center justify-center opacity-40">
+              <span className="display-heading text-[25vw] text-white whitespace-nowrap">SOLITAIRE</span>
+            </div>
           </div>
-          <h1 className="display-heading text-[12vw] md:text-[9rem] leading-[0.85] text-[#f2f0ec] relative z-10">
-            ZYNGA SOLITAIRE
-          </h1>
+          
+          {/* Gradient Overlay for text legibility */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/80 pointer-events-none" />
+
+          {/* Title & Scroll Indicator at Bottom */}
+          <div className="relative z-10 flex-1 flex items-end justify-between p-8 md:p-16 w-full">
+            <h1 className="display-heading text-[18vw] md:text-[14rem] leading-[0.85] text-[#f2f0ec]">
+              ZYNGA SOLITAIRE
+            </h1>
+          </div>
         </div>
 
         {/* Stats Bar */}

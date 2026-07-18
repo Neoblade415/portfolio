@@ -114,9 +114,9 @@ function ProjectsPage() {
   return (
     <motion.div ref={scrollRef} className="w-full h-full crt-content-scroll" style={{ background: backgroundColor }}>
       <div className="w-full">
-        <div className="relative z-50 p-6 pointer-events-none">
+        <div className="sticky top-0 z-50 pt-4 md:pt-6 pointer-events-none">
           <div className="pointer-events-auto">
-            <SiteHeader variant="light" centerIcons="diamond" />
+            <SiteHeader variant="light" centerIcons="diamond" bgColor="#e14b42" />
           </div>
         </div>
           

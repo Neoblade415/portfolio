@@ -10,6 +10,7 @@ function routeLabel(pathname: string): string {
 
 function routeColors(pathname: string): { bg: string; text: string } {
   if (pathname === "/" || pathname === "") return { bg: "#f0ebe3", text: "#000000" };
+  if (pathname.startsWith("/projects/") && pathname.length > 10) return { bg: "#333333", text: "#f0ebe3" };
   if (pathname.startsWith("/projects")) return { bg: "#e14b42", text: "#f0ebe3" };
   if (pathname.startsWith("/artworks")) return { bg: "#2f5be8", text: "#f0ebe3" };
   if (pathname.startsWith("/contact")) return { bg: "#2b1f3d", text: "#f0ebe3" };
