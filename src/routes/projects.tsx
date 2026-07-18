@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Download } from "lucide-react";
@@ -20,11 +20,11 @@ export const Route = createFileRoute("/projects")({
 });
 
 const featured = [
-  { name: "PEP APP", tag: "MOBILE APP", year: "2026" },
-  { name: "A.G.E.N.T. CHAOS", tag: "MOBILE APP", year: "2025" },
-  { name: "ZYNGA SOLITAIRE", tag: "MOBILE APP", year: "2020" },
-  { name: "BEIN SPORTS CONNECT", tag: "WEB DESIGN, MOBILE APP", year: "2019" },
-  { name: "ING BANK", tag: "WEB DESIGN, MOBILE APP", year: "2018" },
+  { name: "PEP APP", tag: "MOBILE APP", year: "2026", href: "/projects/pep-app" },
+  { name: "A.G.E.N.T. CHAOS", tag: "MOBILE APP", year: "2025", href: "/projects/agent-chaos" },
+  { name: "ZYNGA SOLITAIRE", tag: "MOBILE APP", year: "2020", href: "/projects/zynga-solitaire" },
+  { name: "BEIN SPORTS CONNECT", tag: "WEB DESIGN, MOBILE APP", year: "2019", href: "/projects/bein-sports-connect" },
+  { name: "ING BANK", tag: "WEB DESIGN, MOBILE APP", year: "2018", href: "/projects/ing-bank" },
 ];
 
 const chapters = [
@@ -113,11 +113,15 @@ function ProjectsPage() {
 
   return (
     <motion.div ref={scrollRef} className="w-full h-full crt-content-scroll" style={{ background: backgroundColor }}>
-      <div className="space-y-6">
-          <SiteHeader variant="light" centerIcons="diamond" />
+      <div className="w-full">
+        <div className="relative z-50 p-6 pointer-events-none">
+          <div className="pointer-events-auto">
+            <SiteHeader variant="light" centerIcons="diamond" />
+          </div>
+        </div>
           
           {/* Hero Section */}
-          <div ref={heroRef} className="px-8 md:px-16 pt-10 pb-20 text-[#f0ebe3]">
+          <div ref={heroRef} className="px-8 md:px-16 pt-4 pb-20 text-[#f0ebe3]">
             <h1 className="display-heading text-[18vw] md:text-[14rem] leading-[0.85] text-white">
               PROJECTS
             </h1>
@@ -127,17 +131,25 @@ function ProjectsPage() {
             </p>
 
             <ul className="mt-14 divide-y divide-black/20 border-t border-black/20">
-              {featured.map((p) => (
-                <li key={p.name} className="flex items-baseline justify-between gap-4 py-6 group cursor-pointer">
-                  <span className="display-heading text-4xl md:text-6xl text-[#f0ebe3] group-hover:text-black transition-colors">
-                    <ScrambleText text={p.name} />
-                  </span>
-                  <span className="flex items-baseline gap-6 text-xs tracking-[0.2em] text-[#f0ebe3]/80">
-                    <span className="hidden md:inline">{p.tag}</span>
-                    <span className="text-black/70">{p.year}</span>
-                  </span>
-                </li>
-              ))}
+              {featured.map((p) => {
+                const Item = (
+                  <li key={p.name} className="flex items-baseline justify-between gap-4 py-6 group cursor-pointer">
+                    <span className="display-heading text-4xl md:text-6xl text-[#f0ebe3] group-hover:text-black transition-colors">
+                      <ScrambleText text={p.name} />
+                    </span>
+                    <span className="flex items-baseline gap-6 text-xs tracking-[0.2em] text-[#f0ebe3]/80">
+                      <span className="hidden md:inline">{p.tag}</span>
+                      <span className="text-black/70">{p.year}</span>
+                    </span>
+                  </li>
+                );
+
+                return p.href ? (
+                  <Link to={p.href} state={{ transitionText: p.name }} key={p.name} className="block">
+                    {Item}
+                  </Link>
+                ) : Item;
+              })}
             </ul>
 
             <div className="mt-16">

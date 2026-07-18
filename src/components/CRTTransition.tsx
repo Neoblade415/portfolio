@@ -24,7 +24,10 @@ export function CRTTransition() {
   const { location } = useRouterState();
   const [visible, setVisible] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [label, setLabel] = useState(() => routeLabel(location.pathname));
+  const [label, setLabel] = useState(() => {
+    const state = location.state as any;
+    return state?.transitionText || routeLabel(location.pathname);
+  });
   const [colors, setColors] = useState(() => routeColors(location.pathname));
   const firstRun = useRef(true);
 
@@ -34,13 +37,14 @@ export function CRTTransition() {
       firstRun.current = false;
       return;
     }
-    setLabel(routeLabel(location.pathname));
+    const state = location.state as any;
+    setLabel(state?.transitionText || routeLabel(location.pathname));
     setColors(routeColors(location.pathname));
     setMounted(true);
     setVisible(true);
     const t = setTimeout(() => setVisible(false), 1400);
     return () => clearTimeout(t);
-  }, [location.pathname]);
+  }, [location.pathname, location.state]);
 
   if (!mounted) return null;
 
@@ -50,7 +54,7 @@ export function CRTTransition() {
         <motion.div
           id="crt-transition-overlay"
           key="crt-overlay"
-          className="absolute inset-0 z-20 flex flex-col justify-center overflow-hidden"
+          className="absolute inset-0 z-[100] flex flex-col justify-center overflow-hidden"
           style={{ background: colors.bg }}
           data-no-splash="true"
           initial={{ opacity: 0 }}

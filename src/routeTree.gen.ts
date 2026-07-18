@@ -14,6 +14,11 @@ import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ArtworksRouteImport } from './routes/artworks'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProjectsZyngaSolitaireRouteImport } from './routes/projects_.zynga-solitaire'
+import { Route as ProjectsPepAppRouteImport } from './routes/projects_.pep-app'
+import { Route as ProjectsIngBankRouteImport } from './routes/projects_.ing-bank'
+import { Route as ProjectsBeinSportsConnectRouteImport } from './routes/projects_.bein-sports-connect'
+import { Route as ProjectsAgentChaosRouteImport } from './routes/projects_.agent-chaos'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -40,6 +45,32 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProjectsZyngaSolitaireRoute = ProjectsZyngaSolitaireRouteImport.update({
+  id: '/projects_/zynga-solitaire',
+  path: '/projects/zynga-solitaire',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsPepAppRoute = ProjectsPepAppRouteImport.update({
+  id: '/projects_/pep-app',
+  path: '/projects/pep-app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsIngBankRoute = ProjectsIngBankRouteImport.update({
+  id: '/projects_/ing-bank',
+  path: '/projects/ing-bank',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsBeinSportsConnectRoute =
+  ProjectsBeinSportsConnectRouteImport.update({
+    id: '/projects_/bein-sports-connect',
+    path: '/projects/bein-sports-connect',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ProjectsAgentChaosRoute = ProjectsAgentChaosRouteImport.update({
+  id: '/projects_/agent-chaos',
+  path: '/projects/agent-chaos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +78,11 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/projects': typeof ProjectsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/projects/agent-chaos': typeof ProjectsAgentChaosRoute
+  '/projects/bein-sports-connect': typeof ProjectsBeinSportsConnectRoute
+  '/projects/ing-bank': typeof ProjectsIngBankRoute
+  '/projects/pep-app': typeof ProjectsPepAppRoute
+  '/projects/zynga-solitaire': typeof ProjectsZyngaSolitaireRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +90,11 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/projects': typeof ProjectsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/projects/agent-chaos': typeof ProjectsAgentChaosRoute
+  '/projects/bein-sports-connect': typeof ProjectsBeinSportsConnectRoute
+  '/projects/ing-bank': typeof ProjectsIngBankRoute
+  '/projects/pep-app': typeof ProjectsPepAppRoute
+  '/projects/zynga-solitaire': typeof ProjectsZyngaSolitaireRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,13 +103,49 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/projects': typeof ProjectsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/projects_/agent-chaos': typeof ProjectsAgentChaosRoute
+  '/projects_/bein-sports-connect': typeof ProjectsBeinSportsConnectRoute
+  '/projects_/ing-bank': typeof ProjectsIngBankRoute
+  '/projects_/pep-app': typeof ProjectsPepAppRoute
+  '/projects_/zynga-solitaire': typeof ProjectsZyngaSolitaireRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/artworks' | '/contact' | '/projects' | '/sitemap.xml'
+  fullPaths:
+    | '/'
+    | '/artworks'
+    | '/contact'
+    | '/projects'
+    | '/sitemap.xml'
+    | '/projects/agent-chaos'
+    | '/projects/bein-sports-connect'
+    | '/projects/ing-bank'
+    | '/projects/pep-app'
+    | '/projects/zynga-solitaire'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/artworks' | '/contact' | '/projects' | '/sitemap.xml'
-  id: '__root__' | '/' | '/artworks' | '/contact' | '/projects' | '/sitemap.xml'
+  to:
+    | '/'
+    | '/artworks'
+    | '/contact'
+    | '/projects'
+    | '/sitemap.xml'
+    | '/projects/agent-chaos'
+    | '/projects/bein-sports-connect'
+    | '/projects/ing-bank'
+    | '/projects/pep-app'
+    | '/projects/zynga-solitaire'
+  id:
+    | '__root__'
+    | '/'
+    | '/artworks'
+    | '/contact'
+    | '/projects'
+    | '/sitemap.xml'
+    | '/projects_/agent-chaos'
+    | '/projects_/bein-sports-connect'
+    | '/projects_/ing-bank'
+    | '/projects_/pep-app'
+    | '/projects_/zynga-solitaire'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,6 +154,11 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   ProjectsRoute: typeof ProjectsRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  ProjectsAgentChaosRoute: typeof ProjectsAgentChaosRoute
+  ProjectsBeinSportsConnectRoute: typeof ProjectsBeinSportsConnectRoute
+  ProjectsIngBankRoute: typeof ProjectsIngBankRoute
+  ProjectsPepAppRoute: typeof ProjectsPepAppRoute
+  ProjectsZyngaSolitaireRoute: typeof ProjectsZyngaSolitaireRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -116,6 +198,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/projects_/zynga-solitaire': {
+      id: '/projects_/zynga-solitaire'
+      path: '/projects/zynga-solitaire'
+      fullPath: '/projects/zynga-solitaire'
+      preLoaderRoute: typeof ProjectsZyngaSolitaireRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects_/pep-app': {
+      id: '/projects_/pep-app'
+      path: '/projects/pep-app'
+      fullPath: '/projects/pep-app'
+      preLoaderRoute: typeof ProjectsPepAppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects_/ing-bank': {
+      id: '/projects_/ing-bank'
+      path: '/projects/ing-bank'
+      fullPath: '/projects/ing-bank'
+      preLoaderRoute: typeof ProjectsIngBankRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects_/bein-sports-connect': {
+      id: '/projects_/bein-sports-connect'
+      path: '/projects/bein-sports-connect'
+      fullPath: '/projects/bein-sports-connect'
+      preLoaderRoute: typeof ProjectsBeinSportsConnectRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects_/agent-chaos': {
+      id: '/projects_/agent-chaos'
+      path: '/projects/agent-chaos'
+      fullPath: '/projects/agent-chaos'
+      preLoaderRoute: typeof ProjectsAgentChaosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -125,6 +242,11 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   ProjectsRoute: ProjectsRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  ProjectsAgentChaosRoute: ProjectsAgentChaosRoute,
+  ProjectsBeinSportsConnectRoute: ProjectsBeinSportsConnectRoute,
+  ProjectsIngBankRoute: ProjectsIngBankRoute,
+  ProjectsPepAppRoute: ProjectsPepAppRoute,
+  ProjectsZyngaSolitaireRoute: ProjectsZyngaSolitaireRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
