@@ -2,10 +2,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
-import { useRef, useMemo, useEffect } from "react";
+import { useRef, useMemo, useEffect, useState } from "react";
 import { useScrollColorPlateaus } from "@/hooks/useScrollColorPlateaus";
-import { useMotionValueEvent } from "motion/react";
+import { useMotionValueEvent, motion, useMotionValue, useTransform, useSpring } from "motion/react";
 import { HeroFluidReveal } from "@/components/HeroFluidReveal";
+import { SlotText } from "@/components/SlotText";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -22,6 +23,45 @@ function Index() {
   const heroRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
   const artRef = useRef<HTMLImageElement>(null);
+
+  const [hoverState, setHoverState] = useState<'left' | 'right' | 'center'>('center');
+  const [activeText, setActiveText] = useState("JOHNY");
+  const mouseY = useMotionValue(0.5);
+  const smoothMouseY = useSpring(mouseY, { stiffness: 50, damping: 20 });
+  const yOffset = useTransform(smoothMouseY, [0, 1], [15, -15]);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!heroRef.current) return;
+    const rect = heroRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const percentage = x / rect.width;
+    const percentageY = y / rect.height;
+
+    mouseY.set(percentageY);
+
+    // 12% dead-zone in the middle (0.44 to 0.56)
+    if (percentage < 0.40) {
+      setHoverState('left');
+    } else if (percentage > 0.60) {
+      setHoverState('right');
+    } else {
+      setHoverState('center');
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setHoverState('center');
+    mouseY.set(0.5);
+  };
+
+  useEffect(() => {
+    if (hoverState === 'left') {
+      setActiveText("ANSH ");
+    } else if (hoverState === 'right') {
+      setActiveText("JOHNY");
+    }
+  }, [hoverState]);
 
   useEffect(() => {
     let animationFrameId: number;
@@ -89,6 +129,8 @@ function Index() {
             clipPath: 'url(#global-crt-clip)',
             WebkitClipPath: 'url(#global-crt-clip)'
           }}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
         >
           {/* Layer 1: Pink Base Background (Full Frame) */}
           <img src="/pink_bg.png" className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none select-none" alt="" />
@@ -99,76 +141,135 @@ function Index() {
           </div>
 
           <div className="relative z-30 pt-4 md:pt-6">
-            <SiteHeader variant="light" centerIcons="diamond" />
+            <SiteHeader variant="light" centerIcons="none" noBlur />
           </div>
 
           <div className="relative flex-1 flex flex-col items-center justify-center px-6 md:px-12 pt-8 pb-24">
-            {/* orbit ellipse */}
-            <div
+            {/* Liquid Ripple 1 */}
+            <motion.div
               aria-hidden
-              className="absolute z-30 inset-x-6 top-16 bottom-16 border border-black/15 rounded-[50%] rotate-[-8deg] pointer-events-none"
+              animate={{ 
+                scale: [1, 1.05, 1],
+                borderRadius: ["25% 75% 85% 15% / 25% 20% 80% 75%", "75% 25% 15% 85% / 75% 80% 20% 25%", "25% 75% 85% 15% / 25% 20% 80% 75%"]
+              }}
+              transition={{ repeat: Infinity, duration: 25, ease: "easeInOut" }}
+              className="absolute z-20 inset-6 md:inset-16 border-[1px] border-black/20 pointer-events-none origin-center"
+            />
+            
+            {/* Liquid Ripple 2 */}
+            <motion.div
+              aria-hidden
+              animate={{ 
+                scale: [1, 1.05, 1],
+                borderRadius: ["25% 75% 85% 15% / 25% 20% 80% 75%", "75% 25% 15% 85% / 75% 80% 20% 25%", "25% 75% 85% 15% / 25% 20% 80% 75%"]
+              }}
+              transition={{ repeat: Infinity, duration: 25, ease: "easeInOut", delay: 1 }}
+              className="absolute z-20 inset-2 md:inset-8 border-[1px] border-black/15 pointer-events-none origin-center"
+            />
+
+            {/* Liquid Ripple 3 */}
+            <motion.div
+              aria-hidden
+              animate={{ 
+                scale: [1, 1.05, 1],
+                borderRadius: ["25% 75% 85% 15% / 25% 20% 80% 75%", "75% 25% 15% 85% / 75% 80% 20% 25%", "25% 75% 85% 15% / 25% 20% 80% 75%"]
+              }}
+              transition={{ repeat: Infinity, duration: 25, ease: "easeInOut", delay: 2 }}
+              className="absolute z-20 -inset-2 md:inset-0 border-[1px] border-black/10 pointer-events-none origin-center"
             />
 
             {/* side vertical labels */}
-            <Link
-              to="/projects"
-              className="hidden md:block absolute z-30 left-6 top-1/2 -translate-y-1/2 text-black/80 text-[10px] tracking-[0.4em] font-semibold pointer-events-auto"
-              style={{ writingMode: "vertical-rl", transform: "rotate(180deg) translateY(50%)" }}
+            <motion.div
+              className="hidden md:block absolute z-30 left-6 top-1/2 origin-center pointer-events-auto"
+              initial={{ y: "-50%" }}
+              animate={{
+                y: "-50%",
+                scale: hoverState === 'left' ? 1.4 : 1,
+                color: hoverState === 'left' ? "#ff3333" : "rgba(0,0,0,0.8)",
+                textShadow: hoverState === 'left' ? "0 0 40px rgba(255, 50, 50, 0.8)" : "0 0 0px rgba(0,0,0,0)",
+              }}
+              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
             >
-              ← PROJECTS
-            </Link>
-            <div
-              aria-hidden
-              className="hidden md:block absolute z-30 left-24 top-1/2 -translate-y-1/2 display-heading text-black/8 text-[6rem] pointer-events-none"
-              style={{ writingMode: "vertical-rl", transform: "rotate(180deg)", color: "rgba(0,0,0,0.06)" }}
-            >
-              01
-            </div>
-
-            <Link
-              to="/artworks"
-              className="hidden md:block absolute z-30 right-6 top-1/2 -translate-y-1/2 text-black/80 text-[10px] tracking-[0.4em] font-semibold pointer-events-auto"
-              style={{ writingMode: "vertical-rl" }}
-            >
-              ARTWORKS →
-            </Link>
-            <div
-              aria-hidden
-              className="hidden md:block absolute z-30 right-24 top-1/2 -translate-y-1/2 display-heading text-black/8 text-[6rem] pointer-events-none"
-              style={{ writingMode: "vertical-rl", color: "rgba(0,0,0,0.06)" }}
-            >
-              02
-            </div>
-
-            {/* portrait */}
-            <div className="relative z-10 mt-auto flex items-end justify-center w-full max-w-[280px] md:max-w-[420px] mx-auto pointer-events-none scale-[1.5] md:scale-[1.8] origin-bottom translate-y-[180px] md:translate-y-[340px]">
-              {/* Colorful layer (sets natural dimensions) */}
-              <img ref={artRef} src="/art_one.png" alt="Galekto" className="relative z-10 w-full h-auto object-contain pointer-events-none select-none" />
-            </div>
-
-            <h1 className="relative z-30 display-heading text-[18vw] md:text-[14rem] leading-[0.85] text-black mt-[-6vw] md:mt-[-8rem] tracking-tight pointer-events-none">
-              JOHNY
-            </h1>
-
-            <p className="relative z-30 mt-8 max-w-2xl text-center text-sm md:text-base text-black/70 pointer-events-none">
-              I'm <strong className="text-black">Evren Yılmaz</strong> — a UX/UI designer, illustrator and creative director from
-              Istanbul. Building interfaces by day, painting strange worlds by night.
-            </p>
-
-            <div className="relative z-30 mt-8 flex flex-wrap items-center justify-center gap-3 pointer-events-auto">
               <Link
                 to="/projects"
-                className="rounded-full border border-black/30 px-6 py-3 text-xs tracking-[0.25em] font-semibold text-black hover:bg-black hover:text-[#f0ebe3] transition-colors"
+                className="text-[18px] tracking-[0.4em] font-semibold block outline-none"
+                style={{ writingMode: "vertical-rl", transform: "rotate(180deg)", color: "inherit", textShadow: "inherit" }}
               >
-                SEE PROJECTS
+                ← PROJECTS
               </Link>
+            </motion.div>
+            <motion.div
+              animate={{
+                scale: hoverState === 'left' ? 1.4 : 1,
+                rotate: hoverState === 'left' ? 630 : 180,
+                color: hoverState === 'left' ? "#ff3333" : "rgba(0,0,0,0.06)",
+                textShadow: hoverState === 'left' ? "0 0 40px rgba(255, 50, 50, 0.8)" : "0 0 0px rgba(0,0,0,0)",
+              }}
+              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+              aria-hidden
+              className="hidden md:block absolute z-30 left-24 top-1/2 display-heading font-thin text-[12rem] pointer-events-none origin-center"
+              style={{ writingMode: "vertical-rl", marginTop: "-6rem" }}
+            >
+              01
+            </motion.div>
+
+            <motion.div
+              className="hidden md:block absolute z-30 right-6 top-1/2 origin-center pointer-events-auto"
+              initial={{ y: "-50%" }}
+              animate={{
+                y: "-50%",
+                scale: hoverState === 'right' ? 1.4 : 1,
+                color: hoverState === 'right' ? "#3366ff" : "rgba(0,0,0,0.8)",
+                textShadow: hoverState === 'right' ? "0 0 40px rgba(50, 100, 255, 0.8)" : "0 0 0px rgba(0,0,0,0)",
+              }}
+              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            >
               <Link
                 to="/artworks"
-                className="rounded-full bg-black px-6 py-3 text-xs tracking-[0.25em] font-semibold text-[#f0ebe3] hover:bg-[#e14b42] transition-colors"
+                className="text-[18px] tracking-[0.4em] font-semibold block outline-none"
+                style={{ writingMode: "vertical-rl", color: "inherit", textShadow: "inherit" }}
               >
-                VIEW ARTWORKS
+                ARTWORKS →
               </Link>
-            </div>
+            </motion.div>
+            <motion.div
+              animate={{
+                scale: hoverState === 'right' ? 1.4 : 1,
+                rotate: hoverState === 'right' ? 630 : 0,
+                color: hoverState === 'right' ? "#3366ff" : "rgba(0,0,0,0.06)",
+                textShadow: hoverState === 'right' ? "0 0 40px rgba(50, 100, 255, 0.8)" : "0 0 0px rgba(0,0,0,0)",
+              }}
+              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+              aria-hidden
+              className="hidden md:block absolute z-30 right-24 top-1/2 display-heading font-thin text-[12rem] pointer-events-none origin-center"
+              style={{ writingMode: "vertical-rl", marginTop: "-6rem" }}
+            >
+              02
+            </motion.div>
+
+            {/* portrait */}
+            <motion.div
+              style={{ y: yOffset }}
+              animate={{ x: hoverState === 'left' ? 140 : hoverState === 'right' ? -140 : 0 }}
+              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+              className="relative z-10 mt-auto flex items-end justify-center w-full max-w-[320px] md:max-w-[480px] mx-auto pointer-events-none"
+            >
+              <div className="w-full scale-[1.5] md:scale-[1.8] origin-bottom translate-y-[180px] md:translate-y-[340px]">
+                {/* Colorful layer (sets natural dimensions) */}
+                <img ref={artRef} src="/art_one.png" alt="Galekto" className="relative z-10 w-full h-auto object-contain pointer-events-none select-none" />
+              </div>
+            </motion.div>
+
+            <motion.h1 
+              style={{ y: yOffset }}
+              animate={{ x: hoverState === 'left' ? 140 : hoverState === 'right' ? -140 : 0 }}
+              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+              className="relative z-30 display-heading text-[18vw] md:text-[14rem] text-[#333] mt-[-6vw] md:mt-[-8rem] tracking-wide pointer-events-none flex justify-center"
+            >
+              <SlotText text={activeText} />
+            </motion.h1>
+
+
           </div>
         </div>
 

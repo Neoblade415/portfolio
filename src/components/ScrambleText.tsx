@@ -3,16 +3,19 @@ import { useState, useEffect } from "react";
 interface ScrambleTextProps {
   text: string;
   className?: string;
+  trigger?: boolean;
 }
 
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-export function ScrambleText({ text, className = "" }: ScrambleTextProps) {
+export function ScrambleText({ text, className = "", trigger }: ScrambleTextProps) {
   const [displayText, setDisplayText] = useState(text);
   const [isHovered, setIsHovered] = useState(false);
 
+  const active = trigger !== undefined ? trigger : isHovered;
+
   useEffect(() => {
-    if (!isHovered) {
+    if (!active) {
       setDisplayText(text);
       return;
     }
@@ -48,8 +51,8 @@ export function ScrambleText({ text, className = "" }: ScrambleTextProps) {
 
   return (
     <span
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={trigger === undefined ? () => setIsHovered(true) : undefined}
+      onMouseLeave={trigger === undefined ? () => setIsHovered(false) : undefined}
       className={`relative inline-block ${className}`}
     >
       {/* Invisible original text to maintain the exact layout width and height */}

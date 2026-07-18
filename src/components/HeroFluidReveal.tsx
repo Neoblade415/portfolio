@@ -42,7 +42,9 @@ export function HeroFluidReveal({
       this.deltaY = 0;
       this.down = false;
       this.moved = false;
-      this.color = [0, 0, 0];
+      this.color = { r: 0, g: 0, b: 0 };
+      this.forceMultiplier = 1.0;
+      this.colorMultiplier = 1.0;
     }
 
     let config = {
@@ -65,7 +67,24 @@ export function HeroFluidReveal({
       COLOR
     };
 
+    const numPhantoms = 10;
     let pointers = [new pointerPrototype()];
+    
+    // Setup multiple phantom pointers for chaotic autonomous movement
+    for (let i = 0; i < numPhantoms; i++) {
+      let p = new pointerPrototype();
+      p.id = 999 + i;
+      p.color = { r: Math.random(), g: Math.random(), b: Math.random() };
+      p.px = 0; // Will be initialized in updateFrame
+      p.py = 0;
+      pointers.push(p);
+    }
+    
+    let phantomTime = 0;
+    const autonomousStartTime = Date.now();
+    
+    // Track user interaction to pause the autonomous effect
+    let lastUserInteractionTime = 0;
 
     const { gl, ext } = getWebGLContext(canvas);
     if (!ext.supportLinearFiltering) {
@@ -696,8 +715,66 @@ export function HeroFluidReveal({
 
     function updateFrame() {
       if (!isActive) return;
-      const dt = calcDeltaTime();
       if (resizeCanvas()) initFramebuffers();
+      const dt = calcDeltaTime();
+      
+      // Autonomous phantom pointer movement
+      if (canvas.width > 0 && canvas.height > 0) {
+        // Initial delay of 2 seconds before the autonomous effect starts
+        const timeSinceMount = Date.now() - autonomousStartTime;
+        
+        // Pause autonomous movement if the user interacted in the last 3 seconds
+        if (timeSinceMount > 2000 && Date.now() - lastUserInteractionTime > 3000) {
+          phantomTime += dt * 1.2;
+          const cx = canvas.width / 2;
+          const cy = canvas.height / 2;
+          
+          // Linear progress from 0 to 1 over 4 seconds
+          const linearProgress = Math.min((timeSinceMount - 2000) / 4000, 1.0);
+          
+          for (let i = 1; i <= numPhantoms; i++) {
+            let p = pointers[i];
+            
+            // Multi-directional circular orbits
+            // Alternate clockwise/counter-clockwise and vary speed
+            // Reduced speed multiplier to make motion more relaxed
+            const speed = (i % 2 === 0 ? 1 : -1) * (0.2 + i * 0.08);
+            const pt = phantomTime * speed;
+            
+            // Varying orbital radius
+            const targetRadiusScale = 0.04 + i * 0.02; // e.g. 6% to 14% of screen
+            const rx = canvas.width * targetRadiusScale;
+            const ry = canvas.height * targetRadiusScale;
+            
+            // Distribute them evenly in phase so they don't clump
+            const phase = i * ((Math.PI * 2) / numPhantoms);
+            
+            p.px = cx + Math.cos(pt + phase) * rx;
+            p.py = cy + Math.sin(pt + phase) * ry;
+            
+            if (!p.down) {
+              updatePointerDownData(p, p.id, p.px, p.py);
+            } else {
+              // Occasionally change color for variety
+              if (Math.random() < 0.005) {
+                p.color = generateColor();
+              }
+              
+              // Set the multipliers for the physics engine to apply inside splatPointer
+              p.colorMultiplier = linearProgress;
+              p.forceMultiplier = linearProgress * linearProgress; // ease-in the force
+              
+              updatePointerMoveData(p, p.px, p.py, p.color);
+            }
+          }
+        } else {
+          // Release the phantom pointers if user takes over
+          for (let i = 1; i <= numPhantoms; i++) {
+            if (pointers[i].down) updatePointerUpData(pointers[i]);
+          }
+        }
+      }
+
       updateColors(dt);
       applyInputs();
       step(dt);
@@ -839,9 +916,15 @@ export function HeroFluidReveal({
     }
 
     function splatPointer(pointer) {
-      let dx = pointer.deltaX * config.SPLAT_FORCE;
-      let dy = pointer.deltaY * config.SPLAT_FORCE;
-      splat(pointer.texcoordX, pointer.texcoordY, dx, dy, pointer.color);
+      let dx = pointer.deltaX * config.SPLAT_FORCE * (pointer.forceMultiplier !== undefined ? pointer.forceMultiplier : 1.0);
+      let dy = pointer.deltaY * config.SPLAT_FORCE * (pointer.forceMultiplier !== undefined ? pointer.forceMultiplier : 1.0);
+      let cMult = pointer.colorMultiplier !== undefined ? pointer.colorMultiplier : 1.0;
+      let finalColor = {
+        r: pointer.color.r * cMult,
+        g: pointer.color.g * cMult,
+        b: pointer.color.b * cMult
+      };
+      splat(pointer.texcoordX, pointer.texcoordY, dx, dy, finalColor);
     }
 
     function clickSplat(pointer) {
@@ -1013,6 +1096,7 @@ export function HeroFluidReveal({
 
     // Named event handlers for proper cleanup
     function handleMouseDown(e) {
+      lastUserInteractionTime = Date.now();
       if (document.getElementById('crt-transition-overlay')) return;
       let pointer = pointers[0];
       let rect = canvas.getBoundingClientRect();
@@ -1024,6 +1108,7 @@ export function HeroFluidReveal({
 
     let firstMouseMoveHandled = false;
     function handleMouseMove(e) {
+      lastUserInteractionTime = Date.now();
       if (document.getElementById('crt-transition-overlay')) return;
       let pointer = pointers[0];
       let rect = canvas.getBoundingClientRect();
@@ -1040,6 +1125,7 @@ export function HeroFluidReveal({
 
     function handleTouchStart(e) {
       e.preventDefault();
+      lastUserInteractionTime = Date.now();
       if (document.getElementById('crt-transition-overlay')) return;
       const touches = e.targetTouches;
       let pointer = pointers[0];
@@ -1053,6 +1139,7 @@ export function HeroFluidReveal({
 
     function handleTouchMove(e) {
       e.preventDefault();
+      lastUserInteractionTime = Date.now();
       if (document.getElementById('crt-transition-overlay')) return;
       const touches = e.targetTouches;
       let pointer = pointers[0];

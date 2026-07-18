@@ -3,21 +3,23 @@ import { Eye, Square, Circle, Skull, Orbit, Wifi, Diamond, Hash } from "lucide-r
 
 interface SiteHeaderProps {
   logo?: string;
-  centerIcons?: "eye" | "space" | "diamond";
+  centerIcons?: "eye" | "space" | "diamond" | "none";
   variant?: "light" | "dark";
+  noBlur?: boolean;
 }
 
 const iconSets = {
   eye: [Eye, Square, Circle],
   space: [Skull, Orbit, Wifi],
   diamond: [Diamond, Hash, Square],
+  none: [],
 };
 
-export function SiteHeader({ logo = "GALEKTO", centerIcons = "eye", variant = "dark" }: SiteHeaderProps) {
+export function SiteHeader({ logo = "GALEKTO", centerIcons = "eye", variant = "dark", noBlur = false }: SiteHeaderProps) {
   const { pathname } = useLocation();
   const Icons = iconSets[centerIcons];
   const inkClass = variant === "light" ? "text-black/80" : "text-white/70";
-  const borderClass = variant === "light" ? "border-black/40" : "border-white/40";
+  const borderClass = variant === "light" ? "border-black/20" : "border-white/20";
 
   const links = [
     { to: "/projects", label: "PROJECTS" },
@@ -26,7 +28,7 @@ export function SiteHeader({ logo = "GALEKTO", centerIcons = "eye", variant = "d
   ] as const;
 
   return (
-    <header className={`relative z-10 mx-6 mt-6 md:mx-12 md:mt-8 rounded-full border ${borderClass} px-6 py-3 backdrop-blur-sm`}>
+    <header className={`relative z-10 mx-6 mt-2 md:mx-12 md:mt-2 rounded-lg border ${borderClass} px-8 py-3 ${noBlur ? '' : 'backdrop-blur-sm'}`}>
       <div className="relative flex items-center justify-between gap-4">
         <Link to="/" className={`text-xs font-semibold tracking-[0.2em] ${inkClass} hover:opacity-100 opacity-80 transition-opacity`}>
           {logo}
@@ -36,7 +38,7 @@ export function SiteHeader({ logo = "GALEKTO", centerIcons = "eye", variant = "d
             <I key={i} size={16} strokeWidth={1.4} />
           ))}
         </div>
-        <nav className="flex items-center gap-4 sm:gap-6">
+        <nav className="flex items-center gap-6 sm:gap-10">
           {links.map((l) => {
             const active = pathname.startsWith(l.to);
             return (
