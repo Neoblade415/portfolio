@@ -207,10 +207,12 @@ function Index() {
               }}
               transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
               aria-hidden
-              className="hidden md:block absolute z-30 left-24 top-1/2 display-heading font-thin text-[12rem] pointer-events-none origin-center"
+              className="hidden md:block absolute z-30 left-24 top-1/2 display-heading font-thin text-[12rem] origin-center cursor-pointer pointer-events-auto"
               style={{ writingMode: "vertical-rl", marginTop: "-6rem" }}
             >
-              01
+              <Link to="/projects" className="outline-none block" style={{ color: "inherit", textShadow: "inherit" }}>
+                01
+              </Link>
             </motion.div>
 
             <motion.div
@@ -241,10 +243,12 @@ function Index() {
               }}
               transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
               aria-hidden
-              className="hidden md:block absolute z-30 right-24 top-1/2 display-heading font-thin text-[12rem] pointer-events-none origin-center"
+              className="hidden md:block absolute z-30 right-24 top-1/2 display-heading font-thin text-[12rem] origin-center cursor-pointer pointer-events-auto"
               style={{ writingMode: "vertical-rl", marginTop: "-6rem" }}
             >
-              02
+              <Link to="/artworks" className="outline-none block" style={{ color: "inherit", textShadow: "inherit" }}>
+                02
+              </Link>
             </motion.div>
 
             {/* portrait */}

@@ -20,7 +20,7 @@ export const CRTScreen = ({ children, className = "", style }: CRTScreenProps) =
     const [size, setSize] = useState({ w: 0, h: 0 });
     const clipId = "global-crt-clip";
     const location = useLocation();
-    const showSplash = !location.pathname.startsWith("/projects/");
+    const showSplash = !location.pathname.startsWith("/projects");
 
     useAmbientDisturbances(outerRef);
 

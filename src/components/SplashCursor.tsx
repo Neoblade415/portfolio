@@ -3,6 +3,8 @@
 import React, { useEffect, useRef } from 'react';
 
 function SplashCursor({
+  baseLayer,
+  revealLayer,
   SIM_RESOLUTION = 128,
   DYE_RESOLUTION = 1440,
   CAPTURE_RESOLUTION = 512,
@@ -21,6 +23,7 @@ function SplashCursor({
   COLOR = '#ffffff'
 }) {
   const canvasRef = useRef(null);
+  const canvas2Ref = useRef(null);
   const animationFrameId = useRef(null);
 
   useEffect(() => {
@@ -692,6 +695,16 @@ function SplashCursor({
       applyInputs();
       step(dt);
       render(null);
+
+      // Copy to the second canvas for the reveal effect
+      if (canvasRef.current && canvas2Ref.current) {
+        const ctx2 = canvas2Ref.current.getContext('2d');
+        if (ctx2) {
+          ctx2.clearRect(0, 0, canvas2Ref.current.width, canvas2Ref.current.height);
+          ctx2.drawImage(canvasRef.current, 0, 0);
+        }
+      }
+
       animationFrameId.current = requestAnimationFrame(updateFrame);
     }
 
@@ -706,12 +719,19 @@ function SplashCursor({
     function resizeCanvas() {
       let width = scaleByPixelRatio(canvas.clientWidth);
       let height = scaleByPixelRatio(canvas.clientHeight);
+      let resized = false;
       if (canvas.width !== width || canvas.height !== height) {
         canvas.width = width;
         canvas.height = height;
-        return true;
+        resized = true;
       }
-      return false;
+      if (canvas2Ref.current) {
+        if (canvas2Ref.current.width !== width || canvas2Ref.current.height !== height) {
+          canvas2Ref.current.width = width;
+          canvas2Ref.current.height = height;
+        }
+      }
+      return resized;
     }
 
     function updateColors(dt) {
@@ -1077,30 +1097,88 @@ function SplashCursor({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        zIndex: 35,
-        pointerEvents: 'none',
-        width: '100%',
-        height: '100%',
-        mixBlendMode: 'difference', // Keeps the color inversion
-      }}
-    >
-      <canvas
-        ref={canvasRef}
-        id="fluid"
+  if (!baseLayer && !revealLayer) {
+    return (
+      <div
         style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          zIndex: 35,
+          pointerEvents: 'none',
           width: '100%',
           height: '100%',
-          display: 'block'
         }}
-      />
-    </div>
-  );
+      >
+        <canvas
+          ref={canvasRef}
+          id="fluid"
+          style={{
+            width: '100%',
+            height: '100%',
+            display: 'block'
+          }}
+        />
+      </div>
+    );
+  }
+
+  if (baseLayer && revealLayer) {
+    return (
+      <div style={{ display: 'grid', gridTemplateColumns: '100%', zIndex: 0, width: '100%' }}>
+        {/* Base Group */}
+        <div style={{ gridColumn: 1, gridRow: 1, zIndex: 0 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '100%' }}>
+            <div style={{ gridColumn: 1, gridRow: 1 }}>
+              {baseLayer}
+            </div>
+            <canvas
+              ref={canvasRef}
+              id="fluid"
+              style={{
+                gridColumn: 1,
+                gridRow: 1,
+                pointerEvents: 'none',
+                zIndex: 100,
+                width: '100%',
+                height: '100vh',
+                display: 'block',
+                position: 'sticky',
+                top: 0,
+                mixBlendMode: 'multiply',
+                filter: 'invert(1)'
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Reveal Group */}
+        <div style={{ gridColumn: 1, gridRow: 1, isolation: 'isolate', zIndex: 50, mixBlendMode: 'screen', pointerEvents: 'none' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '100%' }}>
+            <div style={{ gridColumn: 1, gridRow: 1 }}>
+              {revealLayer}
+            </div>
+            <canvas
+              ref={canvas2Ref}
+              style={{
+                gridColumn: 1,
+                gridRow: 1,
+                pointerEvents: 'none',
+                zIndex: 100,
+                width: '100%',
+                height: '100vh',
+                display: 'block',
+                position: 'sticky',
+                top: 0,
+                mixBlendMode: 'multiply',
+                background: 'black'
+              }}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default SplashCursor;
