@@ -19,9 +19,10 @@ const iconSets = {
 
 export function SiteHeader({ logo = "GALEKTO", centerIcons = "eye", variant = "dark", noBlur = false, backLink, bgColor }: SiteHeaderProps) {
   const { pathname } = useLocation();
+  const isHome = pathname === "/";
   const Icons = iconSets[centerIcons];
   const inkClass = variant === "light" ? "text-black/80" : "text-white";
-  const borderClass = variant === "light" ? "border-black border-solid" : "border-white border-solid";
+  const borderClass = variant === "light" ? "border-black/50 border-solid" : "border-white/50 border-solid";
 
   const links = [
     { to: "/projects", label: "PROJECTS" },
@@ -30,7 +31,7 @@ export function SiteHeader({ logo = "GALEKTO", centerIcons = "eye", variant = "d
   ] as const;
 
   return (
-    <header className={`relative z-10 mx-6 mt-2 md:mx-12 md:mt-2 rounded-lg border ${borderClass} px-8 py-3 transition-colors duration-500 ${noBlur || bgColor ? '' : 'backdrop-blur-sm'}`} style={bgColor ? { backgroundColor: bgColor } : undefined}>
+    <header className={`relative z-10 mx-6 mt-2 md:mx-12 md:mt-2 rounded-lg border ${borderClass} px-8 py-3 transition-colors duration-500 ${noBlur || bgColor ? '' : 'backdrop-blur-sm'} ${isHome ? (variant === 'light' ? 'shadow-[0_0_10px_rgba(0,0,0,0.15)]' : 'shadow-[0_0_10px_rgba(255,255,255,0.15)]') : ''}`} style={bgColor ? { backgroundColor: bgColor } : undefined}>
       <div className="relative flex items-center justify-between gap-4">
         {backLink ? (
           <Link to={backLink} className={`text-[10px] sm:text-xs font-semibold tracking-[0.2em] ${inkClass} hover:opacity-100 opacity-80 transition-opacity flex items-center gap-2`}>

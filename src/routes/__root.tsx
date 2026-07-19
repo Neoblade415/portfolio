@@ -7,12 +7,13 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CRTTransition } from "../components/CRTTransition";
 import { CRTScreen } from "../components/CRTScreen";
+import { BootSequence } from "../components/BootSequence";
 
 function NotFoundComponent() {
   return (
@@ -104,13 +105,25 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const [isBooting, setIsBooting] = useState(() => {
+    if (typeof window !== "undefined") {
+      return sessionStorage.getItem("hasBooted") !== "true";
+    }
+    return true; // Server-side default
+  });
 
   return (
     <QueryClientProvider client={queryClient}>
       <div className="bg-black w-screen h-screen overflow-hidden">
         <CRTScreen>
-          <Outlet />
-          <CRTTransition />
+          {isBooting ? (
+            <BootSequence onComplete={() => setIsBooting(false)} />
+          ) : (
+            <>
+              <Outlet />
+              <CRTTransition />
+            </>
+          )}
         </CRTScreen>
       </div>
     </QueryClientProvider>
