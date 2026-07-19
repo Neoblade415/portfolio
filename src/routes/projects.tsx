@@ -120,7 +120,7 @@ function ProjectItem({ p, isReveal, isPlaceholder }: { p: any, isReveal: boolean
 
 const HeroContent = ({ isReveal = false, isPlaceholder = false }: { isReveal?: boolean, isPlaceholder?: boolean }) => (
   <div className={`pl-2 pr-8 md:pl-12 md:pr-16 pt-4 pb-20 w-full h-full ${isReveal ? 'text-[#333]' : 'text-[#f0ebe3]'}`}>
-    <h1 className={`display-heading text-[18vw] md:text-[14rem] leading-[0.85] ${isReveal ? 'text-[#333]' : 'text-white'}`}>
+    <h1 className={`display-heading text-[18vw] md:text-[10rem] leading-[0.85] ${isReveal ? 'text-[#333]' : 'text-white'}`}>
       PROJECTS
     </h1>
     <p className={`display-heading mt-6 max-w-full text-xl md:text-2xl lg:text-3xl uppercase tracking-wide leading-snug ${isReveal ? 'text-[#333]/85' : 'text-white/85'}`}>
@@ -149,21 +149,21 @@ const HeroContent = ({ isReveal = false, isPlaceholder = false }: { isReveal?: b
 
 const ChaptersContent = ({ isReveal = false, isPlaceholder = false }: { isReveal?: boolean, isPlaceholder?: boolean }) => (
   <div className={`pl-6 pr-8 md:pl-12 md:pr-16 pt-12 pb-14 min-h-screen w-full h-full ${isReveal ? 'text-[#f0ebe3]' : 'text-black'}`}>
-    <h2 className={`display-heading text-[18vw] md:text-[13rem] leading-[0.85] pt-4 ${isReveal ? 'text-[#f0ebe3]' : 'text-black'}`}>
+    <h2 className={`display-heading text-[18vw] md:text-[10rem] leading-[0.85] pt-4 text-[#e14b42]`}>
       JOURNEY
     </h2>
-    <p className={`display-heading text-lg md:text-2xl tracking-[0.2em] ${isReveal ? 'text-[#f0ebe3]/80' : 'text-black/80'} mb-12 pt-8 uppercase`}>A FEW CHAPTERS — DOWNLOAD FOR THE FULL STORY.</p>
-    <ul className="space-y-12">
+    <p className={`display-heading text-lg md:text-2xl tracking-[0.2em] text-[#333] mb-12 pt-8 uppercase`}>A FEW CHAPTERS — DOWNLOAD FOR THE FULL STORY.</p>
+    <ul className="flex flex-col">
       {chapters.map((c) => (
-        <li key={c.n} className={`grid grid-cols-[auto,1fr,auto] items-start gap-x-5 md:gap-x-8 border-b ${isReveal ? 'border-[#f0ebe3]/15' : 'border-[#333]/15'} pb-10`}>
+        <li key={c.n} className={`grid grid-cols-[auto,1fr,auto] items-start gap-x-5 md:gap-x-8 border-b ${isReveal ? 'border-[#f0ebe3]/15' : 'border-[#333]/15'} py-2`}>
           <span className={`display-heading text-xl md:text-2xl mt-1 md:mt-2 tabular-nums ${isReveal ? 'text-[#f0ebe3]' : 'text-[#333]'}`}>{c.n}</span>
           <div>
             <div className="flex flex-wrap items-start gap-3 md:gap-4">
               <h3 className={`display-heading text-5xl md:text-6xl uppercase leading-none ${isReveal ? 'text-[#f0ebe3]' : 'text-black'}`}>{c.name}</h3>
               <span className={`text-[10px] md:text-xs tracking-[0.2em] px-2 py-1 mt-1 md:mt-2 rounded-none ${isReveal ? 'bg-[#f0ebe3] text-black' : 'bg-black text-[#f0ebe3]'}`}>{c.badge}</span>
             </div>
-            <p className={`display-heading mt-2 md:mt-3 text-lg md:text-xl tracking-[0.1em] uppercase ${isReveal ? 'text-[#f0ebe3]/90' : 'text-[#333]/90'}`}>{c.role}</p>
-            <p className={`mt-4 max-w-4xl text-sm md:text-base leading-relaxed ${isReveal ? 'text-[#f0ebe3]/70' : 'text-[#333]/80'}`}>{c.body}</p>
+            <p className={`display-heading mt-2 md:mt-3 text-lg md:text-xl tracking-[0.1em] uppercase text-[#333]`}>{c.role}</p>
+            <p className={`mt-4 max-w-4xl text-sm md:text-base leading-relaxed text-[#333]`}>{c.body}</p>
           </div>
           <span className={`display-heading text-right self-start justify-self-end text-sm md:text-base tabular-nums whitespace-nowrap -mt-2 md:-mt-3 ${isReveal ? 'text-[#f0ebe3]/70' : 'text-[#333]/80'}`}>{c.years}</span>
         </li>
@@ -180,12 +180,12 @@ const ChaptersContent = ({ isReveal = false, isPlaceholder = false }: { isReveal
     </div>
 
     <div className="mt-16">
-      <p className={`display-heading text-xl md:text-2xl tracking-[0.2em] mb-6 ${isReveal ? 'text-[#f0ebe3]/90' : 'text-black/90'}`}>SKILLS</p>
+      <p className={`display-heading text-xl md:text-2xl tracking-[0.2em] mb-6 text-[#333]`}>SKILLS</p>
       <div className="flex flex-wrap gap-3">
         {skills.map((s) => (
           <span
             key={s}
-            className={`display-heading text-[10px] md:text-xs tracking-[0.15em] border rounded-none px-4 py-2 transition-colors ${isReveal ? 'border-[#f0ebe3]/20 text-[#f0ebe3]/80 hover:bg-[#f0ebe3] hover:text-black' : 'border-black/20 text-[#333]/80 hover:bg-[#333] hover:text-[#f0ebe3]'}`}
+            className={`font-sans font-semibold text-[10px] md:text-xs tracking-[0.15em] border rounded-none px-4 py-2 transition-colors ${isReveal ? 'border-[#f0ebe3]/20 text-[#f0ebe3]/80 hover:bg-[#f0ebe3] hover:text-black' : 'border-black/20 text-[#333]/80 hover:bg-[#333] hover:text-[#f0ebe3]'}`}
           >
             {s}
           </span>
@@ -226,6 +226,7 @@ function ProjectsPage() {
 
   const backgroundColor = useScrollColorPlateaus(scrollRef, sections);
   const revealBackgroundColor = useScrollColorPlateaus(scrollRef, revealSections);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useLayoutEffect(() => {
     if (scrollRef.current) {
@@ -233,8 +234,12 @@ function ProjectsPage() {
     }
   }, []);
 
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    setIsScrolled(e.currentTarget.scrollTop > 50);
+  };
+
   return (
-    <motion.div ref={scrollRef} className="w-full h-full crt-content-scroll" style={{ background: backgroundColor }}>
+    <motion.div ref={scrollRef} onScroll={handleScroll} className="w-full h-full crt-content-scroll" style={{ background: backgroundColor }}>
       <div className="w-full">
           
           {/* Combined SplashCursor for Hero and Chapters */}
@@ -243,7 +248,7 @@ function ProjectsPage() {
               <>
                 <div className="sticky top-0 z-50 pt-4 md:pt-6 pointer-events-none">
                   <div className="pointer-events-auto">
-                    <SiteHeader variant="light" centerIcons="diamond" />
+                    <SiteHeader variant="light" centerIcons="diamond" bgColor={isScrolled ? "#e14b42" : "transparent"} />
                   </div>
                 </div>
 
