@@ -83,7 +83,7 @@ function CortexCaseStudy() {
               E-commerce businesses historically struggle with isolated data silos—inventory, financial reporting, competitor tracking, and customer management are often scattered. Traditional tools visualize this data, but fail to provide conversational decision support or automated recommendations. Cortex solves this by ingesting real-time operational data via APIs and using Large Language Models (LLMs) to detect risks, track financial health, calculate safety stock levels, and provide proactive, context-aware operational guidance.
             </p>
           </div>
-          <div className="w-full relative rounded-xl overflow-hidden shadow-2xl">
+          <div className="w-full relative rounded-md overflow-hidden shadow-2xl">
             <Safari url="cortex.ai" videoSrc="/safari_cortex.mp4" className="w-full h-full object-cover" />
           </div>
         </div>
@@ -115,7 +115,7 @@ function CortexCaseStudy() {
         {/* 4 Screens UI */}
         <div className="px-8 md:px-16 py-16 max-w-7xl mx-auto flex flex-col md:flex-row gap-6 justify-between items-center">
           {[1,2,3,4].map((i) => (
-             <div key={i} className="w-full md:w-1/4 bg-[#333] aspect-[9/19.5] rounded-xl flex items-center justify-center border-4 border-[#222] shadow-xl">
+             <div key={i} className="w-full md:w-1/4 bg-[#333] aspect-[9/19.5] rounded-md flex items-center justify-center border-4 border-[#222] shadow-xl">
                <span className="text-[10px] tracking-[0.2em] opacity-40 text-white text-center">WIDGET UI {i}</span>
              </div>
           ))}

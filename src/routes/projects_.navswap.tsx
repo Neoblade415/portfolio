@@ -109,7 +109,7 @@ function NavSwapCaseStudy() {
 
         {/* Laptop Mockup */}
         <div className="px-8 md:px-16 py-12 max-w-[1600px] mx-auto">
-          <img src="/macbook.png" alt="Web Dashboard Laptop Mockup" className="w-full h-auto drop-shadow-2xl rounded-xl" />
+          <img src="/macbook.png" alt="Web Dashboard Laptop Mockup" className="w-full h-auto drop-shadow-2xl rounded-md" />
         </div>
 
         {/* Core Architecture */}
@@ -166,7 +166,7 @@ function NavSwapCaseStudy() {
         <div className="px-8 md:px-16 py-16 max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
             <div className="order-2 md:order-1">
-              <div className="w-full rounded-xl overflow-hidden shadow-2xl border border-black/10">
+              <div className="w-full rounded-md overflow-hidden shadow-2xl border border-black/10">
                 <img src="/dashboard.png" alt="NavSwap Dashboard" className="w-full h-auto object-cover" />
               </div>
             </div>
@@ -184,7 +184,7 @@ function NavSwapCaseStudy() {
 
         {/* Wireframe to Visual (Two Phones) */}
         <div className="px-8 md:px-16 py-20 max-w-7xl mx-auto">
-          <div className="w-full bg-[#d0cac2] min-h-[500px] aspect-video md:aspect-[21/9] rounded-xl flex items-center justify-center shadow-inner overflow-hidden relative">
+          <div className="w-full bg-[#d0cac2] min-h-[500px] aspect-video md:aspect-[21/9] rounded-md flex items-center justify-center shadow-inner overflow-hidden relative">
              <div className="absolute inset-0 flex items-center justify-center gap-6 md:gap-12 rotate-[-15deg] scale-[1.15] md:scale-125">
                <div className="w-48 md:w-64 aspect-[9/19.5] bg-[#111] rounded-3xl border-4 border-[#333] shadow-2xl overflow-hidden relative">
                  <div className="absolute inset-0 bg-white/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10 backdrop-blur-sm">
@@ -205,7 +205,7 @@ function NavSwapCaseStudy() {
 
         {/* Wireframes Grid */}
         <div className="px-8 md:px-16 py-12 max-w-[1400px] mx-auto">
-          <div className="w-full rounded-xl overflow-hidden shadow-2xl border border-black/10">
+          <div className="w-full rounded-md overflow-hidden shadow-2xl border border-black/10">
              <img src="/wireframe_grid.png" alt="Wireframe Architecture Grid" className="w-full h-auto object-cover" />
           </div>
         </div>
