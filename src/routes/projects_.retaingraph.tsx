@@ -1,8 +1,68 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { Macbook } from "@/components/ui/macbook";
 import { useRef, useLayoutEffect, useState } from "react";
 import { motion } from "motion/react";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(useGSAP);
+
+function BentoCarousel({ images, duration, direction = "right" }: { images: string[], duration: number, direction?: "left" | "right" | "up" | "down" | "up-left" | "up-right" | "down-left" | "down-right" }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    const slides = gsap.utils.toArray<HTMLElement>(".bento-slide", containerRef.current);
+    
+    // Parse direction
+    const isUp = direction.includes("up");
+    const isDown = direction.includes("down");
+    const isLeft = direction.includes("left");
+    const isRight = direction.includes("right");
+
+    const xStart = isLeft ? 120 : isRight ? -120 : 0;
+    const xEnd = isLeft ? -120 : isRight ? 120 : 0;
+    
+    const yStart = isUp ? 120 : isDown ? -120 : 0;
+    const yEnd = isUp ? -120 : isDown ? 120 : 0;
+
+    gsap.set(slides, { xPercent: 0, yPercent: 0, scale: 0.85 });
+    gsap.set(slides, { xPercent: xStart, yPercent: yStart });
+    gsap.set(slides[0], { xPercent: 0, yPercent: 0, scale: 1 }); 
+
+    const tl = gsap.timeline({ repeat: -1 });
+
+    slides.forEach((slide, i) => {
+      const nextSlide = slides[(i + 1) % slides.length];
+
+      tl.to({}, { duration: duration * 0.4 }) // hold
+        .to(slide, { scale: 0.85, duration: duration * 0.2, ease: "power2.inOut" }) // shrink
+        .addLabel(`slide-${i}`)
+        .to(slide, { xPercent: xEnd, yPercent: yEnd, duration: duration * 0.3, ease: "power4.inOut" }, `slide-${i}`)
+        .to(nextSlide, 
+          { xPercent: 0, yPercent: 0, duration: duration * 0.3, ease: "power4.inOut" }, 
+          `slide-${i}`
+        )
+        .to(nextSlide, { scale: 1, duration: duration * 0.2, ease: "power2.inOut" }) // expand next
+        .set(slide, { xPercent: xStart, yPercent: yStart });
+    });
+  }, { scope: containerRef });
+
+  return (
+    <div ref={containerRef} className="absolute inset-0 w-full h-full overflow-hidden flex items-center justify-center">
+      {images.map((src, i) => (
+        <img
+          key={i}
+          src={src}
+          className="bento-slide absolute w-full h-full object-cover rounded-md shadow-xl"
+          alt="Dashboard preview"
+        />
+      ))}
+      <div className="absolute inset-0 bg-black/20 z-10 pointer-events-none"></div>
+    </div>
+  );
+}
 
 export const Route = createFileRoute("/projects_/retaingraph")({
   head: () => ({
@@ -29,7 +89,7 @@ function RetainGraphCaseStudy() {
   };
 
   return (
-    <motion.div ref={scrollRef} onScroll={handleScroll} className="w-full h-full crt-content-scroll" style={{ background: "#f2f0ec" }}>
+    <motion.div ref={scrollRef} onScroll={handleScroll} className="w-full h-full crt-content-scroll" style={{ background: "#ffffff" }}>
       <div className="w-full text-[#222]">
 
         {/* Site Header (Sticky across whole page) */}
@@ -40,13 +100,16 @@ function RetainGraphCaseStudy() {
         </div>
 
         {/* Hero */}
-        <div className="w-full bg-[#ff6200] h-screen min-h-[600px] flex items-end p-8 md:p-16 relative overflow-hidden">
-          <div className="absolute inset-0 bg-black/50 z-0 pointer-events-none"></div>
-          <div className="relative z-10">
-            <h1 className="display-heading text-[12vw] md:text-[9rem] leading-[0.85] text-[#f2f0ec] drop-shadow-2xl">
-              RETAINGRAPH
-            </h1>
-            <p className="text-xs md:text-sm tracking-[0.3em] text-white/80 mt-6 uppercase drop-shadow-md">Customer Success Intelligence</p>
+        <div className="w-full h-screen min-h-[600px] flex items-end p-8 md:p-16 relative overflow-hidden group">
+          <img src="/retaingraph_hero.png" alt="RetainGraph Interface" className="absolute inset-0 w-full h-full object-cover z-0" />
+          <div className="absolute inset-0 bg-black/40 z-0 transition-opacity duration-700 group-hover:bg-black/20 pointer-events-none"></div>
+          
+          <div className="relative z-10 w-full flex flex-col md:flex-row md:items-end justify-between gap-8 md:gap-0">
+            <div>
+              <h1 className="display-heading text-[12vw] md:text-[10rem] leading-[0.85] text-[#f0ebe3] drop-shadow-lg mix-blend-difference">
+                RETAINGRAPH
+              </h1>
+            </div>
           </div>
         </div>
 
@@ -104,12 +167,8 @@ function RetainGraphCaseStudy() {
         </div>
 
         {/* Single panoramic mockup with floating stat badges */}
-        <div className="px-8 md:px-16 py-12 max-w-[1400px] mx-auto">
-          <div className="relative">
-            <div className="w-full bg-[#111] aspect-[21/9] rounded-2xl border border-black/10 flex items-center justify-center shadow-xl relative overflow-hidden">
-              <span className="text-xs tracking-[0.2em] opacity-50 text-white/50 text-center">KNOWLEDGE GRAPH VISUALIZATION</span>
-            </div>
-          </div>
+        <div className="px-8 md:px-16 py-12 max-w-[1200px] mx-auto">
+          <Macbook videoSrc="/retaingraph_video.mp4" />
         </div>
 
         {/* Pipeline Steps — Clean architectural grid layout */}
@@ -141,8 +200,15 @@ function RetainGraphCaseStudy() {
         {/* Architecture — Reversed: image left, text right */}
         <div className="px-8 md:px-16 py-16 max-w-[1400px] mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
-            <div className="order-2 md:order-1 w-full bg-[#e8e6e1] aspect-video rounded-xl flex items-center justify-center shadow-sm border border-black/10 p-8">
-              <span className="text-xs tracking-[0.2em] opacity-50 text-center">SYSTEM ARCHITECTURE — INFERENCE PIPELINE & GRAPH SYNC</span>
+            <div className="order-2 md:order-1 w-full aspect-video rounded-xl overflow-hidden shadow-sm border border-black/10 bg-[#e8e6e1]">
+              <video 
+                src="/liquid_retaingraph.mov" 
+                autoPlay 
+                loop 
+                muted 
+                playsInline 
+                className="w-full h-full object-cover" 
+              />
             </div>
             <div className="order-1 md:order-2">
               <h2 className="display-heading text-3xl md:text-4xl mb-6">ARCHITECTURE</h2>
@@ -183,9 +249,55 @@ function RetainGraphCaseStudy() {
         {/* Dashboard section — full-width alternate background */}
         <div className="w-full bg-[#111] py-16 md:py-24 mt-12">
           <div className="px-8 md:px-16 max-w-[1400px] mx-auto text-center">
-            <h2 className="display-heading text-3xl md:text-4xl text-[#f2f0ec] mb-8">ACCOUNT TIMELINE & HEALTH DASHBOARD</h2>
-            <div className="w-full bg-white/5 aspect-video rounded-xl flex items-center justify-center border border-white/10 shadow-xl">
-              <span className="text-xs tracking-[0.2em] opacity-50 text-white/50 text-center">CUSTOMER SUCCESS DASHBOARD — ACCOUNT SUMMARIES & HEALTH SCORES</span>
+            <h2 className="display-heading text-3xl md:text-4xl text-[#f2f0ec] mb-8">INTELLIGENCE DASHBOARDS</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-4 gap-4 md:h-[800px] xl:h-[1000px] w-full">
+              
+              {/* 1. Top Left Tall (Phone) */}
+              <div className="md:col-span-1 md:row-span-2 bg-transparent rounded-md relative overflow-hidden group aspect-[3/4] md:aspect-auto w-full h-full">
+                <BentoCarousel images={["/retaingraph1.png", "/retaingraph3.png", "/retaingraph_hero.png", "/retaingraph4.png", "/retaingraph5.png", "/retaingraph6.png"]} duration={7.0} direction="down" />
+              </div>
+
+              {/* 2. Top Middle-Left Square (4.875) */}
+              <div className="md:col-span-1 md:row-span-1 bg-transparent rounded-md relative overflow-hidden group aspect-square md:aspect-auto w-full h-full">
+                <BentoCarousel images={["/retaingraph3.png", "/retaingraph4.png", "/retaingraph_hero.png", "/retaingraph5.png", "/retaingraph6.png", "/retaingraph1.png"]} duration={5.0} direction="up-left" />
+              </div>
+
+              {/* 3. Top Middle-Right Square (57K) */}
+              <div className="md:col-span-1 md:row-span-1 bg-transparent rounded-md relative overflow-hidden group aspect-square md:aspect-auto w-full h-full">
+                <BentoCarousel images={["/retaingraph4.png", "/retaingraph5.png", "/retaingraph_hero.png", "/retaingraph6.png", "/retaingraph1.png", "/retaingraph3.png"]} duration={6.0} direction="down-right" />
+              </div>
+
+              {/* 4. Top Right Tall (Team) */}
+              <div className="md:col-span-1 md:row-span-2 bg-transparent rounded-md relative overflow-hidden group aspect-[3/4] md:aspect-auto w-full h-full">
+                <BentoCarousel images={["/retaingraph5.png", "/retaingraph6.png", "/retaingraph_hero.png", "/retaingraph1.png", "/retaingraph3.png", "/retaingraph4.png"]} duration={7.5} direction="up" />
+              </div>
+
+              {/* 5. Center Large (Chart) */}
+              <div className="md:col-span-2 md:row-span-2 bg-transparent rounded-md relative overflow-hidden group aspect-video md:aspect-auto w-full h-full">
+                <BentoCarousel images={["/retaingraph6.png", "/retaingraph1.png", "/retaingraph_hero.png", "/retaingraph3.png", "/retaingraph4.png", "/retaingraph5.png"]} duration={8.0} direction="left" />
+              </div>
+
+              {/* 6. Bottom Left Tall (Smart Digital) */}
+              <div className="md:col-span-1 md:row-span-2 bg-transparent rounded-md relative overflow-hidden group aspect-[3/4] md:aspect-auto w-full h-full">
+                <BentoCarousel images={["/retaingraph4.png", "/retaingraph6.png", "/retaingraph_hero.png", "/retaingraph5.png", "/retaingraph1.png", "/retaingraph3.png"]} duration={6.5} direction="up-right" />
+              </div>
+
+              {/* 7. Bottom Right Square (CUBO) */}
+              <div className="md:col-span-1 md:row-span-1 bg-transparent rounded-md relative overflow-hidden group aspect-square md:aspect-auto w-full h-full">
+                <BentoCarousel images={["/retaingraph3.png", "/retaingraph1.png", "/retaingraph_hero.png", "/retaingraph6.png", "/retaingraph4.png", "/retaingraph5.png"]} duration={4.5} direction="down-left" />
+              </div>
+
+              {/* 8. Bottom Middle-Left Square (Font) */}
+              <div className="md:col-span-1 md:row-span-1 bg-transparent rounded-md relative overflow-hidden group aspect-square md:aspect-auto w-full h-full">
+                <BentoCarousel images={["/retaingraph1.png", "/retaingraph5.png", "/retaingraph_hero.png", "/retaingraph3.png", "/retaingraph6.png", "/retaingraph4.png"]} duration={5.5} direction="right" />
+              </div>
+
+              {/* 9. Bottom Right Wide (We Build Future) */}
+              <div className="md:col-span-2 md:row-span-1 bg-transparent rounded-md relative overflow-hidden group aspect-[21/9] md:aspect-auto w-full h-full">
+                <BentoCarousel images={["/retaingraph5.png", "/retaingraph4.png", "/retaingraph_hero.png", "/retaingraph1.png", "/retaingraph6.png", "/retaingraph3.png"]} duration={6.0} direction="left" />
+              </div>
+
             </div>
           </div>
         </div>
@@ -221,10 +333,9 @@ function RetainGraphCaseStudy() {
         </div>
 
         {/* Next Project Hero (NAVSWAP) */}
-        <Link to="/projects/navswap" state={{ transitionText: "LOADING" }} className="block w-full bg-[#1c1c1c] text-white h-screen min-h-[600px] flex items-end p-8 md:p-16 relative overflow-hidden group">
-          <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none overflow-hidden group-hover:scale-105 transition-transform duration-700">
-            <span className="display-heading text-[25vw] text-white whitespace-nowrap select-none">NAVSWAP</span>
-          </div>
+        <Link to="/projects/navswap" state={{ transitionText: "LOADING" }} className="block w-full bg-black text-[#f2f0ec] aspect-[21/9] flex items-end p-8 md:p-16 cursor-pointer relative overflow-hidden group">
+          <img src="/pep_app_hero.png" alt="NavSwap" className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-105" />
+          <div className="absolute inset-0 bg-black/40 z-0 transition-colors duration-700 group-hover:bg-black/60 pointer-events-none"></div>
           <div className="relative z-10 w-full flex justify-between items-end">
             <div>
               <h1 className="display-heading text-[8vw] md:text-[6rem] leading-[0.85] text-white">

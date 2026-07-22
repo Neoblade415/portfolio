@@ -51,12 +51,12 @@ function MobileStorefrontCarousel() {
   }, { scope: containerRef });
 
   return (
-    <div ref={containerRef} className="w-full md:w-2/5 bg-[#faf9f6] rounded-2xl border border-black/10 shadow-lg p-0 overflow-hidden aspect-[3/4] relative flex items-center justify-center">
+    <div ref={containerRef} className="w-full md:w-2/5 bg-[#faf9f6] rounded-md border border-black/10 shadow-lg p-0 overflow-hidden aspect-[3/4] relative flex items-center justify-center">
       {images.map((src, i) => (
         <img
           key={i}
           src={src}
-          className="gsap-slide absolute w-full h-full object-cover rounded-2xl shadow-md"
+          className="gsap-slide absolute w-full h-full object-cover rounded-md shadow-md"
           alt={`Mobile Storefront ${i + 1}`}
         />
       ))}
@@ -103,7 +103,7 @@ function BentoCarousel({ images, duration, direction = "right" }: { images: stri
         <img
           key={i}
           src={src}
-          className="bento-slide absolute w-full h-full object-cover rounded-2xl shadow-xl"
+          className="bento-slide absolute w-full h-full object-cover rounded-md shadow-xl"
           alt="Feature preview"
         />
       ))}
@@ -242,16 +242,16 @@ function OvelaCaseStudy() {
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="md:col-span-2 bg-transparent rounded-2xl flex items-center justify-center aspect-[16/9] relative overflow-hidden group">
+            <div className="md:col-span-2 bg-transparent rounded-md flex items-center justify-center aspect-[16/9] relative overflow-hidden group">
               <BentoCarousel images={["/ovela4.png", "/ovela5.png", "/ovela6.png", "/ovela7.png", "/ovela8.png", "/ovela9.png"]} duration={6.0} direction="up" />
             </div>
-            <div className="bg-transparent rounded-2xl flex items-center justify-center aspect-[4/3] relative overflow-hidden group">
+            <div className="bg-transparent rounded-md flex items-center justify-center aspect-[4/3] relative overflow-hidden group">
               <BentoCarousel images={["/ovela7.png", "/ovela8.png", "/ovela9.png", "/ovela4.png", "/ovela5.png", "/ovela6.png"]} duration={4.5} direction="left" />
             </div>
-            <div className="bg-transparent rounded-2xl flex items-center justify-center aspect-[4/3] relative overflow-hidden group">
+            <div className="bg-transparent rounded-md flex items-center justify-center aspect-[4/3] relative overflow-hidden group">
               <BentoCarousel images={["/ovela6.png", "/ovela9.png", "/ovela4.png", "/ovela8.png", "/ovela5.png", "/ovela7.png"]} duration={4.5} direction="right" />
             </div>
-            <div className="md:col-span-2 bg-transparent rounded-2xl flex items-center justify-center aspect-[16/9] relative overflow-hidden group">
+            <div className="md:col-span-2 bg-transparent rounded-md flex items-center justify-center aspect-[16/9] relative overflow-hidden group">
               <BentoCarousel images={["/ovela9.png", "/ovela7.png", "/ovela5.png", "/ovela6.png", "/ovela8.png", "/ovela4.png"]} duration={6.0} direction="down" />
             </div>
           </div>
@@ -293,10 +293,9 @@ function OvelaCaseStudy() {
         </div>
 
         {/* Next Project Hero (RETAINGRAPH) */}
-        <Link to="/projects/retaingraph" state={{ transitionText: "LOADING" }} className="block w-full bg-[#ff6200] text-white h-screen min-h-[600px] flex items-end p-8 md:p-16 relative overflow-hidden group">
-          <div className="absolute inset-0 flex justify-end items-center opacity-10 pointer-events-none group-hover:scale-105 transition-transform duration-700">
-             <span className="display-heading text-[25vw] text-white whitespace-nowrap select-none">RETAIN</span>
-          </div>
+        <Link to="/projects/retaingraph" state={{ transitionText: "LOADING" }} className="block w-full bg-black text-white aspect-[21/9] flex items-end p-8 md:p-16 relative overflow-hidden group">
+          <img src="/retaingraph_hero.png" alt="RetainGraph" className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-105" />
+          <div className="absolute inset-0 bg-black/40 z-0 transition-colors duration-700 group-hover:bg-black/60 pointer-events-none"></div>
           <div className="relative z-10 w-full flex justify-between items-end">
             <div>
               <h1 className="display-heading text-[8vw] md:text-[6rem] leading-[0.85] text-white">

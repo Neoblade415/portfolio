@@ -84,7 +84,7 @@ function CortexCaseStudy() {
             </p>
           </div>
           <div className="w-full relative rounded-xl overflow-hidden shadow-2xl">
-            <Safari url="cortex.ai" videoSrc="/safari_cortex_boomerang.mp4" className="w-full h-full object-cover" />
+            <Safari url="cortex.ai" videoSrc="/safari_cortex.mp4" className="w-full h-full object-cover" />
           </div>
         </div>
 
@@ -191,10 +191,9 @@ function CortexCaseStudy() {
         </div>
 
         {/* Next Project Hero (POLARIS) */}
-        <Link to="/projects/polaris" state={{ transitionText: "LOADING" }} className="block w-full bg-[#1e4a3b] text-white h-screen min-h-[600px] flex items-end p-8 md:p-16 relative overflow-hidden group">
-          <div className="absolute inset-0 flex justify-end items-center opacity-10 pointer-events-none group-hover:scale-105 transition-transform duration-700">
-             <span className="display-heading text-[25vw] text-white whitespace-nowrap select-none">POLARIS</span>
-          </div>
+        <Link to="/projects/polaris" state={{ transitionText: "LOADING" }} className="block w-full bg-black text-[#f0ebe3] aspect-[21/9] flex items-end p-8 md:p-16 relative overflow-hidden group">
+          <img src="/polaris_hero.png" alt="Polaris" className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-105" />
+          <div className="absolute inset-0 bg-black/40 z-0 transition-colors duration-700 group-hover:bg-black/60 pointer-events-none"></div>
           <div className="relative z-10 w-full flex justify-between items-end">
             <div>
               <h1 className="display-heading text-[8vw] md:text-[6rem] leading-[0.85] text-white">

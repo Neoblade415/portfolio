@@ -2,6 +2,33 @@ import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { useRouterState } from "@tanstack/react-router";
 
+/**
+ * Per-route assets to preload during the transition overlay window (~1.4s).
+ * Adding an asset here ensures the browser cache is warm by the time the
+ * destination page mounts.
+ */
+const ROUTE_ASSETS: Record<string, string[]> = {
+  "/": ["/pink_bg.png", "/art_one.png", "/black_and_white.png"],
+  "/projects/navswap": [
+    "/pep_app_hero.png", "/phone_view.png", "/dashboard.png", "/macbook.png",
+    "/wireframe_Dark_full.png", "/wire_frame_bright.png", "/wireframe_grid.png",
+  ],
+  "/projects/cortex": [
+    "/cortex_hero_logo.png",
+    "/cortex_dashboard_1.png", "/cortex_dashboard_2.png", "/cortex_dashboard_3.png",
+    "/cortex_dashboard_4.png", "/cortex_dashboard_5.png", "/cortex_dashboard_6.png",
+    "/safari_cortex_boomerang.mp4",
+  ],
+  "/projects/polaris": ["/polaris_hero.png"],
+  "/projects/ovela": [
+    "/ovela_hero.png", "/ovela_logo_without_bg.png",
+    "/ovela1.png", "/ovela2.png", "/ovela3.png",
+    "/ovela4.png", "/ovela5.png", "/ovela6.png",
+    "/ovela7.png", "/ovela8.png", "/ovela9.png",
+    "/ovela_all_pages.png", "/ovela_video.mp4",
+  ],
+};
+
 function routeLabel(pathname: string): string {
   if (pathname === "/" || pathname === "") return "HOME";
   const seg = pathname.split("/").filter(Boolean)[0] ?? "HOME";
@@ -47,6 +74,20 @@ export function CRTTransition() {
     const t = setTimeout(() => setVisible(false), 1400);
     return () => clearTimeout(t);
   }, [location.pathname, location.state]);
+
+  // Preload destination-page assets during the ~1.4s transition window.
+  useEffect(() => {
+    if (!visible) return;
+
+    const assets = ROUTE_ASSETS[location.pathname];
+    if (!assets) return;
+
+    const aborter = new AbortController();
+    for (const src of assets) {
+      fetch(src, { signal: aborter.signal }).catch(() => {});
+    }
+    return () => aborter.abort();
+  }, [visible, location.pathname]);
 
   if (!mounted) return null;
 

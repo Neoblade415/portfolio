@@ -239,10 +239,9 @@ function NavSwapCaseStudy() {
         </div>
 
         {/* Next Project Hero (CORTEX) */}
-        <Link to="/projects/cortex" state={{ transitionText: "LOADING" }} className="block w-full bg-[#111] text-white h-screen min-h-[600px] flex items-end p-8 md:p-16 cursor-pointer hover:bg-black transition-colors relative group">
-          <div className="absolute inset-0 flex items-center justify-center opacity-20 pointer-events-none overflow-hidden group-hover:scale-105 transition-transform duration-700">
-            <span className="display-heading text-[25vw] text-[#e14b42] whitespace-nowrap select-none">CORTEX</span>
-          </div>
+        <Link to="/projects/cortex" state={{ transitionText: "LOADING" }} className="block w-full bg-black text-white aspect-[21/9] flex items-end p-8 md:p-16 cursor-pointer transition-colors relative overflow-hidden group">
+          <img src="/cortex_hero_logo.png" alt="Cortex" className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-105" />
+          <div className="absolute inset-0 bg-black/40 z-0 transition-colors duration-700 group-hover:bg-black/60 pointer-events-none"></div>
           <div className="relative z-10 w-full flex justify-between items-end">
             <div>
               <h1 className="display-heading text-[8vw] md:text-[6rem] leading-[0.85] text-white">

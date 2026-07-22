@@ -195,10 +195,9 @@ function PolarisCaseStudy() {
         </div>
 
         {/* Next Project Hero */}
-        <Link to="/projects/ovela" state={{ transitionText: "LOADING" }} className="block w-full bg-[#201041] text-white aspect-[21/9] flex items-end p-8 md:p-16 relative overflow-hidden group">
-          <div className="absolute inset-0 flex justify-end items-center opacity-10 pointer-events-none group-hover:scale-105 transition-transform duration-700">
-             <span className="display-heading text-[25vw] text-white whitespace-nowrap select-none">OVELA</span>
-          </div>
+        <Link to="/projects/ovela" state={{ transitionText: "LOADING" }} className="block w-full bg-black text-white aspect-[21/9] flex items-end p-8 md:p-16 relative overflow-hidden group">
+          <img src="/ovela_hero.png" alt="Ovela" className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-105" />
+          <div className="absolute inset-0 bg-black/40 z-0 transition-colors duration-700 group-hover:bg-black/60 pointer-events-none"></div>
           <div className="relative z-10 w-full flex justify-between items-end">
             <div>
               <h1 className="display-heading text-[8vw] md:text-[6rem] leading-[0.85] text-white">
