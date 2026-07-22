@@ -192,14 +192,23 @@ function RetainGraphCaseStudy() {
 
         {/* Footer Tags */}
         <div className="w-full py-16 md:py-24 border-t border-black/10 overflow-hidden">
-          <div className="flex justify-center whitespace-nowrap px-4">
-            <span className="display-heading text-[5vw] md:text-5xl opacity-30 tracking-widest flex gap-8 md:gap-16">
-              <span>KNOWLEDGE GRAPHS</span>
-              <span>COGNEE</span>
-              <span>GROQ LPU</span>
-              <span>NODE.JS</span>
-              <span>PRISMA</span>
-            </span>
+          <div className="flex whitespace-nowrap w-[200vw]">
+            <motion.div
+              className="display-heading text-[5vw] md:text-5xl opacity-30 tracking-widest flex gap-8 md:gap-16 pr-8 md:pr-16"
+              style={{ willChange: "transform" }}
+              animate={{ x: ["0%", "-50%"] }}
+              transition={{ repeat: Infinity, ease: "linear", duration: 60 }}
+            >
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="flex gap-8 md:gap-16">
+                  <span>KNOWLEDGE GRAPHS</span>
+                  <span>COGNEE</span>
+                  <span>GROQ LPU</span>
+                  <span>NODE.JS</span>
+                  <span>PRISMA</span>
+                </div>
+              ))}
+            </motion.div>
           </div>
         </div>
 

@@ -64,6 +64,54 @@ function MobileStorefrontCarousel() {
   );
 }
 
+function BentoCarousel({ images, duration, direction = "right" }: { images: string[], duration: number, direction?: "left" | "right" | "up" | "down" }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    const slides = gsap.utils.toArray<HTMLElement>(".bento-slide", containerRef.current);
+    
+    const axis = direction === "left" || direction === "right" ? "xPercent" : "yPercent";
+    const isReversed = direction === "left" || direction === "up";
+    const offScreenStart = isReversed ? 120 : -120;
+    const offScreenEnd = isReversed ? -120 : 120;
+
+    gsap.set(slides, { xPercent: 0, yPercent: 0, scale: 0.85 });
+    gsap.set(slides, { [axis]: offScreenStart });
+    gsap.set(slides[0], { [axis]: 0, scale: 1 }); 
+
+    const tl = gsap.timeline({ repeat: -1 });
+
+    slides.forEach((slide, i) => {
+      const nextSlide = slides[(i + 1) % slides.length];
+
+      tl.to({}, { duration: duration * 0.4 }) // hold
+        .to(slide, { scale: 0.85, duration: duration * 0.2, ease: "power2.inOut" }) // shrink
+        .addLabel(`slide-${i}`)
+        .to(slide, { [axis]: offScreenEnd, duration: duration * 0.3, ease: "power4.inOut" }, `slide-${i}`)
+        .to(nextSlide, 
+          { [axis]: 0, duration: duration * 0.3, ease: "power4.inOut" }, 
+          `slide-${i}`
+        )
+        .to(nextSlide, { scale: 1, duration: duration * 0.2, ease: "power2.inOut" }) // expand next
+        .set(slide, { [axis]: offScreenStart });
+    });
+  }, { scope: containerRef });
+
+  return (
+    <div ref={containerRef} className="absolute inset-0 w-full h-full overflow-hidden flex items-center justify-center">
+      {images.map((src, i) => (
+        <img
+          key={i}
+          src={src}
+          className="bento-slide absolute w-full h-full object-cover rounded-2xl shadow-xl"
+          alt="Feature preview"
+        />
+      ))}
+      <div className="absolute inset-0 bg-black/20 z-10 pointer-events-none"></div>
+    </div>
+  );
+}
+
 function OvelaCaseStudy() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -124,7 +172,7 @@ function OvelaCaseStudy() {
         </div>
 
         {/* Overview — Wide single-column with large type */}
-        <div className="px-8 md:px-16 py-16 md:py-24 max-w-5xl mx-auto">
+        <div className="px-4 md:px-6 py-12 max-w-7xl mx-auto">
           <h3 className="text-xs tracking-[0.2em] font-semibold mb-6">PROJECT CONTEXT</h3>
           <p className="text-xl md:text-2xl opacity-80 leading-relaxed mb-6">
             OVELA is a full-stack luxury fashion commerce platform engineered to deliver a premium digital shopping experience while equipping businesses with intelligent operational tooling.
@@ -135,7 +183,7 @@ function OvelaCaseStudy() {
         </div>
 
         {/* Solution first, then Challenge — reversed for commerce narrative */}
-        <div className="px-8 md:px-16 py-12 max-w-7xl mx-auto">
+        <div className="px-4 md:px-6 py-12 max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24">
             <div>
               <h2 className="display-heading text-3xl md:text-4xl mb-6">THE SOLUTION</h2>
@@ -169,8 +217,8 @@ function OvelaCaseStudy() {
 
         {/* Full-width Architecture Strip */}
         <div className="w-full bg-[#111] py-16 md:py-24">
-          <div className="px-8 md:px-16 max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
-            <div>
+          <div className="px-8 md:px-16 max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-16 items-center">
+            <div className="md:col-span-5">
               <h2 className="display-heading text-3xl md:text-4xl text-[#f2f0ec] mb-6">ARCHITECTURE</h2>
               <p className="text-sm md:text-base opacity-70 text-[#f2f0ec] leading-relaxed mb-6">
                 The frontend is organized into customer storefront and admin dashboard modules, sharing a reusable component library and type system. Next.js App Router handles server-side rendering for product pages and secure route protection for admin interfaces. Firebase Authentication manages user identity while React Context synchronizes cart state and session data across the application.
@@ -179,8 +227,8 @@ function OvelaCaseStudy() {
                 Supabase provides the PostgreSQL-backed data layer with relational schemas for products, orders, customers, cart items, inventory, and error logging. Docker containerization ensures consistent development and deployment environments.
               </p>
             </div>
-            <div className="w-full bg-white/5 aspect-video rounded-xl flex items-center justify-center border border-white/10 p-8">
-              <span className="text-xs tracking-[0.2em] opacity-50 text-white/50 text-center">SYSTEM ARCHITECTURE DIAGRAM</span>
+            <div className="md:col-span-7 w-full flex justify-center">
+              <img src="/ovela_all_pages.png" alt="Ovela System Architecture Diagram" className="w-full h-auto object-cover  scale-90 md:scale-110 transform origin-center" />
             </div>
           </div>
         </div>
@@ -194,31 +242,40 @@ function OvelaCaseStudy() {
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="md:col-span-2 bg-[#e8e6e1] rounded-2xl flex items-center justify-center shadow-sm border border-black/10 aspect-[16/9]">
-              <span className="text-xs tracking-[0.2em] opacity-50 text-center">PRODUCT CATALOG & COLLECTIONS</span>
+            <div className="md:col-span-2 bg-transparent rounded-2xl flex items-center justify-center aspect-[16/9] relative overflow-hidden group">
+              <BentoCarousel images={["/ovela4.png", "/ovela5.png", "/ovela6.png", "/ovela7.png", "/ovela8.png", "/ovela9.png"]} duration={6.0} direction="up" />
             </div>
-            <div className="bg-white rounded-2xl flex items-center justify-center shadow-sm border border-black/10 aspect-[4/3]">
-              <span className="text-[10px] tracking-[0.2em] opacity-40 text-center">SHOPPING CART</span>
+            <div className="bg-transparent rounded-2xl flex items-center justify-center aspect-[4/3] relative overflow-hidden group">
+              <BentoCarousel images={["/ovela7.png", "/ovela8.png", "/ovela9.png", "/ovela4.png", "/ovela5.png", "/ovela6.png"]} duration={4.5} direction="left" />
             </div>
-            <div className="bg-[#201041] rounded-2xl flex items-center justify-center shadow-sm border border-white/10 aspect-[4/3]">
-              <span className="text-[10px] tracking-[0.2em] opacity-40 text-white text-center">CHECKOUT FLOW</span>
+            <div className="bg-transparent rounded-2xl flex items-center justify-center aspect-[4/3] relative overflow-hidden group">
+              <BentoCarousel images={["/ovela6.png", "/ovela9.png", "/ovela4.png", "/ovela8.png", "/ovela5.png", "/ovela7.png"]} duration={4.5} direction="right" />
             </div>
-            <div className="md:col-span-2 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-black/10 aspect-[16/9]">
-              <span className="text-[10px] tracking-[0.2em] opacity-40 text-center">ANALYTICS DASHBOARD</span>
+            <div className="md:col-span-2 bg-transparent rounded-2xl flex items-center justify-center aspect-[16/9] relative overflow-hidden group">
+              <BentoCarousel images={["/ovela9.png", "/ovela7.png", "/ovela5.png", "/ovela6.png", "/ovela8.png", "/ovela4.png"]} duration={6.0} direction="down" />
             </div>
           </div>
         </div>
 
         {/* Footer Tags */}
         <div className="w-full py-16 md:py-24 border-t border-black/10 overflow-hidden mt-12">
-          <div className="flex justify-center whitespace-nowrap px-4">
-            <span className="display-heading text-[5vw] md:text-5xl opacity-30 tracking-widest flex gap-8 md:gap-16">
-              <span>NEXT.JS</span>
-              <span>TYPESCRIPT</span>
-              <span>SUPABASE</span>
-              <span>FIREBASE AUTH</span>
-              <span>TAILWIND</span>
-            </span>
+          <div className="flex whitespace-nowrap w-[200vw]">
+            <motion.div
+              className="display-heading text-[5vw] md:text-5xl opacity-30 tracking-widest flex gap-8 md:gap-16 pr-8 md:pr-16"
+              style={{ willChange: "transform" }}
+              animate={{ x: ["0%", "-50%"] }}
+              transition={{ repeat: Infinity, ease: "linear", duration: 60 }}
+            >
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="flex gap-8 md:gap-16">
+                  <span>NEXT.JS</span>
+                  <span>TYPESCRIPT</span>
+                  <span>SUPABASE</span>
+                  <span>FIREBASE AUTH</span>
+                  <span>TAILWIND</span>
+                </div>
+              ))}
+            </motion.div>
           </div>
         </div>
 
