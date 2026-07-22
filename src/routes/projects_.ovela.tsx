@@ -4,6 +4,10 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { useRef, useLayoutEffect, useState } from "react";
 import { motion } from "motion/react";
 import { Safari } from "@/components/ui/safari";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(useGSAP);
 
 export const Route = createFileRoute("/projects_/ovela")({
   head: () => ({
@@ -14,6 +18,51 @@ export const Route = createFileRoute("/projects_/ovela")({
   }),
   component: OvelaCaseStudy,
 });
+
+function MobileStorefrontCarousel() {
+  const images = ["/ovela1.png", "/ovela2.png", "/ovela3.png"];
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    const slides = gsap.utils.toArray<HTMLElement>(".gsap-slide");
+    
+    // Initial setup
+    gsap.set(slides, { xPercent: -150, scale: 0.85 });
+    gsap.set(slides[0], { xPercent: 0, scale: 0.85 }); // First slide is ready in the center
+
+    const tl = gsap.timeline({ repeat: -1 });
+
+    slides.forEach((slide: HTMLElement, i: number) => {
+      const nextSlide = slides[(i + 1) % slides.length];
+
+      tl.to(slide, { scale: 1, duration: 1.2, ease: "expo.inOut" }, "+=0.2") // Expand
+        .to({}, { duration: 1.5 }) // Hold at full scale
+        .to(slide, { scale: 0.85, duration: 1.0, ease: "expo.inOut" }) // Shrink
+        .addLabel(`slide-${i}`)
+        // Transition: Current slide moves right out of frame, next slide moves from left into center
+        .to(slide, { xPercent: 150, duration: 1.2, ease: "power4.inOut" }, `slide-${i}`)
+        .to(nextSlide, 
+          { xPercent: 0, duration: 1.2, ease: "power4.inOut" }, 
+          `slide-${i}`
+        )
+        // Reset current slide to the left instantly so it's ready for its next turn
+        .set(slide, { xPercent: -150 });
+    });
+  }, { scope: containerRef });
+
+  return (
+    <div ref={containerRef} className="w-full md:w-2/5 bg-[#faf9f6] rounded-2xl border border-black/10 shadow-lg p-0 overflow-hidden aspect-[3/4] relative flex items-center justify-center">
+      {images.map((src, i) => (
+        <img
+          key={i}
+          src={src}
+          className="gsap-slide absolute w-full h-full object-cover rounded-2xl shadow-md"
+          alt={`Mobile Storefront ${i + 1}`}
+        />
+      ))}
+    </div>
+  );
+}
 
 function OvelaCaseStudy() {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -106,11 +155,14 @@ function OvelaCaseStudy() {
         {/* Staggered Mockups — Asymmetric offset layout */}
         <div className="px-8 md:px-16 py-20 max-w-[1400px] mx-auto">
           <div className="flex flex-col md:flex-row gap-8 items-end">
-            <div className="w-full md:w-2/5 bg-white rounded-2xl border border-black/10 shadow-lg p-12 flex items-center justify-center aspect-[3/4]">
-              <span className="text-[10px] tracking-[0.2em] opacity-40 text-center">MOBILE STOREFRONT</span>
-            </div>
-            <div className="w-full md:w-3/5 relative shadow-xl">
-              <Safari url="admin.ovela.com" videoSrc="/ovela_video.mp4" className="w-full h-full object-cover" />
+            <MobileStorefrontCarousel />
+            <div className="w-full md:w-3/5 flex flex-col gap-2 justify-between">
+              <div className="w-full flex items-center justify-center ">
+                <img src="/ovela_logo_without_bg.png" alt="Ovela Logo" className="w-full h-auto object-contain max-h-[250px]" />
+              </div>
+              <div className="relative shadow-xl w-full">
+                <Safari url="admin.ovela.com" videoSrc="/ovela_video.mp4" className="w-full h-full object-cover" />
+              </div>
             </div>
           </div>
         </div>
