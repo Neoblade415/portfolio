@@ -21,11 +21,11 @@ export const Route = createFileRoute("/projects")({
 });
 
 const featured = [
-  { name: "PEP APP", tag: "MOBILE APP", year: "2026", href: "/projects/pep-app" },
-  { name: "A.G.E.N.T. CHAOS", tag: "MOBILE APP", year: "2025", href: "/projects/agent-chaos" },
-  { name: "ZYNGA SOLITAIRE", tag: "MOBILE APP", year: "2020", href: "/projects/zynga-solitaire" },
-  { name: "BEIN SPORTS CONNECT", tag: "WEB DESIGN, MOBILE APP", year: "2019", href: "/projects/bein-sports-connect" },
-  { name: "ING BANK", tag: "WEB DESIGN, MOBILE APP", year: "2018", href: "/projects/ing-bank" },
+  { name: "NAVSWAP OS", tag: "CLOUD PLATFORM", year: "2026", href: "/projects/navswap" },
+  { name: "CORTEX", tag: "AI PLATFORM", year: "2026", href: "/projects/cortex" },
+  { name: "POLARIS", tag: "AI PLATFORM", year: "2025", href: "/projects/polaris" },
+  { name: "OVELA", tag: "E-COMMERCE PLATFORM", year: "2025", href: "/projects/ovela" },
+  { name: "RETAINGRAPH", tag: "AI PLATFORM", year: "2025", href: "/projects/retaingraph" },
 ];
 
 const chapters = [
@@ -240,6 +240,8 @@ function ProjectsPage() {
 
   return (
     <motion.div ref={scrollRef} onScroll={handleScroll} className="w-full h-full crt-content-scroll" style={{ background: backgroundColor }}>
+      {/* Static Noise Overlay */}
+      <div className="fixed inset-0 pointer-events-none z-0 opacity-[0.08] mix-blend-overlay" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")` }} />
       <div className="w-full">
           
           {/* Combined SplashCursor for Hero and Chapters */}

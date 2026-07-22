@@ -130,6 +130,18 @@
   display: none;
 }
 
+/* CRT static noise animation — shifts background-position to simulate live static */
+@keyframes noise-shift {
+  0%   { background-position: 0 0; }
+  25%  { background-position: -5% -10%; }
+  50%  { background-position: 7% -25%; }
+  75%  { background-position: -10% 10%; }
+  100% { background-position: 0 0; }
+}
+.crt-noise-animate {
+  animation: noise-shift 0.3s steps(5) infinite;
+}
+
 @utility crt-scanlines {
   position: relative;
 }
@@ -162,33 +174,7 @@
   );
 }
 
-.crt-ambient-noise {
-  position: absolute;
-  inset: -100%;
-  pointer-events: none;
-  z-index: 30;
-  opacity: 0.45;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='noiseFilter'><feTurbulence type='fractalNoise' baseFrequency='3' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='matrix' values='1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 1 0' /></filter><rect width='100%25' height='100%25' filter='url(%23noiseFilter)'/></svg>");
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  .crt-ambient-noise {
-    animation: static-noise 0.15s steps(8) infinite;
-  }
-}
-
-@keyframes static-noise {
-  0%   { transform: translate(0, 0); }
-  12.5%{ transform: translate(-5%, 3%); }
-  25%  { transform: translate(2%, -4%); }
-  37.5%{ transform: translate(-3%, -2%); }
-  50%  { transform: translate(4%, 5%); }
-  62.5%{ transform: translate(-2%, 6%); }
-  75%  { transform: translate(5%, -3%); }
-  87.5%{ transform: translate(-4%, 2%); }
-  100% { transform: translate(0, 0); }
-}
 
 @media (hover: none) and (pointer: coarse) {
   .paint-splash-cursor-container {
@@ -249,6 +235,18 @@
   85% { transform: translateY(0); filter: none; }
   86% { transform: translateY(-3%); filter: brightness(2); }
   87% { transform: translateY(0); filter: none; }
+}
+
+@keyframes static-noise {
+  0%   { transform: translate(0, 0); }
+  12.5%{ transform: translate(-5%, 3%); }
+  25%  { transform: translate(2%, -4%); }
+  37.5%{ transform: translate(-3%, -2%); }
+  50%  { transform: translate(4%, 5%); }
+  62.5%{ transform: translate(-2%, 6%); }
+  75%  { transform: translate(5%, -3%); }
+  87.5%{ transform: translate(-4%, 2%); }
+  100% { transform: translate(0, 0); }
 }
 
 @media (prefers-reduced-motion: no-preference) {

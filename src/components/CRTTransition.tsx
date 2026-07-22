@@ -30,14 +30,15 @@ export function CRTTransition() {
     return state?.transitionText || routeLabel(location.pathname);
   });
   const [colors, setColors] = useState(() => routeColors(location.pathname));
-  const firstRun = useRef(true);
+  const prevPathname = useRef(location.pathname);
 
   useEffect(() => {
-    // Skip on initial mount
-    if (firstRun.current) {
-      firstRun.current = false;
+    // Only play transition if we actually navigated to a new route
+    if (prevPathname.current === location.pathname) {
       return;
     }
+    prevPathname.current = location.pathname;
+
     const state = location.state as any;
     setLabel(state?.transitionText || routeLabel(location.pathname));
     setColors(routeColors(location.pathname));
