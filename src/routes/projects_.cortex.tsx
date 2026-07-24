@@ -5,6 +5,76 @@ import { useRef, useLayoutEffect, useState } from "react";
 import { motion } from "motion/react";
 import { Safari } from "@/components/ui/safari";
 import { Carousel_003 } from "@/components/ui/carousel-003";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(useGSAP);
+
+function BentoCarousel({ images, duration, direction = "right", radiusClass = "rounded-md" }: { images: string[], duration: number, direction?: "left" | "right" | "up" | "down" | "up-left" | "up-right" | "down-left" | "down-right", radiusClass?: string }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    if (images.length <= 1) return;
+    
+    const slides = gsap.utils.toArray<HTMLElement>(".bento-slide", containerRef.current);
+    
+    // Parse direction
+    const isUp = direction.includes("up");
+    const isDown = direction.includes("down");
+    const isLeft = direction.includes("left");
+    const isRight = direction.includes("right");
+
+    const xStart = isLeft ? 120 : isRight ? -120 : 0;
+    const xEnd = isLeft ? -120 : isRight ? 120 : 0;
+    
+    const yStart = isUp ? 120 : isDown ? -120 : 0;
+    const yEnd = isUp ? -120 : isDown ? 120 : 0;
+
+    gsap.set(slides, { xPercent: 0, yPercent: 0, scale: 0.92, autoAlpha: 0 });
+    gsap.set(slides, { xPercent: xStart, yPercent: yStart });
+    gsap.set(slides[0], { xPercent: 0, yPercent: 0, scale: 1, autoAlpha: 1 }); 
+
+    const tl = gsap.timeline({ repeat: -1 });
+
+    slides.forEach((slide, i) => {
+      const nextSlide = slides[(i + 1) % slides.length];
+
+      tl.to({}, { duration: duration * 0.3 }) // hold
+        .to(slide, { scale: 0.92, duration: duration * 0.3, ease: "power3.inOut" }) // shrink
+        .addLabel(`slide-${i}`)
+        .to(slide, { xPercent: xEnd, yPercent: yEnd, autoAlpha: 0, duration: duration * 0.4, ease: "power3.inOut" }, `slide-${i}`)
+        .to(nextSlide, 
+          { xPercent: 0, yPercent: 0, autoAlpha: 1, duration: duration * 0.4, ease: "power3.inOut" }, 
+          `slide-${i}`
+        )
+        .to(nextSlide, { scale: 1, duration: duration * 0.3, ease: "power3.inOut" }) // expand next
+        .set(slide, { xPercent: xStart, yPercent: yStart });
+    });
+  }, { scope: containerRef });
+
+  return (
+    <div ref={containerRef} className={`absolute inset-0 w-full h-full overflow-hidden flex items-center justify-center ${radiusClass}`}>
+      {images.map((src, i) => (
+        <img
+          key={i}
+          src={src}
+          loading="lazy"
+          decoding="async"
+          className={`bento-slide absolute w-full h-full object-cover shadow-xl ${radiusClass}`}
+          alt="Dashboard preview"
+          style={{ 
+            opacity: i === 0 ? 1 : 0,
+            willChange: "transform, opacity",
+            WebkitBackfaceVisibility: "hidden",
+            backfaceVisibility: "hidden",
+            transform: "translateZ(0)"
+          }}
+        />
+      ))}
+      <div className={`absolute inset-0 bg-black/20 z-10 pointer-events-none ${radiusClass}`}></div>
+    </div>
+  );
+}
 
 export const Route = createFileRoute("/projects_/cortex")({
   head: () => ({
@@ -112,14 +182,6 @@ function CortexCaseStudy() {
           </div>
         </div>
 
-        {/* 4 Screens UI */}
-        <div className="px-8 md:px-16 py-16 max-w-7xl mx-auto flex flex-col md:flex-row gap-6 justify-between items-center">
-          {[1,2,3,4].map((i) => (
-             <div key={i} className="w-full md:w-1/4 bg-[#333] aspect-[9/19.5] rounded-md flex items-center justify-center border-4 border-[#222] shadow-xl">
-               <span className="text-[10px] tracking-[0.2em] opacity-40 text-white text-center">WIDGET UI {i}</span>
-             </div>
-          ))}
-        </div>
 
         {/* UI Design & 2 Screens */}
         <div className="px-8 md:px-16 py-16 md:py-24 max-w-7xl mx-auto">
@@ -132,21 +194,44 @@ function CortexCaseStudy() {
               <strong>Financial Intelligence:</strong> Cortex acts as a virtual Chartered Accountant (CA). It automates profit and loss analysis, categorizes expenses, generates invoices, and identifies tax deduction opportunities. It consolidates this data into a unified, dark-mode-first dashboard that prevents cognitive overload.
             </p>
           </div>
-          <div className="w-full relative mt-16">
-            <Carousel_003 
-              images={[
-                { src: "/cortex_dashboard_1.png", alt: "Cortex Dashboard Screen 1" },
-                { src: "/cortex_dashboard_2.png", alt: "Cortex Dashboard Screen 2" },
-                { src: "/cortex_dashboard_3.png", alt: "Cortex Dashboard Screen 3" },
-                { src: "/cortex_dashboard_4.png", alt: "Cortex Dashboard Screen 4" },
-                { src: "/cortex_dashboard_5.png", alt: "Cortex Dashboard Screen 5" },
-                { src: "/cortex_dashboard_6.png", alt: "Cortex Dashboard Screen 6" }
-              ]} 
-              showPagination={true} 
-              showNavigation={true} 
-              loop={true} 
-              autoplay={true} 
-            />
+        </div>
+
+        {/* Dashboard Grid */}
+        <div className="w-full py-16 md:py-24 mt-4 bg-[#111]">
+          <div className="px-4 md:px-16 max-w-[1600px] mx-auto text-center">
+            <h2 className="display-heading text-3xl md:text-4xl text-[#f2f0ec] mb-12">INTELLIGENT WORKFLOW DASHBOARDS</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-3 gap-4 w-full h-auto min-h-[800px] md:h-[1000px]">
+              {/* Box 1 (Large top-left) */}
+              <div className="md:col-span-2 md:row-span-2 relative rounded-md overflow-hidden border border-[#444] bg-transparent min-h-[300px]">
+                <BentoCarousel images={["/cortex_dashboard_1.png", "/cortex_dashboard_2.png", "/cortex_hero_logo.png", "/cortex_dashboard_4.png", "/cortex_dashboard_3.png", "/cortex_dashboard_5.png"]} duration={6.5} direction="up" radiusClass="rounded-md" />
+              </div>
+              
+              {/* Box 2 (Wide top-right) */}
+              <div className="md:col-span-2 md:row-span-1 relative rounded-md overflow-hidden border border-[#444] bg-transparent min-h-[250px]">
+                <BentoCarousel images={["/cortex_dashboard_2.png", "/cortex_dashboard_5.png", "/cortex.png", "/cortex_dashboard_1.png", "/cortex_dashboard_6.png", "/cortex_dashboard_3.png"]} duration={5.0} direction="left" radiusClass="rounded-md" />
+              </div>
+
+              {/* Box 3 (Small mid-right) */}
+              <div className="md:col-span-1 md:row-span-1 relative rounded-md overflow-hidden border border-[#444] bg-transparent min-h-[250px]">
+                <BentoCarousel images={["/cortex_dashboard_3.png", "/cortex_hero_logo.png", "/cortex_dashboard_1.png", "/cortex_dashboard_6.png", "/cortex_dashboard_2.png", "/cortex_dashboard_4.png"]} duration={4.5} direction="down-left" radiusClass="rounded-md" />
+              </div>
+
+              {/* Box 4 (Tall far-right) */}
+              <div className="md:col-span-1 md:row-span-2 relative rounded-md overflow-hidden border border-[#444] bg-transparent min-h-[250px]">
+                <BentoCarousel images={["/cortex.png", "/cortex_dashboard_6.png", "/cortex_dashboard_3.png", "/cortex_dashboard_1.png", "/cortex_dashboard_5.png", "/cortex_dashboard_2.png"]} duration={7.0} direction="down" radiusClass="rounded-md" />
+              </div>
+
+              {/* Box 5 (Small bottom-left) */}
+              <div className="md:col-span-1 md:row-span-1 relative rounded-md overflow-hidden border border-[#444] bg-transparent min-h-[250px]">
+                <BentoCarousel images={["/cortex_dashboard_4.png", "/cortex_dashboard_6.png", "/cortex_hero_logo.png", "/cortex_dashboard_2.png", "/cortex_dashboard_1.png", "/cortex_dashboard_5.png"]} duration={5.5} direction="up-right" radiusClass="rounded-md" />
+              </div>
+
+              {/* Box 6 (Wide bottom-center) */}
+              <div className="md:col-span-2 md:row-span-1 relative rounded-md overflow-hidden border border-[#444] bg-transparent min-h-[250px]">
+                <BentoCarousel images={["/cortex_dashboard_5.png", "/cortex.png", "/cortex_dashboard_4.png", "/cortex_dashboard_3.png", "/cortex_dashboard_2.png", "/cortex_dashboard_1.png"]} duration={6.0} direction="right" radiusClass="rounded-md" />
+              </div>
+            </div>
           </div>
         </div>
 

@@ -3,6 +3,65 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useRef, useLayoutEffect, useState } from "react";
 import { motion } from "motion/react";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(useGSAP);
+
+function BentoCarousel({ images, duration, direction = "right", radiusClass = "rounded-md" }: { images: string[], duration: number, direction?: "left" | "right" | "up" | "down" | "up-left" | "up-right" | "down-left" | "down-right", radiusClass?: string }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    if (images.length <= 1) return;
+    
+    const slides = gsap.utils.toArray<HTMLElement>(".bento-slide", containerRef.current);
+    
+    const isUp = direction.includes("up");
+    const isDown = direction.includes("down");
+    const isLeft = direction.includes("left");
+    const isRight = direction.includes("right");
+
+    const xStart = isLeft ? 120 : isRight ? -120 : 0;
+    const xEnd = isLeft ? -120 : isRight ? 120 : 0;
+    
+    const yStart = isUp ? 120 : isDown ? -120 : 0;
+    const yEnd = isUp ? -120 : isDown ? 120 : 0;
+
+    gsap.set(slides, { xPercent: 0, yPercent: 0, scale: 0.92, autoAlpha: 0 });
+    gsap.set(slides, { xPercent: xStart, yPercent: yStart });
+    gsap.set(slides[0], { xPercent: 0, yPercent: 0, scale: 1, autoAlpha: 1 }); 
+
+    const tl = gsap.timeline({ repeat: -1 });
+
+    slides.forEach((slide, i) => {
+      const nextSlide = slides[(i + 1) % slides.length];
+
+      tl.to({}, { duration: duration * 0.3 })
+        .to(slide, { scale: 0.92, duration: duration * 0.3, ease: "power3.inOut" })
+        .addLabel(`slide-${i}`)
+        .to(slide, { xPercent: xEnd, yPercent: yEnd, autoAlpha: 0, duration: duration * 0.4, ease: "power3.inOut" }, `slide-${i}`)
+        .to(nextSlide, 
+          { xPercent: 0, yPercent: 0, autoAlpha: 1, duration: duration * 0.4, ease: "power3.inOut" }, 
+          `slide-${i}`
+        )
+        .to(nextSlide, { scale: 1, duration: duration * 0.3, ease: "power3.inOut" })
+        .set(slide, { xPercent: xStart, yPercent: yStart });
+    });
+  }, { scope: containerRef });
+
+  return (
+    <div ref={containerRef} className={`absolute inset-0 w-full h-full overflow-hidden flex items-center justify-center ${radiusClass}`}>
+      {images.map((src, i) => (
+        <img
+          key={i}
+          src={src}
+          className={`bento-slide absolute inset-0 w-full h-full object-cover ${radiusClass}`}
+          alt="Carousel slide"
+        />
+      ))}
+    </div>
+  );
+}
 
 export const Route = createFileRoute("/projects_/polaris")({
   head: () => ({
@@ -77,9 +136,9 @@ function PolarisCaseStudy() {
           </div>
         </div>
 
-        {/* Overview & Intro text */}
+        {/* Overview & Problem Statement */}
         <div className="px-8 md:px-16 py-16 max-w-7xl mx-auto">
-          <div className="max-w-4xl mb-16">
+          <div className="max-w-4xl">
             <h3 className="text-xs tracking-[0.2em] font-semibold mb-6">PROJECT CONTEXT</h3>
             <p className="text-base md:text-lg opacity-80 leading-relaxed mb-6">
               Polaris is an AI-powered Urban Operating System that orchestrates multiple specialized LLM agents to transform citizen-submitted infrastructure reports into dispatch-ready municipal work orders within seconds. Built to replace fragmented manual triage workflows with autonomous, explainable reasoning pipelines.
@@ -87,12 +146,9 @@ function PolarisCaseStudy() {
             <p className="text-base md:text-lg opacity-80 leading-relaxed">
               The platform unifies computer vision, semantic search, geospatial intelligence, and structured reasoning to give municipalities a real-time understanding of infrastructure health — turning disconnected complaints into predictive operational intelligence.
             </p>
-          </div>
-        </div>
 
-        {/* Problem Statement */}
-        <div className="px-8 md:px-16 py-16 max-w-7xl mx-auto">
-          <div className="max-w-4xl">
+            <hr className="border-black/10 my-12" />
+
             <h3 className="text-xs tracking-[0.2em] font-semibold mb-6">THE PROBLEM</h3>
             <p className="text-base md:text-lg opacity-80 leading-relaxed mb-6">
               Municipalities process thousands of citizen reports annually — cracked sidewalks, potholes, broken streetlights, water main leaks — yet the infrastructure managing these complaints hasn't evolved. Fragmented reports arrive through phone calls, emails, and apps with no unified intake. Duplicate complaints from different citizens about the same issue pile up unchecked. Manual triage teams spend hours classifying, prioritizing, and routing issues that should take seconds.
@@ -103,14 +159,6 @@ function PolarisCaseStudy() {
           </div>
         </div>
 
-        {/* 3 Architecture Diagrams */}
-        <div className="px-8 md:px-16 py-12 max-w-7xl mx-auto flex flex-col md:flex-row gap-8 justify-between items-center">
-          {[1,2,3].map((i) => (
-             <div key={i} className="w-full md:w-1/3 bg-[#2a6853] aspect-[9/19.5] rounded-[2rem] flex items-center justify-center border-[8px] border-[#1e4a3b] shadow-2xl relative overflow-hidden">
-               <span className="text-[10px] tracking-[0.2em] opacity-40 text-white text-center px-4">{["MULTI-AGENT PIPELINE", "GIS DASHBOARD", "AI REASONING"][i-1]}</span>
-             </div>
-          ))}
-        </div>
 
         {/* Architecture & Process */}
         <div className="px-8 md:px-16 py-16 md:py-24 max-w-[1400px] mx-auto">
@@ -124,20 +172,19 @@ function PolarisCaseStudy() {
                 Every inter-agent communication is validated through Pydantic schemas, ensuring structured JSON contracts between stages. This guarantees deterministic handoffs, production-grade reliability, and a complete decision audit trail from submission to dispatch.
               </p>
             </div>
-            <div className="w-full bg-white aspect-square md:aspect-[4/3] rounded-xl flex items-center justify-center shadow-sm border border-black/10 p-8">
-              <span className="text-xs tracking-[0.2em] opacity-50 text-center">PIPELINE ARCHITECTURE DIAGRAM</span>
+            <div className="w-full aspect-video rounded-md overflow-hidden shadow-2xl bg-black flex items-center justify-center">
+              <video 
+                src="/polaris.mov" 
+                autoPlay 
+                loop 
+                muted 
+                playsInline 
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
         </div>
 
-        {/* 4 Agent Screens */}
-        <div className="px-8 md:px-16 py-16 max-w-7xl mx-auto flex flex-col md:flex-row gap-6 justify-between items-center">
-          {["INTAKE AGENT", "EVIDENCE AGENT", "SYNTHESIS AGENT", "BRIEF AGENT"].map((label, i) => (
-             <div key={i} className="w-full md:w-1/4 bg-[#111] aspect-[9/19.5] rounded-xl flex items-center justify-center border border-black/10 shadow-lg">
-               <span className="text-[10px] tracking-[0.2em] opacity-40 text-white text-center px-2">{label}</span>
-             </div>
-          ))}
-        </div>
 
         {/* The Challenge & Solution */}
         <div className="px-8 md:px-16 py-16 max-w-7xl mx-auto">
@@ -158,9 +205,27 @@ function PolarisCaseStudy() {
         </div>
 
         {/* Dashboard Grid */}
-        <div className="px-8 md:px-16 py-12 max-w-7xl mx-auto">
-          <div className="w-full bg-[#e8e6e1] aspect-[21/9] rounded-xl flex items-center justify-center shadow-sm border border-black/10">
-             <span className="text-xs tracking-[0.2em] opacity-50 text-center">GIS INTELLIGENCE DASHBOARD — INFRASTRUCTURE OVERLAYS & CLUSTER VISUALIZATION</span>
+        <div className="w-full py-16 md:py-24 mt-12 bg-[#111]">
+          <div className="px-4 md:px-16 max-w-[1600px] mx-auto text-center">
+            <h2 className="display-heading text-3xl md:text-4xl text-[#f2f0ec] mb-12">GIS INTELLIGENCE DASHBOARDS</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-4 w-full h-auto min-h-[800px] md:h-[900px]">
+              <div className="md:col-span-2 md:row-span-2 relative rounded-md overflow-hidden border border-[#444] bg-transparent min-h-[400px]">
+                <BentoCarousel images={["/polaris1.png", "/polaris2.png", "/polaris4.png", "/polaris3.png", "/polaris5.png"]} duration={6.5} direction="up" radiusClass="rounded-md" />
+              </div>
+              <div className="md:col-span-1 md:row-span-1 relative rounded-md overflow-hidden border border-[#444] bg-transparent min-h-[300px]">
+                <BentoCarousel images={["/polaris2.png", "/polaris5.png", "/polaris1.png", "/polaris4.png", "/polaris3.png"]} duration={5.0} direction="left" radiusClass="rounded-md" />
+              </div>
+              <div className="md:col-span-1 md:row-span-1 relative rounded-md overflow-hidden border border-[#444] bg-transparent min-h-[300px]">
+                <BentoCarousel images={["/polaris3.png", "/polaris1.png", "/polaris5.png", "/polaris2.png", "/polaris4.png"]} duration={4.5} direction="down-left" radiusClass="rounded-md" />
+              </div>
+              <div className="md:col-span-1 md:row-span-1 relative rounded-md overflow-hidden border border-[#444] bg-transparent min-h-[300px]">
+                <BentoCarousel images={["/polaris4.png", "/polaris3.png", "/polaris1.png", "/polaris5.png", "/polaris2.png"]} duration={7.0} direction="down" radiusClass="rounded-md" />
+              </div>
+              <div className="md:col-span-1 md:row-span-1 relative rounded-md overflow-hidden border border-[#444] bg-transparent min-h-[300px]">
+                <BentoCarousel images={["/polaris5.png", "/polaris4.png", "/polaris2.png", "/polaris1.png", "/polaris3.png"]} duration={5.5} direction="up-right" radiusClass="rounded-md" />
+              </div>
+            </div>
           </div>
         </div>
 

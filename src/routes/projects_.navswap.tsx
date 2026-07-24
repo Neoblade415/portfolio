@@ -1,8 +1,80 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { Macbook } from "@/components/ui/macbook";
+import { GLBViewer } from "@/components/ui/glb-viewer";
 import { useRef, useLayoutEffect, useState } from "react";
 import { motion } from "motion/react";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(useGSAP);
+
+function BentoCarousel({ images, duration, direction = "right", radiusClass = "rounded-md" }: { images: string[], duration: number, direction?: "left" | "right" | "up" | "down" | "up-left" | "up-right" | "down-left" | "down-right", radiusClass?: string }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    if (images.length <= 1) return;
+    
+    const slides = gsap.utils.toArray<HTMLElement>(".bento-slide", containerRef.current);
+    
+    // Parse direction
+    const isUp = direction.includes("up");
+    const isDown = direction.includes("down");
+    const isLeft = direction.includes("left");
+    const isRight = direction.includes("right");
+
+    const xStart = isLeft ? 120 : isRight ? -120 : 0;
+    const xEnd = isLeft ? -120 : isRight ? 120 : 0;
+    
+    const yStart = isUp ? 120 : isDown ? -120 : 0;
+    const yEnd = isUp ? -120 : isDown ? 120 : 0;
+
+    gsap.set(slides, { xPercent: 0, yPercent: 0, scale: 0.92, autoAlpha: 0 });
+    gsap.set(slides, { xPercent: xStart, yPercent: yStart });
+    gsap.set(slides[0], { xPercent: 0, yPercent: 0, scale: 1, autoAlpha: 1 }); 
+
+    const tl = gsap.timeline({ repeat: -1 });
+
+    slides.forEach((slide, i) => {
+      const nextSlide = slides[(i + 1) % slides.length];
+
+      tl.to({}, { duration: duration * 0.3 }) // hold
+        .to(slide, { scale: 0.92, duration: duration * 0.3, ease: "power3.inOut" }) // shrink
+        .addLabel(`slide-${i}`)
+        .to(slide, { xPercent: xEnd, yPercent: yEnd, autoAlpha: 0, duration: duration * 0.4, ease: "power3.inOut" }, `slide-${i}`)
+        .to(nextSlide, 
+          { xPercent: 0, yPercent: 0, autoAlpha: 1, duration: duration * 0.4, ease: "power3.inOut" }, 
+          `slide-${i}`
+        )
+        .to(nextSlide, { scale: 1, duration: duration * 0.3, ease: "power3.inOut" }) // expand next
+        .set(slide, { xPercent: xStart, yPercent: yStart });
+    });
+  }, { scope: containerRef });
+
+  return (
+    <div ref={containerRef} className={`absolute inset-0 w-full h-full overflow-hidden flex items-center justify-center ${radiusClass}`}>
+      {images.map((src, i) => (
+        <img
+          key={i}
+          src={src}
+          loading="lazy"
+          decoding="async"
+          className={`bento-slide absolute w-full h-full object-cover shadow-xl ${radiusClass}`}
+          alt="Dashboard preview"
+          style={{ 
+            opacity: i === 0 ? 1 : 0,
+            willChange: "transform, opacity",
+            WebkitBackfaceVisibility: "hidden",
+            backfaceVisibility: "hidden",
+            transform: "translateZ(0)"
+          }}
+        />
+      ))}
+      <div className={`absolute inset-0 bg-black/20 z-10 pointer-events-none ${radiusClass}`}></div>
+    </div>
+  );
+}
 
 export const Route = createFileRoute("/projects_/navswap")({
   head: () => ({
@@ -108,8 +180,8 @@ function NavSwapCaseStudy() {
         </div>
 
         {/* Laptop Mockup */}
-        <div className="px-8 md:px-16 py-12 max-w-[1600px] mx-auto">
-          <img src="/macbook.png" alt="Web Dashboard Laptop Mockup" className="w-full h-auto drop-shadow-2xl rounded-md" />
+        <div className="px-8 md:px-16 py-12 max-w-6xl mx-auto">
+          <Macbook variant="midnight-pro" videoSrc="/navswap.mp4" />
         </div>
 
         {/* Core Architecture */}
@@ -149,13 +221,15 @@ function NavSwapCaseStudy() {
             </div>
             <div className="flex justify-center md:justify-end">
               {/* iPhone 17 Pro Frame */}
-              <div className="relative w-full max-w-[280px] aspect-[9/19.5] rounded-[3.5rem] bg-[#1a1a1a] p-2 shadow-2xl border border-white/10 ring-4 ring-[#2a2a2a]">
+              <div className="relative w-full max-w-[280px] aspect-[9/19.5] rounded-[3.25rem] bg-[#1a1a1a] p-1 shadow-2xl border border-white/10 ring-2 ring-[#2a2a2a]">
                 <div className="relative w-full h-full bg-black rounded-[3rem] overflow-hidden">
                   <div className="absolute top-3 left-1/2 -translate-x-1/2 w-[32%] h-7 bg-black rounded-full z-20 flex items-center justify-between px-2">
                     <div className="w-2.5 h-2.5 rounded-full bg-white/10 ml-1"></div>
                     <div className="w-2.5 h-2.5 rounded-full bg-white/10 mr-1"></div>
                   </div>
-                  <img src="/phone_view.png" alt="App Home Screen" className="absolute inset-0 w-full h-full object-cover z-0" />
+                  <div className="absolute inset-0 z-0">
+                    <BentoCarousel images={["/navswap13.png", "/navswap14.png"]} duration={2.5} direction="up" radiusClass="rounded-[3rem]" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -166,8 +240,8 @@ function NavSwapCaseStudy() {
         <div className="px-8 md:px-16 py-16 max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
             <div className="order-2 md:order-1">
-              <div className="w-full rounded-md overflow-hidden shadow-2xl border border-black/10">
-                <img src="/dashboard.png" alt="NavSwap Dashboard" className="w-full h-auto object-cover" />
+              <div className="w-full aspect-video rounded-md overflow-hidden shadow-2xl border border-black/10 flex items-center justify-center bg-black">
+                <GLBViewer url="/NavSwap (1).glb" />
               </div>
             </div>
             <div className="order-1 md:order-2">
@@ -182,31 +256,55 @@ function NavSwapCaseStudy() {
           </div>
         </div>
 
-        {/* Wireframe to Visual (Two Phones) */}
-        <div className="px-8 md:px-16 py-20 max-w-7xl mx-auto">
-          <div className="w-full bg-[#d0cac2] min-h-[500px] aspect-video md:aspect-[21/9] rounded-md flex items-center justify-center shadow-inner overflow-hidden relative">
-             <div className="absolute inset-0 flex items-center justify-center gap-6 md:gap-12 rotate-[-15deg] scale-[1.15] md:scale-125">
-               <div className="w-48 md:w-64 aspect-[9/19.5] bg-[#111] rounded-3xl border-4 border-[#333] shadow-2xl overflow-hidden relative">
-                 <div className="absolute inset-0 bg-white/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10 backdrop-blur-sm">
-                   <span className="text-white text-[10px] tracking-[0.2em] font-bold">DARK THEME</span>
-                 </div>
-                 <img src="/wireframe_Dark_full.png" alt="Dark Wireframe" className="absolute top-0 w-full object-cover" />
-               </div>
-               <div className="w-48 md:w-64 aspect-[9/19.5] bg-white/80 rounded-3xl border-4 border-white/50 shadow-2xl overflow-hidden relative mt-16 md:mt-24">
-                 <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10 backdrop-blur-sm">
-                   <span className="text-white text-[10px] tracking-[0.2em] font-bold">LIGHT THEME</span>
-                 </div>
-                 <img src="/wire_frame_bright.png" alt="Bright Wireframe" className="absolute top-0 w-full object-cover" />
-               </div>
-             </div>
-          </div>
-          <p className="text-center text-xs tracking-[0.2em] opacity-50 mt-8">MOBILE WIREFRAME EXPLORATION</p>
-        </div>
 
-        {/* Wireframes Grid */}
-        <div className="px-8 md:px-16 py-12 max-w-[1400px] mx-auto">
-          <div className="w-full rounded-md overflow-hidden shadow-2xl border border-black/10">
-             <img src="/wireframe_grid.png" alt="Wireframe Architecture Grid" className="w-full h-auto object-cover" />
+        {/* Network Control Center Grid */}
+        <div className="w-full py-16 md:py-24 mt-12 bg-[#111]">
+          <div className="px-4 md:px-16 max-w-[1600px] mx-auto text-center">
+            <h2 className="display-heading text-3xl md:text-4xl text-[#f2f0ec] mb-12">NETWORK CONTROL CENTER</h2>
+            
+            <div className="grid grid-cols-6 grid-rows-4 gap-3 w-full h-[800px] md:h-[1000px] xl:h-[1200px]">
+              
+              {/* Block 1: Massive Hero (3x3) */}
+              <div className="col-start-1 col-span-3 row-start-1 row-span-3 border border-[#444] rounded-md bg-transparent relative overflow-hidden group">
+                <BentoCarousel images={["/optimized/navswap10.png", "/optimized/navswap11.png", "/optimized/navswap5.png"]} duration={7} direction="up-right" />
+              </div>
+
+              {/* Block 2: Very Wide Top Bar (3x1) */}
+              <div className="col-start-4 col-span-3 row-start-1 row-span-1 border border-[#444] rounded-md bg-transparent relative overflow-hidden group">
+                <BentoCarousel images={["/optimized/navswap13.png", "/optimized/navswap14.png", "/optimized/navswap16.png"]} duration={6} direction="down-left" />
+              </div>
+
+              {/* Block 3: Tall Portrait (1x2) */}
+              <div className="col-start-4 col-span-1 row-start-2 row-span-2 border border-[#444] rounded-md bg-transparent relative overflow-hidden group">
+                <BentoCarousel images={["/optimized/nav_home_dark.png", "/optimized/nav_home_bright.png", "/optimized/navswap3.png", "/optimized/navswap4.png", "/optimized/navswap15.png"]} duration={9} direction="down" />
+              </div>
+
+              {/* Block 4: Secondary Large Square (2x2) */}
+              <div className="col-start-5 col-span-2 row-start-2 row-span-2 border border-[#444] rounded-md bg-transparent relative overflow-hidden group">
+                <BentoCarousel images={["/optimized/navswap7.png", "/optimized/navswap6.png"]} duration={5.5} direction="up-left" />
+              </div>
+
+              {/* Block 5: Bottom Left Wide (2x1) */}
+              <div className="col-start-1 col-span-2 row-start-4 row-span-1 border border-[#444] rounded-md bg-transparent relative overflow-hidden group">
+                <BentoCarousel images={["/optimized/navswap17.png", "/optimized/navswap8.png"]} duration={5} direction="down-right" />
+              </div>
+
+              {/* Block 6: Bottom Mid Square (1x1) */}
+              <div className="col-start-3 col-span-1 row-start-4 row-span-1 border border-[#444] rounded-md bg-transparent relative overflow-hidden group">
+                <BentoCarousel images={["/optimized/navswap1.jpeg", "/optimized/navswap2.jpeg"]} duration={4} direction="up" />
+              </div>
+
+              {/* Block 7: Bottom Right Wide (2x1) */}
+              <div className="col-start-4 col-span-2 row-start-4 row-span-1 border border-[#444] rounded-md bg-transparent relative overflow-hidden group">
+                <BentoCarousel images={["/optimized/navswap18.png", "/optimized/navswap9.png"]} duration={5.5} direction="right" />
+              </div>
+
+              {/* Block 8: Bottom Far Right Square (1x1) */}
+              <div className="col-start-6 col-span-1 row-start-4 row-span-1 border border-[#444] rounded-md bg-transparent relative overflow-hidden group">
+                <BentoCarousel images={["/optimized/navswap12.png"]} duration={4} direction="up-left" />
+              </div>
+
+            </div>
           </div>
         </div>
 

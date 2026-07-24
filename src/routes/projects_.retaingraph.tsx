@@ -167,8 +167,8 @@ function RetainGraphCaseStudy() {
         </div>
 
         {/* Single panoramic mockup with floating stat badges */}
-        <div className="px-8 md:px-16 py-12 max-w-[1200px] mx-auto">
-          <Macbook videoSrc="/retaingraph_video.mp4" />
+        <div className="px-8 md:px-16 py-12 max-w-6xl mx-auto">
+          <Macbook variant="space-black" videoSrc="/retaingraph_video.mp4" />
         </div>
 
         {/* Pipeline Steps — Clean architectural grid layout */}
