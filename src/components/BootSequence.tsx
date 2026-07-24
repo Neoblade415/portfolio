@@ -62,9 +62,9 @@ export function BootSequence({ onComplete }: BootSequenceProps) {
     
     // 1. Assets to preload
     const imagesToPreload = [
-      "/pink_bg.png",
-      "/art_one.png",
-      "/black_and_white.png",
+      "/pink_bg.webp",
+      "/art_one.webp",
+      "/black_and_white.webp",
     ];
 
     // 2. We explicitly load the display fonts used on the site 

@@ -20,7 +20,7 @@ export const Route = createFileRoute("/projects_/ovela")({
 });
 
 function MobileStorefrontCarousel() {
-  const images = ["/ovela1.png", "/ovela2.png", "/ovela3.png"];
+  const images = ["/ovela1.webp", "/ovela2.webp", "/ovela3.webp"];
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
@@ -139,7 +139,10 @@ function OvelaCaseStudy() {
 
         {/* Hero */}
         <div className="w-full bg-[#201041] h-screen min-h-[600px] flex items-end p-8 md:p-16 relative overflow-hidden">
-          <img src="/ovela_hero.png" alt="Ovela Commerce" className="absolute inset-0 w-full h-full object-cover z-0" />
+          {/* Preload hero image for LCP optimization */}
+          <link rel="preload" as="image" href="/ovela_hero.webp" />
+          
+          <img src="/ovela_hero.webp" alt="Ovela Hero" fetchPriority="high" className="absolute inset-0 w-full h-full object-cover z-0" />
           <div className="absolute inset-0 bg-black/50 z-0 pointer-events-none"></div>
           <div className="relative z-10">
             <h1 className="display-heading text-[12vw] md:text-[9rem] leading-[0.85] text-[#f2f0ec] drop-shadow-2xl">
@@ -206,10 +209,10 @@ function OvelaCaseStudy() {
             <MobileStorefrontCarousel />
             <div className="w-full md:w-3/5 flex flex-col gap-2 justify-between">
               <div className="w-full flex items-center justify-center ">
-                <img src="/ovela_logo_without_bg.png" alt="Ovela Logo" className="w-full h-auto object-contain max-h-[250px]" />
+                <img src="/ovela_logo_without_bg.webp" alt="Ovela Logo" loading="lazy" decoding="async" className="w-full h-auto object-contain max-h-[250px]" />
               </div>
               <div className="relative shadow-xl w-full">
-                <Safari url="admin.ovela.com" videoSrc="/ovela_video.mp4" className="w-full h-full object-cover" />
+                <Safari url="admin.ovela.com" videoSrc="/ovela_video_opt.mp4" className="w-full h-full object-cover" />
               </div>
             </div>
           </div>
@@ -228,7 +231,7 @@ function OvelaCaseStudy() {
               </p>
             </div>
             <div className="md:col-span-7 w-full flex justify-center">
-              <img src="/ovela_all_pages.png" alt="Ovela System Architecture Diagram" className="w-full h-auto object-cover  scale-90 md:scale-110 transform origin-center" />
+              <img src="/ovela_all_pages.webp" alt="Ovela System Architecture Diagram" loading="lazy" decoding="async" className="w-full h-auto object-cover  scale-90 md:scale-110 transform origin-center" />
             </div>
           </div>
         </div>
@@ -243,16 +246,16 @@ function OvelaCaseStudy() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="md:col-span-2 bg-transparent rounded-md flex items-center justify-center aspect-[16/9] relative overflow-hidden group">
-              <BentoCarousel images={["/ovela4.png", "/ovela5.png", "/ovela6.png", "/ovela7.png", "/ovela8.png", "/ovela9.png"]} duration={6.0} direction="up" />
+              <BentoCarousel images={["/ovela4.webp", "/ovela5.webp", "/ovela6.webp", "/ovela7.webp", "/ovela8.webp", "/ovela9.webp"]} duration={6.0} direction="up" />
             </div>
             <div className="bg-transparent rounded-md flex items-center justify-center aspect-[4/3] relative overflow-hidden group">
-              <BentoCarousel images={["/ovela7.png", "/ovela8.png", "/ovela9.png", "/ovela4.png", "/ovela5.png", "/ovela6.png"]} duration={4.5} direction="left" />
+              <BentoCarousel images={["/ovela7.webp", "/ovela8.webp", "/ovela9.webp", "/ovela4.webp", "/ovela5.webp", "/ovela6.webp"]} duration={4.5} direction="left" />
             </div>
             <div className="bg-transparent rounded-md flex items-center justify-center aspect-[4/3] relative overflow-hidden group">
-              <BentoCarousel images={["/ovela6.png", "/ovela9.png", "/ovela4.png", "/ovela8.png", "/ovela5.png", "/ovela7.png"]} duration={4.5} direction="right" />
+              <BentoCarousel images={["/ovela6.webp", "/ovela9.webp", "/ovela4.webp", "/ovela8.webp", "/ovela5.webp", "/ovela7.webp"]} duration={4.5} direction="right" />
             </div>
             <div className="md:col-span-2 bg-transparent rounded-md flex items-center justify-center aspect-[16/9] relative overflow-hidden group">
-              <BentoCarousel images={["/ovela9.png", "/ovela7.png", "/ovela5.png", "/ovela6.png", "/ovela8.png", "/ovela4.png"]} duration={6.0} direction="down" />
+              <BentoCarousel images={["/ovela9.webp", "/ovela7.webp", "/ovela5.webp", "/ovela6.webp", "/ovela8.webp", "/ovela4.webp"]} duration={6.0} direction="down" />
             </div>
           </div>
         </div>
@@ -294,7 +297,7 @@ function OvelaCaseStudy() {
 
         {/* Next Project Hero (RETAINGRAPH) */}
         <Link to="/projects/retaingraph" state={{ transitionText: "LOADING" }} className="block w-full bg-black text-white aspect-[21/9] flex items-end p-8 md:p-16 relative overflow-hidden group">
-          <img src="/retaingraph_hero.png" alt="RetainGraph" className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-105" />
+          <img src="/retaingraph_hero.webp" alt="RetainGraph" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-105" />
           <div className="absolute inset-0 bg-black/40 z-0 transition-colors duration-700 group-hover:bg-black/60 pointer-events-none"></div>
           <div className="relative z-10 w-full flex justify-between items-end">
             <div>

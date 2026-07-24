@@ -8,24 +8,24 @@ import { useRouterState } from "@tanstack/react-router";
  * destination page mounts.
  */
 const ROUTE_ASSETS: Record<string, string[]> = {
-  "/": ["/pink_bg.png", "/art_one.png", "/black_and_white.png"],
+  "/": ["/pink_bg.webp", "/art_one.webp", "/black_and_white.webp"],
   "/projects/navswap": [
-    "/pep_app_hero.png", "/phone_view.png", "/dashboard.png", "/macbook.png",
-    "/wireframe_Dark_full.png", "/wire_frame_bright.png", "/wireframe_grid.png",
+    "/pep_app_hero.webp", "/phone_view.webp", "/dashboard.webp", "/macbook.webp",
+    "/wireframe_Dark_full.webp", "/wire_frame_bright.webp", "/wireframe_grid.webp",
   ],
   "/projects/cortex": [
-    "/cortex_hero_logo.png",
-    "/cortex_dashboard_1.png", "/cortex_dashboard_2.png", "/cortex_dashboard_3.png",
-    "/cortex_dashboard_4.png", "/cortex_dashboard_5.png", "/cortex_dashboard_6.png",
+    "/cortex_hero_logo.webp",
+    "/cortex_dashboard_1.webp", "/cortex_dashboard_2.webp", "/cortex_dashboard_3.webp",
+    "/cortex_dashboard_4.webp", "/cortex_dashboard_5.webp", "/cortex_dashboard_6.webp",
     "/safari_cortex_boomerang.mp4",
   ],
-  "/projects/polaris": ["/polaris_hero.png"],
+  "/projects/polaris": ["/polaris_hero.webp"],
   "/projects/ovela": [
-    "/ovela_hero.png", "/ovela_logo_without_bg.png",
-    "/ovela1.png", "/ovela2.png", "/ovela3.png",
-    "/ovela4.png", "/ovela5.png", "/ovela6.png",
-    "/ovela7.png", "/ovela8.png", "/ovela9.png",
-    "/ovela_all_pages.png", "/ovela_video.mp4",
+    "/ovela_hero.webp", "/ovela_logo_without_bg.webp",
+    "/ovela1.webp", "/ovela2.webp", "/ovela3.webp",
+    "/ovela4.webp", "/ovela5.webp", "/ovela6.webp",
+    "/ovela7.webp", "/ovela8.webp", "/ovela9.webp",
+    "/ovela_all_pages.webp", "/ovela_video_opt.mp4",
   ],
 };
 

@@ -58,7 +58,10 @@ export function Macbook({ children, className, imageSrc, videoSrc, variant = 'de
         {/* Screen Content */}
         <div className="absolute inset-0 bg-black overflow-hidden rounded-md md:rounded-[22px] flex items-center justify-center">
           {videoSrc ? (
-            <video src={videoSrc} autoPlay loop muted playsInline className="w-full h-full object-cover" />
+            <video autoPlay loop muted playsInline preload="metadata" poster={videoSrc.replace('_opt.mp4', '_poster.jpg')} className="w-full h-full object-cover">
+              <source src={videoSrc.replace('.mp4', '.webm')} type="video/webm" />
+              <source src={videoSrc} type="video/mp4" />
+            </video>
           ) : imageSrc ? (
             <img src={imageSrc} alt="Macbook Screen" className="w-full h-full object-cover" />
           ) : (

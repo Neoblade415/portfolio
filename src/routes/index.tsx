@@ -160,8 +160,11 @@ function Index() {
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
         >
+          {/* Preload hero background image for LCP optimization */}
+          <link rel="preload" as="image" href="/pink_bg.webp" />
+          
           {/* Layer 1: Pink Base Background (Full Frame) */}
-          <img src="/pink_bg.png" className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none select-none" alt="" />
+          <img src="/pink_bg.webp" fetchPriority="high" className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none select-none" alt="" />
           
           {/* Layer 2: HeroFluidReveal (Full Frame) — hidden during glitch, blooms after */}
           <motion.div
@@ -320,7 +323,7 @@ function Index() {
                 {/* Only the image glitches — wrapper stays solid so pink bg never flashes */}
                 <motion.img
                   ref={artRef}
-                  src="/art_one.png"
+                  src="/art_one.webp"
                   alt="Galekto"
                   initial={{ opacity: 0 }}
                   animate={hasRevealed ? { opacity: 1 } : glitchAnimate}

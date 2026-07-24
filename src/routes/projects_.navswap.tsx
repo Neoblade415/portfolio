@@ -113,7 +113,10 @@ function NavSwapCaseStudy() {
           
         {/* NavSwap Hero */}
         <div className="w-full bg-[#1c1c1c] h-screen min-h-[600px] flex items-end p-8 md:p-16 relative overflow-hidden">
-          <img src="/pep_app_hero.png" alt="NavSwap Hero" className="absolute inset-0 w-full h-full object-cover z-0" />
+          {/* Preload hero image for LCP optimization */}
+          <link rel="preload" as="image" href="/pep_app_hero.webp" />
+          
+          <img src="/pep_app_hero.webp" alt="NavSwap Hero" fetchPriority="high" className="absolute inset-0 w-full h-full object-cover z-0" />
           <div className="absolute inset-0 bg-black/50 z-0 pointer-events-none"></div>
           <h1 className="display-heading text-[12vw] md:text-[9rem] leading-[0.85] text-[#f2f0ec] relative z-10 drop-shadow-2xl">
             NAVSWAP
@@ -181,7 +184,7 @@ function NavSwapCaseStudy() {
 
         {/* Laptop Mockup */}
         <div className="px-8 md:px-16 py-12 max-w-6xl mx-auto">
-          <Macbook variant="midnight-pro" videoSrc="/navswap.mp4" />
+          <Macbook variant="midnight-pro" videoSrc="/navswap_opt.mp4" />
         </div>
 
         {/* Core Architecture */}
@@ -228,7 +231,7 @@ function NavSwapCaseStudy() {
                     <div className="w-2.5 h-2.5 rounded-full bg-white/10 mr-1"></div>
                   </div>
                   <div className="absolute inset-0 z-0">
-                    <BentoCarousel images={["/navswap13.png", "/navswap14.png"]} duration={2.5} direction="up" radiusClass="rounded-[3rem]" />
+                    <BentoCarousel images={["/optimized/navswap13.webp", "/optimized/navswap14.webp"]} duration={2.5} direction="up" radiusClass="rounded-[3rem]" />
                   </div>
                 </div>
               </div>
@@ -266,42 +269,42 @@ function NavSwapCaseStudy() {
               
               {/* Block 1: Massive Hero (3x3) */}
               <div className="col-start-1 col-span-3 row-start-1 row-span-3 border border-[#444] rounded-md bg-transparent relative overflow-hidden group">
-                <BentoCarousel images={["/optimized/navswap10.png", "/optimized/navswap11.png", "/optimized/navswap5.png"]} duration={7} direction="up-right" />
+                <BentoCarousel images={["/optimized/navswap10.webp", "/optimized/navswap11.webp", "/optimized/navswap5.webp"]} duration={7} direction="up-right" />
               </div>
 
               {/* Block 2: Very Wide Top Bar (3x1) */}
               <div className="col-start-4 col-span-3 row-start-1 row-span-1 border border-[#444] rounded-md bg-transparent relative overflow-hidden group">
-                <BentoCarousel images={["/optimized/navswap13.png", "/optimized/navswap14.png", "/optimized/navswap16.png"]} duration={6} direction="down-left" />
+                <BentoCarousel images={["/optimized/navswap13.webp", "/optimized/navswap14.webp", "/optimized/navswap16.webp"]} duration={6} direction="down-left" />
               </div>
 
               {/* Block 3: Tall Portrait (1x2) */}
               <div className="col-start-4 col-span-1 row-start-2 row-span-2 border border-[#444] rounded-md bg-transparent relative overflow-hidden group">
-                <BentoCarousel images={["/optimized/nav_home_dark.png", "/optimized/nav_home_bright.png", "/optimized/navswap3.png", "/optimized/navswap4.png", "/optimized/navswap15.png"]} duration={9} direction="down" />
+                <BentoCarousel images={["/optimized/nav_home_dark.webp", "/optimized/nav_home_bright.webp", "/optimized/navswap3.webp", "/optimized/navswap4.webp", "/optimized/navswap15.webp"]} duration={9} direction="down" />
               </div>
 
               {/* Block 4: Secondary Large Square (2x2) */}
               <div className="col-start-5 col-span-2 row-start-2 row-span-2 border border-[#444] rounded-md bg-transparent relative overflow-hidden group">
-                <BentoCarousel images={["/optimized/navswap7.png", "/optimized/navswap6.png"]} duration={5.5} direction="up-left" />
+                <BentoCarousel images={["/optimized/navswap7.webp", "/optimized/navswap6.webp"]} duration={5.5} direction="up-left" />
               </div>
 
               {/* Block 5: Bottom Left Wide (2x1) */}
               <div className="col-start-1 col-span-2 row-start-4 row-span-1 border border-[#444] rounded-md bg-transparent relative overflow-hidden group">
-                <BentoCarousel images={["/optimized/navswap17.png", "/optimized/navswap8.png"]} duration={5} direction="down-right" />
+                <BentoCarousel images={["/optimized/navswap17.webp", "/optimized/navswap8.webp"]} duration={5} direction="down-right" />
               </div>
 
               {/* Block 6: Bottom Mid Square (1x1) */}
               <div className="col-start-3 col-span-1 row-start-4 row-span-1 border border-[#444] rounded-md bg-transparent relative overflow-hidden group">
-                <BentoCarousel images={["/optimized/navswap1.jpeg", "/optimized/navswap2.jpeg"]} duration={4} direction="up" />
+                <BentoCarousel images={["/optimized/navswap1.webp", "/optimized/navswap2.webp"]} duration={4} direction="up" />
               </div>
 
               {/* Block 7: Bottom Right Wide (2x1) */}
               <div className="col-start-4 col-span-2 row-start-4 row-span-1 border border-[#444] rounded-md bg-transparent relative overflow-hidden group">
-                <BentoCarousel images={["/optimized/navswap18.png", "/optimized/navswap9.png"]} duration={5.5} direction="right" />
+                <BentoCarousel images={["/optimized/navswap18.webp", "/optimized/navswap9.webp"]} duration={5.5} direction="right" />
               </div>
 
               {/* Block 8: Bottom Far Right Square (1x1) */}
               <div className="col-start-6 col-span-1 row-start-4 row-span-1 border border-[#444] rounded-md bg-transparent relative overflow-hidden group">
-                <BentoCarousel images={["/optimized/navswap12.png"]} duration={4} direction="up-left" />
+                <BentoCarousel images={["/optimized/navswap12.webp"]} duration={4} direction="up-left" />
               </div>
 
             </div>
@@ -338,7 +341,7 @@ function NavSwapCaseStudy() {
 
         {/* Next Project Hero (CORTEX) */}
         <Link to="/projects/cortex" state={{ transitionText: "LOADING" }} className="block w-full bg-black text-white aspect-[21/9] flex items-end p-8 md:p-16 cursor-pointer transition-colors relative overflow-hidden group">
-          <img src="/cortex_hero_logo.png" alt="Cortex" className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-105" />
+          <img src="/cortex_hero_logo.webp" alt="Cortex" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-105" />
           <div className="absolute inset-0 bg-black/40 z-0 transition-colors duration-700 group-hover:bg-black/60 pointer-events-none"></div>
           <div className="relative z-10 w-full flex justify-between items-end">
             <div>

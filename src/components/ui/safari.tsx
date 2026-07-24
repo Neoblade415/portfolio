@@ -56,13 +56,16 @@ export function Safari({
         >
           <video
             className="block size-full object-cover"
-            src={videoSrc}
             autoPlay
             loop
             muted
             playsInline
             preload="metadata"
-          />
+            poster={videoSrc.replace('_opt.mp4', '_poster.jpg')}
+          >
+            <source src={videoSrc.replace('.mp4', '.webm')} type="video/webm" />
+            <source src={videoSrc} type="video/mp4" />
+          </video>
         </div>
       )}
 

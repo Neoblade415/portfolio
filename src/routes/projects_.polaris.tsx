@@ -100,8 +100,11 @@ function PolarisCaseStudy() {
 
         {/* Full-Screen Hero */}
         <div className="relative w-full h-screen min-h-[600px] flex flex-col bg-[#1e4a3b]">
+          {/* Preload hero image for LCP optimization */}
+          <link rel="preload" as="image" href="/polaris_hero.webp" />
+          
           {/* Background Image */}
-          <img src="/polaris_hero.png" alt="Polaris Hero" className="absolute inset-0 w-full h-full object-cover z-0" />
+          <img src="/polaris_hero.webp" alt="Polaris Design System" fetchPriority="high" className="absolute inset-0 w-full h-full object-cover z-0" />
 
           {/* Solid Tint Overlay for text legibility */}
           <div className="absolute inset-0 bg-black/50 z-0 pointer-events-none" />
@@ -174,13 +177,17 @@ function PolarisCaseStudy() {
             </div>
             <div className="w-full aspect-video rounded-md overflow-hidden shadow-2xl bg-black flex items-center justify-center">
               <video 
-                src="/polaris.mov" 
                 autoPlay 
                 loop 
                 muted 
                 playsInline 
+                preload="metadata"
+                poster="/polaris_poster.jpg"
                 className="w-full h-full object-cover"
-              />
+              >
+                <source src="/polaris_opt.webm" type="video/webm" />
+                <source src="/polaris_opt.mp4" type="video/mp4" />
+              </video>
             </div>
           </div>
         </div>
@@ -211,19 +218,19 @@ function PolarisCaseStudy() {
             
             <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-4 w-full h-auto min-h-[800px] md:h-[900px]">
               <div className="md:col-span-2 md:row-span-2 relative rounded-md overflow-hidden border border-[#444] bg-transparent min-h-[400px]">
-                <BentoCarousel images={["/polaris1.png", "/polaris2.png", "/polaris4.png", "/polaris3.png", "/polaris5.png"]} duration={6.5} direction="up" radiusClass="rounded-md" />
+                <BentoCarousel images={["/polaris1.webp", "/polaris2.webp", "/polaris4.webp", "/polaris3.webp", "/polaris5.webp"]} duration={6.5} direction="up" radiusClass="rounded-md" />
               </div>
               <div className="md:col-span-1 md:row-span-1 relative rounded-md overflow-hidden border border-[#444] bg-transparent min-h-[300px]">
-                <BentoCarousel images={["/polaris2.png", "/polaris5.png", "/polaris1.png", "/polaris4.png", "/polaris3.png"]} duration={5.0} direction="left" radiusClass="rounded-md" />
+                <BentoCarousel images={["/polaris2.webp", "/polaris5.webp", "/polaris1.webp", "/polaris4.webp", "/polaris3.webp"]} duration={5.0} direction="left" radiusClass="rounded-md" />
               </div>
               <div className="md:col-span-1 md:row-span-1 relative rounded-md overflow-hidden border border-[#444] bg-transparent min-h-[300px]">
-                <BentoCarousel images={["/polaris3.png", "/polaris1.png", "/polaris5.png", "/polaris2.png", "/polaris4.png"]} duration={4.5} direction="down-left" radiusClass="rounded-md" />
+                <BentoCarousel images={["/polaris3.webp", "/polaris1.webp", "/polaris5.webp", "/polaris2.webp", "/polaris4.webp"]} duration={4.5} direction="down-left" radiusClass="rounded-md" />
               </div>
               <div className="md:col-span-1 md:row-span-1 relative rounded-md overflow-hidden border border-[#444] bg-transparent min-h-[300px]">
-                <BentoCarousel images={["/polaris4.png", "/polaris3.png", "/polaris1.png", "/polaris5.png", "/polaris2.png"]} duration={7.0} direction="down" radiusClass="rounded-md" />
+                <BentoCarousel images={["/polaris4.webp", "/polaris3.webp", "/polaris1.webp", "/polaris5.webp", "/polaris2.webp"]} duration={7.0} direction="down" radiusClass="rounded-md" />
               </div>
               <div className="md:col-span-1 md:row-span-1 relative rounded-md overflow-hidden border border-[#444] bg-transparent min-h-[300px]">
-                <BentoCarousel images={["/polaris5.png", "/polaris4.png", "/polaris2.png", "/polaris1.png", "/polaris3.png"]} duration={5.5} direction="up-right" radiusClass="rounded-md" />
+                <BentoCarousel images={["/polaris5.webp", "/polaris4.webp", "/polaris2.webp", "/polaris1.webp", "/polaris3.webp"]} duration={5.5} direction="up-right" radiusClass="rounded-md" />
               </div>
             </div>
           </div>
@@ -261,7 +268,7 @@ function PolarisCaseStudy() {
 
         {/* Next Project Hero */}
         <Link to="/projects/ovela" state={{ transitionText: "LOADING" }} className="block w-full bg-black text-white aspect-[21/9] flex items-end p-8 md:p-16 relative overflow-hidden group">
-          <img src="/ovela_hero.png" alt="Ovela" className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-105" />
+          <img src="/ovela_hero.webp" alt="Ovela" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-105" />
           <div className="absolute inset-0 bg-black/40 z-0 transition-colors duration-700 group-hover:bg-black/60 pointer-events-none"></div>
           <div className="relative z-10 w-full flex justify-between items-end">
             <div>

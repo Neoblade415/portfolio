@@ -101,7 +101,10 @@ function RetainGraphCaseStudy() {
 
         {/* Hero */}
         <div className="w-full h-screen min-h-[600px] flex items-end p-8 md:p-16 relative overflow-hidden group">
-          <img src="/retaingraph_hero.png" alt="RetainGraph Interface" className="absolute inset-0 w-full h-full object-cover z-0" />
+          {/* Preload hero image for LCP optimization */}
+          <link rel="preload" as="image" href="/retaingraph_hero.webp" />
+          
+          <img src="/retaingraph_hero.webp" alt="RetainGraph Interface" fetchPriority="high" className="absolute inset-0 w-full h-full object-cover z-0" />
           <div className="absolute inset-0 bg-black/40 z-0 transition-opacity duration-700 group-hover:bg-black/20 pointer-events-none"></div>
           
           <div className="relative z-10 w-full flex flex-col md:flex-row md:items-end justify-between gap-8 md:gap-0">
@@ -168,7 +171,7 @@ function RetainGraphCaseStudy() {
 
         {/* Single panoramic mockup with floating stat badges */}
         <div className="px-8 md:px-16 py-12 max-w-6xl mx-auto">
-          <Macbook variant="space-black" videoSrc="/retaingraph_video.mp4" />
+          <Macbook variant="space-black" videoSrc="/retaingraph_video_opt.mp4" />
         </div>
 
         {/* Pipeline Steps — Clean architectural grid layout */}
@@ -202,13 +205,17 @@ function RetainGraphCaseStudy() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
             <div className="order-2 md:order-1 w-full aspect-video rounded-xl overflow-hidden shadow-sm border border-black/10 bg-[#e8e6e1]">
               <video 
-                src="/liquid_retaingraph.mov" 
                 autoPlay 
                 loop 
                 muted 
                 playsInline 
+                preload="metadata"
+                poster="/liquid_retaingraph_poster.jpg"
                 className="w-full h-full object-cover" 
-              />
+              >
+                <source src="/liquid_retaingraph_opt.webm" type="video/webm" />
+                <source src="/liquid_retaingraph_opt.mp4" type="video/mp4" />
+              </video>
             </div>
             <div className="order-1 md:order-2">
               <h2 className="display-heading text-3xl md:text-4xl mb-6">ARCHITECTURE</h2>
@@ -255,47 +262,47 @@ function RetainGraphCaseStudy() {
               
               {/* 1. Top Left Tall (Phone) */}
               <div className="md:col-span-1 md:row-span-2 bg-transparent rounded-md relative overflow-hidden group aspect-[3/4] md:aspect-auto w-full h-full">
-                <BentoCarousel images={["/retaingraph1.png", "/retaingraph3.png", "/retaingraph_hero.png", "/retaingraph4.png", "/retaingraph5.png", "/retaingraph6.png"]} duration={7.0} direction="down" />
+                <BentoCarousel images={["/retaingraph1.webp", "/retaingraph3.webp", "/retaingraph_hero.webp", "/retaingraph4.webp", "/retaingraph5.webp", "/retaingraph6.webp"]} duration={7.0} direction="down" />
               </div>
 
               {/* 2. Top Middle-Left Square (4.875) */}
               <div className="md:col-span-1 md:row-span-1 bg-transparent rounded-md relative overflow-hidden group aspect-square md:aspect-auto w-full h-full">
-                <BentoCarousel images={["/retaingraph3.png", "/retaingraph4.png", "/retaingraph_hero.png", "/retaingraph5.png", "/retaingraph6.png", "/retaingraph1.png"]} duration={5.0} direction="up-left" />
+                <BentoCarousel images={["/retaingraph3.webp", "/retaingraph4.webp", "/retaingraph_hero.webp", "/retaingraph5.webp", "/retaingraph6.webp", "/retaingraph1.webp"]} duration={5.0} direction="up-left" />
               </div>
 
               {/* 3. Top Middle-Right Square (57K) */}
               <div className="md:col-span-1 md:row-span-1 bg-transparent rounded-md relative overflow-hidden group aspect-square md:aspect-auto w-full h-full">
-                <BentoCarousel images={["/retaingraph4.png", "/retaingraph5.png", "/retaingraph_hero.png", "/retaingraph6.png", "/retaingraph1.png", "/retaingraph3.png"]} duration={6.0} direction="down-right" />
+                <BentoCarousel images={["/retaingraph4.webp", "/retaingraph5.webp", "/retaingraph_hero.webp", "/retaingraph6.webp", "/retaingraph1.webp", "/retaingraph3.webp"]} duration={6.0} direction="down-right" />
               </div>
 
               {/* 4. Top Right Tall (Team) */}
               <div className="md:col-span-1 md:row-span-2 bg-transparent rounded-md relative overflow-hidden group aspect-[3/4] md:aspect-auto w-full h-full">
-                <BentoCarousel images={["/retaingraph5.png", "/retaingraph6.png", "/retaingraph_hero.png", "/retaingraph1.png", "/retaingraph3.png", "/retaingraph4.png"]} duration={7.5} direction="up" />
+                <BentoCarousel images={["/retaingraph5.webp", "/retaingraph6.webp", "/retaingraph_hero.webp", "/retaingraph1.webp", "/retaingraph3.webp", "/retaingraph4.webp"]} duration={7.5} direction="up" />
               </div>
 
               {/* 5. Center Large (Chart) */}
               <div className="md:col-span-2 md:row-span-2 bg-transparent rounded-md relative overflow-hidden group aspect-video md:aspect-auto w-full h-full">
-                <BentoCarousel images={["/retaingraph6.png", "/retaingraph1.png", "/retaingraph_hero.png", "/retaingraph3.png", "/retaingraph4.png", "/retaingraph5.png"]} duration={8.0} direction="left" />
+                <BentoCarousel images={["/retaingraph6.webp", "/retaingraph1.webp", "/retaingraph_hero.webp", "/retaingraph3.webp", "/retaingraph4.webp", "/retaingraph5.webp"]} duration={8.0} direction="left" />
               </div>
 
               {/* 6. Bottom Left Tall (Smart Digital) */}
               <div className="md:col-span-1 md:row-span-2 bg-transparent rounded-md relative overflow-hidden group aspect-[3/4] md:aspect-auto w-full h-full">
-                <BentoCarousel images={["/retaingraph4.png", "/retaingraph6.png", "/retaingraph_hero.png", "/retaingraph5.png", "/retaingraph1.png", "/retaingraph3.png"]} duration={6.5} direction="up-right" />
+                <BentoCarousel images={["/retaingraph4.webp", "/retaingraph6.webp", "/retaingraph_hero.webp", "/retaingraph5.webp", "/retaingraph1.webp", "/retaingraph3.webp"]} duration={6.5} direction="up-right" />
               </div>
 
               {/* 7. Bottom Right Square (CUBO) */}
               <div className="md:col-span-1 md:row-span-1 bg-transparent rounded-md relative overflow-hidden group aspect-square md:aspect-auto w-full h-full">
-                <BentoCarousel images={["/retaingraph3.png", "/retaingraph1.png", "/retaingraph_hero.png", "/retaingraph6.png", "/retaingraph4.png", "/retaingraph5.png"]} duration={4.5} direction="down-left" />
+                <BentoCarousel images={["/retaingraph3.webp", "/retaingraph1.webp", "/retaingraph_hero.webp", "/retaingraph6.webp", "/retaingraph4.webp", "/retaingraph5.webp"]} duration={4.5} direction="down-left" />
               </div>
 
               {/* 8. Bottom Middle-Left Square (Font) */}
               <div className="md:col-span-1 md:row-span-1 bg-transparent rounded-md relative overflow-hidden group aspect-square md:aspect-auto w-full h-full">
-                <BentoCarousel images={["/retaingraph1.png", "/retaingraph5.png", "/retaingraph_hero.png", "/retaingraph3.png", "/retaingraph6.png", "/retaingraph4.png"]} duration={5.5} direction="right" />
+                <BentoCarousel images={["/retaingraph1.webp", "/retaingraph5.webp", "/retaingraph_hero.webp", "/retaingraph3.webp", "/retaingraph6.webp", "/retaingraph4.webp"]} duration={5.5} direction="right" />
               </div>
 
               {/* 9. Bottom Right Wide (We Build Future) */}
               <div className="md:col-span-2 md:row-span-1 bg-transparent rounded-md relative overflow-hidden group aspect-[21/9] md:aspect-auto w-full h-full">
-                <BentoCarousel images={["/retaingraph5.png", "/retaingraph4.png", "/retaingraph_hero.png", "/retaingraph1.png", "/retaingraph6.png", "/retaingraph3.png"]} duration={6.0} direction="left" />
+                <BentoCarousel images={["/retaingraph5.webp", "/retaingraph4.webp", "/retaingraph_hero.webp", "/retaingraph1.webp", "/retaingraph6.webp", "/retaingraph3.webp"]} duration={6.0} direction="left" />
               </div>
 
             </div>
@@ -334,7 +341,7 @@ function RetainGraphCaseStudy() {
 
         {/* Next Project Hero (NAVSWAP) */}
         <Link to="/projects/navswap" state={{ transitionText: "LOADING" }} className="block w-full bg-black text-[#f2f0ec] aspect-[21/9] flex items-end p-8 md:p-16 cursor-pointer relative overflow-hidden group">
-          <img src="/pep_app_hero.png" alt="NavSwap" className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-105" />
+          <img src="/pep_app_hero.webp" alt="NavSwap" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-105" />
           <div className="absolute inset-0 bg-black/40 z-0 transition-colors duration-700 group-hover:bg-black/60 pointer-events-none"></div>
           <div className="relative z-10 w-full flex justify-between items-end">
             <div>

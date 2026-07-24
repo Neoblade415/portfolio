@@ -113,7 +113,10 @@ function CortexCaseStudy() {
           
         {/* Hero */}
         <div className="w-full bg-[#1c1c1c] h-screen min-h-[600px] flex items-end p-8 md:p-16 relative overflow-hidden">
-          <img src="/cortex_hero_logo.png" alt="Cortex Dashboard Hero" className="absolute inset-0 w-full h-full object-cover z-0" />
+          {/* Preload hero image for LCP optimization */}
+          <link rel="preload" as="image" href="/cortex_hero_logo.webp" />
+          
+          <img src="/cortex_hero_logo.webp" alt="Cortex Dashboard Hero" fetchPriority="high" className="absolute inset-0 w-full h-full object-cover z-0" />
           <div className="absolute inset-0 bg-black/50 z-0 pointer-events-none"></div>
           <h1 className="display-heading text-[12vw] md:text-[9rem] leading-[0.85] text-[#f2f0ec] relative z-10 drop-shadow-2xl">
             CORTEX
@@ -154,7 +157,7 @@ function CortexCaseStudy() {
             </p>
           </div>
           <div className="w-full relative rounded-md overflow-hidden shadow-2xl">
-            <Safari url="cortex.ai" videoSrc="/safari_cortex.mp4" className="w-full h-full object-cover" />
+            <Safari url="cortex.ai" videoSrc="/safari_cortex_opt.mp4" className="w-full h-full object-cover" />
           </div>
         </div>
 
@@ -204,32 +207,32 @@ function CortexCaseStudy() {
             <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-3 gap-4 w-full h-auto min-h-[800px] md:h-[1000px]">
               {/* Box 1 (Large top-left) */}
               <div className="md:col-span-2 md:row-span-2 relative rounded-md overflow-hidden border border-[#444] bg-transparent min-h-[300px]">
-                <BentoCarousel images={["/cortex_dashboard_1.png", "/cortex_dashboard_2.png", "/cortex_hero_logo.png", "/cortex_dashboard_4.png", "/cortex_dashboard_3.png", "/cortex_dashboard_5.png"]} duration={6.5} direction="up" radiusClass="rounded-md" />
+                <BentoCarousel images={["/cortex_dashboard_1.webp", "/cortex_dashboard_2.webp", "/cortex_hero_logo.webp", "/cortex_dashboard_4.webp", "/cortex_dashboard_3.webp", "/cortex_dashboard_5.webp"]} duration={6.5} direction="up" radiusClass="rounded-md" />
               </div>
               
               {/* Box 2 (Wide top-right) */}
               <div className="md:col-span-2 md:row-span-1 relative rounded-md overflow-hidden border border-[#444] bg-transparent min-h-[250px]">
-                <BentoCarousel images={["/cortex_dashboard_2.png", "/cortex_dashboard_5.png", "/cortex.png", "/cortex_dashboard_1.png", "/cortex_dashboard_6.png", "/cortex_dashboard_3.png"]} duration={5.0} direction="left" radiusClass="rounded-md" />
+                <BentoCarousel images={["/cortex_dashboard_2.webp", "/cortex_dashboard_5.webp", "/cortex.webp", "/cortex_dashboard_1.webp", "/cortex_dashboard_6.webp", "/cortex_dashboard_3.webp"]} duration={5.0} direction="left" radiusClass="rounded-md" />
               </div>
 
               {/* Box 3 (Small mid-right) */}
               <div className="md:col-span-1 md:row-span-1 relative rounded-md overflow-hidden border border-[#444] bg-transparent min-h-[250px]">
-                <BentoCarousel images={["/cortex_dashboard_3.png", "/cortex_hero_logo.png", "/cortex_dashboard_1.png", "/cortex_dashboard_6.png", "/cortex_dashboard_2.png", "/cortex_dashboard_4.png"]} duration={4.5} direction="down-left" radiusClass="rounded-md" />
+                <BentoCarousel images={["/cortex_dashboard_3.webp", "/cortex_hero_logo.webp", "/cortex_dashboard_1.webp", "/cortex_dashboard_6.webp", "/cortex_dashboard_2.webp", "/cortex_dashboard_4.webp"]} duration={4.5} direction="down-left" radiusClass="rounded-md" />
               </div>
 
               {/* Box 4 (Tall far-right) */}
               <div className="md:col-span-1 md:row-span-2 relative rounded-md overflow-hidden border border-[#444] bg-transparent min-h-[250px]">
-                <BentoCarousel images={["/cortex.png", "/cortex_dashboard_6.png", "/cortex_dashboard_3.png", "/cortex_dashboard_1.png", "/cortex_dashboard_5.png", "/cortex_dashboard_2.png"]} duration={7.0} direction="down" radiusClass="rounded-md" />
+                <BentoCarousel images={["/cortex.webp", "/cortex_dashboard_6.webp", "/cortex_dashboard_3.webp", "/cortex_dashboard_1.webp", "/cortex_dashboard_5.webp", "/cortex_dashboard_2.webp"]} duration={7.0} direction="down" radiusClass="rounded-md" />
               </div>
 
               {/* Box 5 (Small bottom-left) */}
               <div className="md:col-span-1 md:row-span-1 relative rounded-md overflow-hidden border border-[#444] bg-transparent min-h-[250px]">
-                <BentoCarousel images={["/cortex_dashboard_4.png", "/cortex_dashboard_6.png", "/cortex_hero_logo.png", "/cortex_dashboard_2.png", "/cortex_dashboard_1.png", "/cortex_dashboard_5.png"]} duration={5.5} direction="up-right" radiusClass="rounded-md" />
+                <BentoCarousel images={["/cortex_dashboard_4.webp", "/cortex_dashboard_6.webp", "/cortex_hero_logo.webp", "/cortex_dashboard_2.webp", "/cortex_dashboard_1.webp", "/cortex_dashboard_5.webp"]} duration={5.5} direction="up-right" radiusClass="rounded-md" />
               </div>
 
               {/* Box 6 (Wide bottom-center) */}
               <div className="md:col-span-2 md:row-span-1 relative rounded-md overflow-hidden border border-[#444] bg-transparent min-h-[250px]">
-                <BentoCarousel images={["/cortex_dashboard_5.png", "/cortex.png", "/cortex_dashboard_4.png", "/cortex_dashboard_3.png", "/cortex_dashboard_2.png", "/cortex_dashboard_1.png"]} duration={6.0} direction="right" radiusClass="rounded-md" />
+                <BentoCarousel images={["/cortex_dashboard_5.webp", "/cortex.webp", "/cortex_dashboard_4.webp", "/cortex_dashboard_3.webp", "/cortex_dashboard_2.webp", "/cortex_dashboard_1.webp"]} duration={6.0} direction="right" radiusClass="rounded-md" />
               </div>
             </div>
           </div>
@@ -277,7 +280,7 @@ function CortexCaseStudy() {
 
         {/* Next Project Hero (POLARIS) */}
         <Link to="/projects/polaris" state={{ transitionText: "LOADING" }} className="block w-full bg-black text-[#f0ebe3] aspect-[21/9] flex items-end p-8 md:p-16 relative overflow-hidden group">
-          <img src="/polaris_hero.png" alt="Polaris" className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-105" />
+          <img src="/polaris_hero.webp" alt="Polaris" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-105" />
           <div className="absolute inset-0 bg-black/40 z-0 transition-colors duration-700 group-hover:bg-black/60 pointer-events-none"></div>
           <div className="relative z-10 w-full flex justify-between items-end">
             <div>

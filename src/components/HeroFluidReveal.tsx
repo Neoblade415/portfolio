@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 
 export function HeroFluidReveal({
-  imageUrl = '/black_and_white.png',
+  imageUrl = '/black_and_white.webp',
   targetRef,
   SIM_RESOLUTION = 128,
   DYE_RESOLUTION = 1440,
